@@ -1,0 +1,141 @@
+---
+import Avatar from '../../components/Avatar.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getDb, spillerUrl } from '../../lib/site.ts';
+import { filtrerSesong, lederRoller, spillerStat } from '../../lib/stats.ts';
+
+const db = getDb();
+const spillere = db.personer
+  .filter((p) => p.spillerKamper.length > 0)
+  .map((p) => {
+    const alle = spillerStat(p.spillerKamper);
+    const perSesong: Record<string, [number, number, number]> = { alle: [alle.kamper, alle.mal, alle.gule + alle.rode] };
+    for (const s of alle.sesonger) {
+      const st = spillerStat(filtrerSesong(p.spillerKamper, s));
+      perSesong[s] = [st.kamper, st.mal, st.gule + st.rode];
+    }
+    return { p, alle, perSesong };
+  })
+  .sort((a, b) => b.alle.kamper - a.alle.kamper || a.p.navn.localeCompare(b.p.navn, 'nb'));
+const ledere = db.personer
+  .filter((p) => p.lederKamper.length > 0)
+  .map((p) => ({ p, roller: lederRoller(p), sesonger: [...new Set(p.lederKamper.map((x) => x.kamp.sesong))].sort() }))
+  .sort((a, b) => b.p.lederKamper.length - a.p.lederKamper.length || a.p.navn.localeCompare(b.p.navn, 'nb'));
+const spenn = (s: number[]) => (s.length ? (s[0] === s.at(-1) ? `${s[0]}` : `${s[0]}–${s.at(-1)}`) : '');
+---
+
+<Layout title="Spillere" description={`Alle spillere og ledere i ${db.settings.lagnavn}.`} aktiv="spillere">
+  <h1 class="text-2xl font-bold tracking-tight">Spillere</h1>
+  <p class="mt-1 text-sm text-muted">
+    «Kamper» betyr kamper i troppen. Innbyttere er alltid krysset av som spilt i rapportene, så vi vet ikke sikkert om de kom inn.
+  </p>
+
+  <form id="filter" class="mt-4 flex flex-wrap items-end gap-3" onsubmit="return false" aria-label="Filtrer spillere">
+    <label class="flex flex-col gap-1 text-xs font-semibold text-muted">
+      Sesong
+      <select name="sesong" class="field">
+        <option value="alle">Alle tider</option>
+        {db.sesonger.map((s) => <option value={s}>{s}</option>)}
+      </select>
+    </label>
+    <label class="flex flex-col gap-1 text-xs font-semibold text-muted">
+      Sorter
+      <select name="sorter" class="field">
+        <option value="kamper">Flest kamper</option>
+        <option value="mal">Flest mål</option>
+        <option value="navn">Navn</option>
+      </select>
+    </label>
+    <label class="flex min-w-[12rem] flex-1 flex-col gap-1 text-xs font-semibold text-muted">
+      Finn spiller
+      <input name="q" type="search" class="field" placeholder="Skriv et navn" autocomplete="off" />
+    </label>
+  </form>
+
+  <ul id="liste" class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      spillere.map(({ p, alle, perSesong }) => (
+        <li data-navn={p.navn.toLocaleLowerCase('nb')} data-stats={JSON.stringify(perSesong)}>
+          <a href={spillerUrl(p.slug)} class="card flex items-center gap-3 p-3 hover:border-accent">
+            <Avatar navn={p.navn} bilde={p.bilde} size={44} />
+            <span class="min-w-0 flex-1">
+              <span class="block truncate font-semibold">{p.navn}</span>
+              <span class="block text-xs text-muted">
+                <span data-felt="kamper">{alle.kamper}</span> kamper · <span data-felt="mal">{alle.mal}</span> mål · {spenn(alle.sesonger)}
+              </span>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p id="ingen" class="card mt-4 hidden p-6 text-center text-muted">Ingen spillere passer filteret.</p>
+
+  {
+    ledere.length > 0 && (
+      <section class="mt-8" aria-labelledby="ledere">
+        <h2 id="ledere" class="h-section mb-3">Trenere og ledere</h2>
+        <ul class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {ledere.map(({ p, roller, sesonger }) => (
+            <li>
+              <a href={spillerUrl(p.slug)} class="card flex items-center gap-3 p-3 hover:border-accent">
+                <Avatar navn={p.navn} bilde={p.bilde} size={44} />
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate font-semibold">{p.navn}</span>
+                  <span class="block text-xs text-muted">
+                    {roller.map((r) => `${r.funksjon} (${r.kamper})`).join(', ')} · {spenn(sesonger)}
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</Layout>
+
+<script>
+  const form = document.getElementById('filter') as HTMLFormElement;
+  const liste = document.getElementById('liste')!;
+  const items = [...liste.querySelectorAll<HTMLElement>('li')];
+  const ingen = document.getElementById('ingen')!;
+  const params = new URLSearchParams(location.search);
+  const el = (n: string) => form.elements.namedItem(n) as HTMLInputElement | HTMLSelectElement;
+  if (params.get('sesong')) el('sesong').value = params.get('sesong')!;
+  if (params.get('sorter')) el('sorter').value = params.get('sorter')!;
+  const norm = (s: string) => s.toLocaleLowerCase('nb').normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+  function apply() {
+    const sesong = el('sesong').value;
+    const sorter = el('sorter').value;
+    const q = norm(el('q').value.trim());
+    const vis: [HTMLElement, number[]][] = [];
+    for (const li of items) {
+      const stats = JSON.parse(li.dataset.stats!)[sesong] as number[] | undefined;
+      const ok = Boolean(stats) && (!q || norm(li.dataset.navn!).includes(q));
+      li.hidden = !ok;
+      if (ok && stats) {
+        li.querySelector('[data-felt="kamper"]')!.textContent = String(stats[0]);
+        li.querySelector('[data-felt="mal"]')!.textContent = String(stats[1]);
+        vis.push([li, stats]);
+      }
+    }
+    vis.sort((a, b) =>
+      sorter === 'navn'
+        ? a[0].dataset.navn!.localeCompare(b[0].dataset.navn!, 'nb')
+        : sorter === 'mal'
+          ? b[1][1] - a[1][1] || b[1][0] - a[1][0]
+          : b[1][0] - a[1][0] || b[1][1] - a[1][1],
+    );
+    for (const [li] of vis) liste.appendChild(li);
+    ingen.classList.toggle('hidden', vis.length > 0);
+    const p = new URLSearchParams();
+    if (sesong !== 'alle') p.set('sesong', sesong);
+    if (sorter !== 'kamper') p.set('sorter', sorter);
+    history.replaceState(null, '', p.size ? `?${p}` : location.pathname);
+  }
+  form.addEventListener('input', apply);
+  form.addEventListener('change', apply);
+  apply();
+</script>

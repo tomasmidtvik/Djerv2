@@ -1,0 +1,158 @@
+---
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+import { datoKort, getDb, url } from '../lib/site.ts';
+
+interface Props {
+  title?: string;
+  description?: string;
+  aktiv?: 'hjem' | 'kamper' | 'spillere' | 'statistikk' | 'opptak' | 'sok';
+}
+const db = getDb();
+const lag = db.settings.sidetittel;
+const { title, description = `Resultater, kamparkiv og statistikk for ${lag}.`, aktiv } = Astro.props;
+const fullTitle = title ? `${title} · ${lag}` : `${lag} – statistikk og kamparkiv`;
+const sist = db.kamper.at(-1);
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : null;
+
+const nav = [
+  { key: 'hjem', label: 'Hjem', href: url(), icon: 'hjem' },
+  { key: 'kamper', label: 'Kamper', href: url('kamper/'), icon: 'kamper' },
+  { key: 'spillere', label: 'Spillere', href: url('spillere/'), icon: 'spillere' },
+  { key: 'statistikk', label: 'Statistikk', href: url('statistikk/'), icon: 'statistikk' },
+  { key: 'opptak', label: 'Opptak', href: url('opptak/'), icon: 'opptak' },
+] as const;
+---
+
+<!doctype html>
+<html lang="nb">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a4ea6" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="nb_NO" />
+    {canonical && <link rel="canonical" href={canonical} />}
+    {canonical && <meta property="og:url" content={canonical} />}
+    <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+    <script is:inline>
+      (() => {
+        let t = null;
+        try {
+          t = localStorage.getItem('tema');
+        } catch {}
+        const dark = t ? t === 'mork' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', dark);
+      })();
+    </script>
+  </head>
+  <body class="min-h-dvh pb-[calc(4.25rem+env(safe-area-inset-bottom))] md:pb-0">
+    <a href="#innhold" class="sr-only z-50 rounded bg-surface px-3 py-2 text-ink focus:not-sr-only focus:fixed focus:left-3 focus:top-3">Hopp til innhold</a>
+
+    <header class="sticky top-0 z-40 bg-header text-header-ink shadow-sm">
+      <div class="mx-auto flex h-14 max-w-5xl items-center gap-3 px-4">
+        <a href={url()} class="flex items-center gap-2.5 font-bold tracking-tight" aria-label={`${lag} – til forsiden`}>
+          <svg viewBox="0 0 32 36" class="h-8 w-7" aria-hidden="true">
+            <path d="M16 1 2 6v11c0 8.5 6 14.8 14 18 8-3.2 14-9.5 14-18V6z" fill="#fff" />
+            <path d="M16 4.2 5 8.1V17c0 6.8 4.7 12 11 14.8 6.3-2.8 11-8 11-14.8V8.1z" fill="#0a4ea6" />
+            <text x="16" y="22" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="system-ui, sans-serif">D2</text>
+          </svg>
+          <span class="leading-tight">
+            <span class="block text-[1.05rem]">{lag}</span>
+            <span class="block text-[0.7rem] font-medium opacity-80">Statistikk og kamparkiv</span>
+          </span>
+        </a>
+        <nav class="ml-6 hidden md:block" aria-label="Hovedmeny">
+          <ul class="flex gap-1">
+            {
+              nav.map((n) => (
+                <li>
+                  <a
+                    href={n.href}
+                    aria-current={aktiv === n.key ? 'page' : undefined}
+                    class="rounded-lg px-3 py-2 text-sm font-semibold opacity-85 hover:bg-white/10 hover:opacity-100 aria-[current=page]:bg-white/15 aria-[current=page]:opacity-100"
+                  >
+                    {n.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+        <div class="ml-auto flex items-center gap-1">
+          <a
+            href={url('sok/')}
+            class="inline-flex h-10 w-10 items-center justify-center rounded-lg hover:bg-white/10 aria-[current=page]:bg-white/15"
+            aria-current={aktiv === 'sok' ? 'page' : undefined}
+            aria-label="Søk"
+          >
+            <Icon name="sok" />
+          </a>
+          <button
+            type="button"
+            id="tema-knapp"
+            class="inline-flex h-10 w-10 items-center justify-center rounded-lg hover:bg-white/10"
+            aria-label="Bytt mellom lys og mørk modus"
+          >
+            <span class="dark:hidden"><Icon name="maane" /></span>
+            <span class="hidden dark:inline"><Icon name="sol" /></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="innhold" class="mx-auto max-w-5xl px-4 py-5 md:py-8">
+      <slot />
+    </main>
+
+    <footer class="mx-auto max-w-5xl px-4 pb-8 pt-2 text-xs text-muted">
+      <p>
+        {lag} · Data fra NFF-kamprapporter{sist && <> · Sist oppdatert med kampen {datoKort(sist.dato)}</>}
+      </p>
+    </footer>
+
+    <nav
+      class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+      aria-label="Hovedmeny"
+    >
+      <ul class="mx-auto grid max-w-lg grid-cols-5">
+        {
+          nav.map((n) => (
+            <li>
+              <a
+                href={n.href}
+                aria-current={aktiv === n.key ? 'page' : undefined}
+                class="flex h-[4.25rem] flex-col items-center justify-center gap-1 text-[0.7rem] font-semibold text-muted aria-[current=page]:text-accent"
+              >
+                <Icon name={n.icon} class="h-6 w-6" />
+                {n.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <script>
+      const btn = document.getElementById('tema-knapp');
+      btn?.addEventListener('click', () => {
+        const dark = !document.documentElement.classList.contains('dark');
+        document.documentElement.classList.toggle('dark', dark);
+        try {
+          localStorage.setItem('tema', dark ? 'mork' : 'lys');
+        } catch {}
+      });
+      matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        let stored = null;
+        try {
+          stored = localStorage.getItem('tema');
+        } catch {}
+        if (!stored) document.documentElement.classList.toggle('dark', e.matches);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+---
+import Icon from '../../components/Icon.astro';
+import Layout from '../../layouts/Layout.astro';
+import { url } from '../../lib/site.ts';
+---
+
+<Layout title="Søk" description="Søk etter spillere, motstandere og kamper." aktiv="sok">
+  <h1 class="text-2xl font-bold tracking-tight">Søk</h1>
+  <form class="relative mt-4" role="search" onsubmit="return false">
+    <label for="q" class="sr-only">Søk etter spiller, motstander eller kamp</label>
+    <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted"><Icon name="sok" /></span>
+    <input
+      id="q"
+      type="search"
+      class="field w-full !py-3 !pl-11 text-base"
+      placeholder="Spiller, motstander, dato eller kampnummer"
+      autocomplete="off"
+      autofocus
+    />
+  </form>
+  <p id="status" class="mt-3 text-sm text-muted" aria-live="polite"></p>
+  <ul id="treff" class="card mt-2 hidden divide-y divide-line overflow-hidden"></ul>
+</Layout>
+
+<script define:vars={{ indeksUrl: url('sok.json') }}>
+  const input = document.getElementById('q');
+  const list = document.getElementById('treff');
+  const status = document.getElementById('status');
+  const norm = (s) =>
+    s
+      .toLocaleLowerCase('nb')
+      .replace(/æ/g, 'ae')
+      .replace(/ø/g, 'o')
+      .replace(/å/g, 'a')
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '')
+      .replace(/[‐-―]/g, '-');
+  let index = [];
+  fetch(indeksUrl)
+    .then((r) => r.json())
+    .then((data) => {
+      index = data.map((e) => ({ ...e, s: norm(`${e.n} ${e.k} ${e.d}`) }));
+      const q = new URLSearchParams(location.search).get('q');
+      if (q) input.value = q;
+      render();
+    });
+
+  function render() {
+    const q = norm(input.value.trim());
+    list.replaceChildren();
+    if (!q) {
+      list.classList.add('hidden');
+      status.textContent = '';
+      return;
+    }
+    const words = q.split(/\s+/);
+    const hits = index
+      .filter((e) => words.every((w) => e.s.includes(w)))
+      .map((e) => ({ e, score: norm(e.n).startsWith(words[0]) ? 0 : 1 }))
+      .sort((a, b) => a.score - b.score)
+      .slice(0, 40);
+    status.textContent = hits.length ? `${hits.length} treff` : 'Ingen treff';
+    list.classList.toggle('hidden', hits.length === 0);
+    for (const { e } of hits) {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = e.u;
+      a.className = 'flex items-center gap-3 px-4 py-3 hover:bg-surface-2';
+      const tag = document.createElement('span');
+      tag.className = 'chip shrink-0';
+      tag.textContent = e.t;
+      const txt = document.createElement('span');
+      txt.className = 'min-w-0';
+      const n = document.createElement('span');
+      n.className = 'block truncate font-semibold';
+      n.textContent = e.n;
+      const d = document.createElement('span');
+      d.className = 'block truncate text-xs text-muted';
+      d.textContent = e.d;
+      txt.append(n, d);
+      a.append(tag, txt);
+      li.append(a);
+      list.append(li);
+    }
+    const p = new URLSearchParams();
+    if (input.value.trim()) p.set('q', input.value.trim());
+    history.replaceState(null, '', p.size ? `?${p}` : location.pathname);
+  }
+  input.addEventListener('input', render);
+</script>

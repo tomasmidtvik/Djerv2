@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { url } from '../lib/site.ts';
+---
+
+<Layout title="Fant ikke siden">
+  <div class="card mx-auto max-w-md p-8 text-center">
+    <p class="num text-5xl font-extrabold text-accent">404</p>
+    <h1 class="mt-2 text-xl font-bold">Fant ikke siden</h1>
+    <p class="mt-2 text-sm text-muted">Lenken kan være feil, eller kampen/spilleren finnes ikke lenger.</p>
+    <div class="mt-5 flex justify-center gap-3 text-sm font-semibold">
+      <a href={url()} class="rounded-lg bg-accent px-4 py-2 text-on-accent">Til forsiden</a>
+      <a href={url('sok/')} class="rounded-lg border border-line px-4 py-2">Søk</a>
+    </div>
+  </div>
+</Layout>

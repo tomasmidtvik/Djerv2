@@ -1,0 +1,21 @@
+# Byggefiler
+node_modules/
+dist/
+.astro/
+
+# Originalbilder (bare de nedskalerte WebP-bildene i public/spillere/ publiseres)
+bilder-originaler/
+
+# ---------------------------------------------------------------
+# INNSTILLING: publisere PDF-ene?
+# Som standard ligger rå-PDF-ene bare på din maskin, og bare den
+# parsede JSON-en i data/ blir publisert.
+# Vil du ha PDF-ene i repoet: sett # foran de to linjene under.
+kamprapporter/**/*.pdf
+mediarapporter/**/*.pdf
+# ---------------------------------------------------------------
+
+# System
+.DS_Store
+Thumbs.db
+*.log

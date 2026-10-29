@@ -1,0 +1,24 @@
+# Ekstra opplysninger per kamp, som ikke står i kamprapporten.
+# Nøkkelen er kampnummeret. Alle felter er valgfrie. Se README for full forklaring.
+#
+# "12120604081":
+#   opptak:
+#     - type: hel kamp            # hel kamp | høydepunkter | annet
+#       tittel: Hele kampen
+#       url: https://www.youtube.com/watch?v=XXXXXXXXXXX
+#   referat: |
+#     Fin seier i sesongens siste hjemmekamp.
+#   keeper: Simen Elias Knutsvik Håvåg   # bare når mediarapport mangler
+#   selvmal:
+#     - minutt: 55
+#       til: djerv                # laget som fikk målet: djerv | motstander
+#       spiller: Ola Nordmann     # (valgfritt) hvem som scoret selvmålet
+#   brukte_innbyttere:            # hvilke innbyttere som faktisk kom inn
+#     - navn: Marius Claudey
+#       minutt: 60
+#     - navn: Even Klubben Sortland
+#   ikke_spilt:                   # står i rapporten, men spilte ikke
+#     - Ola Nordmann
+#   tilskuere: 40
+#   mediarapport: 2026-10-18_djerv-2_kvernbit-2   # tving kobling (eller false)
+#   godkjent: true                # fjerner kampen fra review-listen

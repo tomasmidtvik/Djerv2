@@ -1,0 +1,26 @@
+{
+  "kamprapporter/2023/Kamprapport-12120601129-29102026-1346.pdf": {
+    "sha256": "ee4af3108edf053049a8518cb085104c4e264093245db4b5a7efff69b2e48215",
+    "type": "kamprapport",
+    "output": "data/matches/12120601129.json",
+    "importert": "2026-10-29T16:07:09.585Z"
+  },
+  "kamprapporter/2025/Kamprapport-12120603044-29102026-1358.pdf": {
+    "sha256": "e0c42ef1b3daf34cb5c13aa0f16fa35d39e2d94261121e633afb4a1572379002",
+    "type": "kamprapport",
+    "output": "data/matches/12120603044.json",
+    "importert": "2026-10-29T16:07:09.636Z"
+  },
+  "kamprapporter/2026/Kamprapport-12120604081-29102026-1359.pdf": {
+    "sha256": "68267cfa97b47da1c81e0af919948ba4b57a707325da28b894983720f2f6e5ee",
+    "type": "kamprapport",
+    "output": "data/matches/12120604081.json",
+    "importert": "2026-10-29T16:07:09.673Z"
+  },
+  "mediarapporter/2026/Mediareport_12120604081-29102026-1359.pdf": {
+    "sha256": "cfb35a4358b084bbd0d7459d0b60961a9bf170beac1eff18b89ac826d0f64786",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2026-10-18_djerv-2_kvernbit-2.json",
+    "importert": "2026-10-29T16:07:09.701Z"
+  }
+}

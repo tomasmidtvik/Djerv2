@@ -1,0 +1,89 @@
+---
+// Rangert tabell over spillere. Viser de 10 første, resten bak "Vis alle".
+import type { Rad } from '../lib/stats.ts';
+import { plasseringer } from '../lib/stats.ts';
+import { spillerUrl } from '../lib/site.ts';
+import Avatar from './Avatar.astro';
+interface Kolonne {
+  label: string;
+  title?: string;
+  verdi: (r: Rad) => string | number;
+  fet?: boolean;
+}
+interface Props {
+  id: string;
+  tittel: string;
+  rader: Rad[];
+  kolonner: Kolonne[];
+  tom?: string;
+  antall?: number;
+  merknad?: string;
+}
+const { id, tittel, rader, kolonner, tom = 'Ingen ennå.', antall = 10, merknad } = Astro.props;
+const plass = plasseringer(rader, (r) => r.verdi);
+const forste = rader.slice(0, antall);
+const resten = rader.slice(antall);
+---
+
+<section class="card overflow-hidden" aria-labelledby={id}>
+  <h2 id={id} class="h-section border-b border-line px-4 py-3">{tittel}</h2>
+  {
+    rader.length === 0 ? (
+      <p class="px-4 py-4 text-sm text-muted">{tom}</p>
+    ) : (
+      <div class="overflow-x-auto">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th scope="col" class="w-8 r">#</th>
+              <th scope="col">Spiller</th>
+              {kolonner.map((k) => (
+                <th scope="col" class="r" title={k.title}>
+                  {k.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          {[forste, resten].map((del, d) => (
+            <tbody class={d === 1 ? 'hidden' : ''} data-resten={d === 1 ? id : undefined}>
+              {del.map((r, i) => (
+                <tr>
+                  <td class="r num text-muted">{plass[i + d * antall]}</td>
+                  <td>
+                    <a href={spillerUrl(r.person.slug)} class="flex items-center gap-2 font-medium hover:text-accent">
+                      <Avatar navn={r.person.navn} bilde={r.person.bilde} size={28} />
+                      <span class="truncate">{r.person.navn}</span>
+                    </a>
+                  </td>
+                  {kolonner.map((k) => (
+                    <td class={`r num ${k.fet ? 'font-bold' : ''}`}>{k.verdi(r)}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          ))}
+        </table>
+      </div>
+    )
+  }
+  {
+    resten.length > 0 && (
+      <button type="button" class="vis-alle w-full border-t border-line px-4 py-2.5 text-sm font-semibold text-accent hover:bg-surface-2" data-for={id} aria-expanded="false">
+        Vis alle ({rader.length})
+      </button>
+    )
+  }
+  {merknad && <p class="border-t border-line px-4 py-2 text-xs text-muted">{merknad}</p>}
+</section>
+
+<script>
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('button.vis-alle')) {
+    btn.addEventListener('click', () => {
+      const body = document.querySelector<HTMLElement>(`tbody[data-resten="${btn.dataset.for}"]`);
+      if (!body) return;
+      const open = body.classList.toggle('hidden') === false;
+      btn.setAttribute('aria-expanded', String(open));
+      btn.textContent = open ? 'Vis færre' : `Vis alle (${btn.textContent?.match(/\d+/)?.[0] ?? ''})`;
+    });
+  }
+</script>

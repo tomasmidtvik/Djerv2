@@ -1,0 +1,89 @@
+---
+// Banevisning med startelleveren og formasjon fra mediarapporten ("oppstilt som").
+// Hjemmelaget øverst, bortelaget nederst.
+import type { Kamp, LagIKamp, SpillerIKamp } from '../lib/db.ts';
+import { spillerUrl } from '../lib/site.ts';
+interface Props {
+  kamp: Kamp;
+}
+const { kamp: k } = Astro.props;
+const LINJER = ['Keeper', 'Forsvar', 'Midtbane', 'Angrep'];
+
+function rader(lag: LagIKamp, topp: boolean) {
+  const linjer = LINJER.map((p) => lag.spillere.filter((s) => !s.innbytter && s.posisjon === p)).filter((l) => l.length);
+  const ys = topp ? [6, 17.5, 30, 42.5] : [94, 82.5, 70, 57.5];
+  // Fordel radene jevnt hvis en linje mangler
+  return linjer.map((spillere, i) => ({
+    y: linjer.length === 4 ? ys[i] : topp ? 6 + (i * 36.5) / Math.max(1, linjer.length - 1) : 94 - (i * 36.5) / Math.max(1, linjer.length - 1),
+    spillere,
+  }));
+}
+const lag = [
+  { lag: k.hjemme, rader: rader(k.hjemme, true) },
+  { lag: k.borte, rader: rader(k.borte, false) },
+].filter((l) => l.lag.harMedia && l.rader.length);
+const kortNavn = (s: SpillerIKamp) => s.etternavn || s.navn.split(' ').at(-1) || s.navn;
+---
+
+{
+  lag.length > 0 && (
+    <figure class="mx-auto w-full max-w-md">
+      <div class="relative w-full overflow-hidden rounded-xl" style="container-type: inline-size; aspect-ratio: 68 / 105; background: repeating-linear-gradient(0deg, var(--pitch) 0 10%, var(--pitch-dark) 10% 20%)">
+        <svg viewBox="0 0 68 105" class="absolute inset-0 h-full w-full" fill="none" stroke="var(--pitch-line)" stroke-width="0.4" aria-hidden="true">
+          <rect x="2" y="2" width="64" height="101" />
+          <line x1="2" y1="52.5" x2="66" y2="52.5" />
+          <circle cx="34" cy="52.5" r="9.15" />
+          <circle cx="34" cy="52.5" r="0.5" fill="var(--pitch-line)" />
+          <rect x="13.84" y="2" width="40.32" height="16.5" />
+          <rect x="24.84" y="2" width="18.32" height="5.5" />
+          <rect x="13.84" y="86.5" width="40.32" height="16.5" />
+          <rect x="24.84" y="97.5" width="18.32" height="5.5" />
+          <circle cx="34" cy="13" r="0.5" fill="var(--pitch-line)" />
+          <circle cx="34" cy="92" r="0.5" fill="var(--pitch-line)" />
+        </svg>
+        {lag.map(({ lag: l, rader: rs }) =>
+          rs.map((rad) =>
+            rad.spillere.map((s, i) => {
+              const x = ((i + 1) / (rad.spillere.length + 1)) * 100;
+              const chip = (
+                <>
+                  <span class={`relative flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold shadow ring-2 ${l.erOss ? 'bg-[#0a4ea6] text-white ring-white' : 'bg-white text-[#0e1a2b] ring-[#0e1a2b]/30'}`}>
+                    <span class="num">{s.draktnr ?? ''}</span>
+                    {s.kaptein && <span class="absolute -right-1.5 -top-1.5 rounded-full bg-[#f2c200] px-1 text-[9px] leading-[14px] text-[#0e1a2b]" title="Kaptein">K</span>}
+                    {s.mal.length > 0 && (
+                      <span class="absolute -bottom-1 -right-2 rounded-full bg-white px-1 text-[9px] font-bold leading-[14px] text-[#0e1a2b] shadow" title={`${s.mal.length} mål`}>
+                        ⚽{s.mal.length > 1 ? s.mal.length : ''}
+                      </span>
+                    )}
+                    {(s.rodeDirekte.length > 0 || s.rodeAdv2.length > 0) ? (
+                      <span class="absolute -left-1.5 -top-1 h-3 w-2 rounded-[1px] bg-[#d7263d] ring-1 ring-white" title="Rødt kort" />
+                    ) : s.gule.length > 0 ? (
+                      <span class="absolute -left-1.5 -top-1 h-3 w-2 rounded-[1px] bg-[#f2c200] ring-1 ring-white" title="Gult kort" />
+                    ) : null}
+                  </span>
+                  <span class="mt-0.5 truncate rounded bg-black/45 px-1 text-[10px] font-semibold leading-4 text-white" style={`max-width:min(4.6rem, ${(96 / (rad.spillere.length + 1)).toFixed(1)}cqw)`}>{kortNavn(s)}</span>
+                </>
+              );
+              const cls = 'absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center';
+              const style = `left:${x}%;top:${rad.y}%`;
+              return s.slug ? (
+                <a href={spillerUrl(s.slug)} class={cls} style={style} aria-label={`${s.navn}, ${s.posisjon}`}>{chip}</a>
+              ) : (
+                <span class={cls} style={style} title={`${s.navn}, ${s.posisjon}`}>{chip}</span>
+              );
+            }),
+          ),
+        )}
+      </div>
+      <figcaption class="mt-2 flex justify-between gap-2 text-xs text-muted">
+        {lag.map(({ lag: l }) => (
+          <span>
+            <span class={`mr-1 inline-block h-2.5 w-2.5 rounded-full align-middle ${l.erOss ? 'bg-[#0a4ea6]' : 'bg-white ring-1 ring-line'}`} />
+            {l.navn}{l.formasjon && `: ${l.formasjon}`}
+          </span>
+        ))}
+      </figcaption>
+      <p class="mt-1 text-xs text-muted">Posisjonene er slik spillerne var oppstilt i mediarapporten før kampen, ikke nødvendigvis der de spilte.</p>
+    </figure>
+  )
+}

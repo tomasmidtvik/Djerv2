@@ -1,0 +1,6 @@
+# Samme linjeskift (LF) overalt, uansett om filene redigeres på Windows eller Mac
+* text=auto eol=lf
+*.pdf binary
+*.webp binary
+*.jpg binary
+*.png binary

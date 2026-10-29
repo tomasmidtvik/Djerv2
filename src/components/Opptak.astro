@@ -1,0 +1,57 @@
+---
+// Opptak av en kamp. YouTube/Vimeo lastes først når man trykker på spill (raskere side, færre sporingskall).
+import type { Opptak } from '../lib/types.ts';
+import { opptakTyper, parseVideo } from '../lib/video.ts';
+import Icon from './Icon.astro';
+interface Props {
+  opptak: Opptak[];
+}
+const { opptak } = Astro.props;
+const liste = opptak.map((o) => ({ o, v: parseVideo(o.url), type: opptakTyper[o.type] ?? o.type ?? 'Opptak' }));
+---
+
+<div class="space-y-4">
+  {
+    liste.map(({ o, v, type }) => (
+      <div>
+        <div class="mb-1.5 flex items-baseline justify-between gap-2 text-sm">
+          <span class="font-semibold">{o.tittel || type}</span>
+          <span class="chip">{type}</span>
+        </div>
+        {v.kind === 'lenke' ? (
+          <a href={v.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-on-accent hover:bg-accent-strong">
+            <Icon name="play" class="h-4 w-4" /> Se opptaket
+          </a>
+        ) : (
+          <div class="video relative w-full overflow-hidden rounded-xl bg-black" style="aspect-ratio: 16 / 9" data-embed={v.embed}>
+            <button type="button" class="group absolute inset-0 flex h-full w-full items-center justify-center" aria-label={`Spill av: ${o.tittel || type}`}>
+              {v.kind === 'youtube' && <img src={v.thumb} alt="" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover opacity-90" />}
+              <span class="relative flex h-16 w-16 items-center justify-center rounded-full bg-accent text-on-accent shadow-lg transition group-hover:scale-105">
+                <Icon name="play" class="ml-1 h-7 w-7" />
+              </span>
+            </button>
+          </div>
+        )}
+        {v.kind !== 'lenke' && (
+          <a href={o.url} target="_blank" rel="noopener noreferrer" class="link mt-1 inline-block text-xs">
+            Åpne på {v.kind === 'youtube' ? 'YouTube' : 'Vimeo'}
+          </a>
+        )}
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  for (const el of document.querySelectorAll<HTMLElement>('.video[data-embed]')) {
+    el.querySelector('button')?.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = el.dataset.embed!;
+      iframe.title = 'Opptak av kampen';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      iframe.className = 'absolute inset-0 h-full w-full';
+      el.replaceChildren(iframe);
+    });
+  }
+</script>

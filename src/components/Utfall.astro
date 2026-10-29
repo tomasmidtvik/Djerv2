@@ -1,0 +1,16 @@
+---
+// S/U/T-merke fra vårt ståsted.
+import type { Utfall } from '../lib/db.ts';
+import { utfallTekst } from '../lib/site.ts';
+interface Props {
+  utfall: Utfall;
+  size?: 'sm' | 'md';
+}
+const { utfall, size = 'sm' } = Astro.props;
+const bg = utfall === 'S' ? 'bg-win' : utfall === 'U' ? 'bg-draw' : 'bg-loss';
+const dim = size === 'sm' ? 'h-6 w-6 text-xs' : 'h-8 px-3 text-sm';
+---
+
+<span class={`inline-flex shrink-0 items-center justify-center rounded-md font-bold text-on-badge ${bg} ${dim}`} title={utfallTekst[utfall]}>
+  {size === 'sm' ? <><span aria-hidden="true">{utfall}</span><span class="sr-only">{utfallTekst[utfall]}</span></> : utfallTekst[utfall]}
+</span>

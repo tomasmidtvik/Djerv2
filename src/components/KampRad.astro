@@ -1,0 +1,46 @@
+---
+// Én kamp i en liste. Mobil: lagene stablet som en resultattavle. Bred skjerm: én linje som i NFFs kampoversikt.
+import type { Kamp } from '../lib/db.ts';
+import { datoKort, datoUkedag, kampUrl } from '../lib/site.ts';
+import Utfall from './Utfall.astro';
+interface Props {
+  kamp: Kamp;
+  visBane?: boolean;
+}
+const { kamp: k, visBane = true } = Astro.props;
+const oss = (side: 'hjemme' | 'borte') => (k.side === side ? 'font-bold text-ink' : 'text-ink');
+---
+
+<a href={kampUrl(k.kampnr)} class="group block px-4 py-3 hover:bg-surface-2 focus-visible:bg-surface-2">
+  <!-- Mobil -->
+  <div class="flex items-center gap-3 md:hidden">
+    <div class="w-[4.5rem] shrink-0 text-xs leading-snug text-muted">
+      <div class="font-semibold capitalize text-ink">{datoUkedag(k.dato)}</div>
+      <div class="num">{k.dato.slice(0, 4)} · {k.avspark}</div>
+    </div>
+    <div class="min-w-0 flex-1 text-[0.95rem] leading-snug">
+      <div class="flex justify-between gap-2">
+        <span class={`truncate ${oss('hjemme')}`}>{k.hjemme.navn}</span>
+        <span class={`num ${oss('hjemme')}`}>{k.resultat.hjemme}</span>
+      </div>
+      <div class="flex justify-between gap-2">
+        <span class={`truncate ${oss('borte')}`}>{k.borte.navn}</span>
+        <span class={`num ${oss('borte')}`}>{k.resultat.borte}</span>
+      </div>
+      {visBane && <div class="truncate text-xs text-muted">{k.bane}</div>}
+    </div>
+    <Utfall utfall={k.utfall} />
+  </div>
+  <!-- Bred skjerm -->
+  <div class="hidden items-center gap-3 text-sm md:grid md:grid-cols-[6rem_3rem_1fr_3.5rem_1fr_minmax(0,13rem)_1.5rem]">
+    <span class="num text-muted">{datoKort(k.dato)}</span>
+    <span class="num text-muted">{k.avspark}</span>
+    <span class={`truncate text-right ${oss('hjemme')}`}>{k.hjemme.navn}</span>
+    <span class="num rounded-md bg-surface-2 py-0.5 text-center font-bold group-hover:bg-bg">
+      {k.resultat.hjemme}–{k.resultat.borte}
+    </span>
+    <span class={`truncate ${oss('borte')}`}>{k.borte.navn}</span>
+    <span class="truncate text-muted">{visBane ? k.bane : ''}</span>
+    <Utfall utfall={k.utfall} />
+  </div>
+</a>

@@ -1,0 +1,31 @@
+{
+  "name": "djerv2-statistikk",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Statistikk og kamparkiv for Djerv 2",
+  "scripts": {
+    "dev": "npm run bilder && astro dev",
+    "build": "npm run bilder && astro build",
+    "preview": "astro preview",
+    "import": "tsx scripts/import.ts",
+    "bilde": "tsx scripts/bilde.ts",
+    "bilder": "tsx scripts/bilder.ts",
+    "test": "vitest run",
+    "parse": "tsx scripts/parse.ts"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.4.4",
+    "pdfjs-dist": "^6.4.299",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}

@@ -1,0 +1,13 @@
+# Innstillinger for nettsiden og importen.
+
+# Lag som starter med dette navnet regnes som "oss" (f.eks. "Djerv 2", men ikke "Djerv 20").
+lagnavn: Djerv 2
+
+# Navnet som vises øverst på siden.
+sidetittel: Djerv 2
+
+# Poeng i sesongoversikten.
+poeng:
+  seier: 3
+  uavgjort: 1
+  tap: 0

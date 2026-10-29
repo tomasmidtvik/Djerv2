@@ -1,0 +1,11 @@
+---
+import StatistikkSide from '../../components/StatistikkSide.astro';
+import { getDb } from '../../lib/site.ts';
+
+export function getStaticPaths() {
+  return getDb().sesonger.map((s) => ({ params: { sesong: String(s) } }));
+}
+const { sesong } = Astro.params;
+---
+
+<StatistikkSide sesong={Number(sesong)} />

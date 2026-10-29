@@ -1,0 +1,93 @@
+---
+// Lagoppstilling for ett lag: startellever, innbyttere og ledere på benken.
+import type { LagIKamp, SpillerIKamp } from '../lib/db.ts';
+import { spillerUrl } from '../lib/site.ts';
+import Icon from './Icon.astro';
+import Kort from './Kort.astro';
+interface Props {
+  lag: LagIKamp;
+  side: 'Hjemme' | 'Borte';
+}
+const { lag, side } = Astro.props;
+const ORDEN: Record<string, number> = { Keeper: 0, Forsvar: 1, Midtbane: 2, Angrep: 3 };
+const start = lag.spillere
+  .filter((s) => !s.innbytter)
+  .map((s, i) => ({ s, i }))
+  .sort((a, b) => (ORDEN[a.s.posisjon ?? ''] ?? 9) - (ORDEN[b.s.posisjon ?? ''] ?? 9) || a.i - b.i)
+  .map((x) => x.s);
+const innbyttere = lag.spillere.filter((s) => s.innbytter);
+const min = (xs: number[]) => xs.map((m) => `${m}'`).join(', ');
+---
+
+<section class="card overflow-hidden" aria-labelledby={`tropp-${side}`}>
+  <header class={`flex items-baseline justify-between gap-2 border-b border-line px-4 py-3 ${lag.erOss ? 'bg-accent-soft' : ''}`}>
+    <h3 id={`tropp-${side}`} class="font-bold">{lag.navn}</h3>
+    <span class="text-xs text-muted">{side}{lag.formasjon && ` · ${lag.formasjon}`}</span>
+  </header>
+
+  {
+    [
+      { tittel: 'Startellever', liste: start },
+      { tittel: 'Innbyttere', liste: innbyttere },
+    ].map(({ tittel, liste }) =>
+      liste.length > 0 && (
+        <div class="px-4 pt-3">
+          <h4 class="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">{tittel}</h4>
+          <ul class="divide-y divide-line">
+            {liste.map((s: SpillerIKamp) => (
+              <li class="flex items-center gap-3 py-2 text-sm">
+                <span class="num w-6 shrink-0 text-right font-semibold text-muted">{s.draktnr ?? ''}</span>
+                <span class="min-w-0 flex-1">
+                  <span class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                    {s.slug ? <a href={spillerUrl(s.slug)} class="link font-medium text-ink">{s.navn}</a> : <span class="font-medium">{s.navn}</span>}
+                    {s.kaptein && <span class="chip !px-1.5 !py-0 text-[0.65rem]" title="Kaptein">K</span>}
+                  </span>
+                  <span class="block text-xs text-muted">
+                    {s.posisjon && <span>Oppstilt som {s.posisjon.toLowerCase()}</span>}
+                    {s.innbyttet === true && <span>Byttet inn{s.innMinutt !== null && ` ${s.innMinutt}'`}</span>}
+                    {s.innbyttet === false && <span>Ble ikke byttet inn</span>}
+                  </span>
+                </span>
+                <span class="flex shrink-0 flex-wrap items-center justify-end gap-x-2 gap-y-1 text-xs text-muted">
+                  {s.mal.length > 0 && (
+                    <span class="inline-flex items-center gap-1 font-semibold text-ink">
+                      <Icon name="ball" class="h-4 w-4" label="Mål" />
+                      <span class="num">{min(s.mal)}</span>
+                    </span>
+                  )}
+                  {s.gule.length > 0 && <span class="inline-flex items-center gap-1"><Kort type="gult" /><span class="num">{min(s.gule)}</span></span>}
+                  {s.rodeAdv2.length > 0 && <span class="inline-flex items-center gap-1"><Kort type="rodt2" /><span class="num">{min(s.rodeAdv2)}</span></span>}
+                  {s.rodeDirekte.length > 0 && <span class="inline-flex items-center gap-1"><Kort type="rodt" /><span class="num">{min(s.rodeDirekte)}</span></span>}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ),
+    )
+  }
+
+  {
+    (lag.ledere.length > 0 || lag.hovedtrener) && (
+      <div class="mt-1 border-t border-line bg-surface-2 px-4 py-3">
+        <h4 class="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">Ledere på benken</h4>
+        <ul class="space-y-1 text-sm">
+          {lag.ledere.map((l) => (
+            <li class="flex items-center justify-between gap-2">
+              <span>
+                {l.slug ? <a href={spillerUrl(l.slug)} class="link text-ink">{l.navn}</a> : l.navn}
+                <span class="text-muted"> · {l.funksjon || 'Leder'}</span>
+              </span>
+              <span class="flex items-center gap-2 text-xs text-muted">
+                {l.gule.length > 0 && <span class="inline-flex items-center gap-1"><Kort type="gult" /><span class="num">{min(l.gule)}</span></span>}
+                {l.rodeAdv2.length > 0 && <span class="inline-flex items-center gap-1"><Kort type="rodt2" /><span class="num">{min(l.rodeAdv2)}</span></span>}
+                {l.rodeDirekte.length > 0 && <span class="inline-flex items-center gap-1"><Kort type="rodt" /><span class="num">{min(l.rodeDirekte)}</span></span>}
+              </span>
+            </li>
+          ))}
+        </ul>
+        {lag.hovedtrener && <p class="mt-2 text-xs text-muted">Hovedtrener i mediarapporten: {lag.hovedtrener}</p>}
+      </div>
+    )
+  }
+</section>

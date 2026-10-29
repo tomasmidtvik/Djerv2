@@ -1,0 +1,22 @@
+---
+// Gult/rødt kort som lite symbol. "rodt2" = rødt etter to gule.
+interface Props {
+  type: 'gult' | 'rodt' | 'rodt2';
+  class?: string;
+}
+const { type, class: cls = '' } = Astro.props;
+const label = type === 'gult' ? 'Gult kort' : type === 'rodt2' ? 'Rødt kort (to gule)' : 'Rødt kort (direkte)';
+---
+
+<span class={`relative inline-block align-[-2px] ${cls}`} role="img" aria-label={label} title={label}>
+  {
+    type === 'rodt2' ? (
+      <span class="relative inline-block h-[13px] w-[13px]">
+        <span class="absolute left-0 top-0 h-[12px] w-[9px] rounded-[2px] bg-kort-gult" />
+        <span class="absolute left-[4px] top-[1px] h-[12px] w-[9px] rounded-[2px] bg-kort-rodt ring-1 ring-surface" />
+      </span>
+    ) : (
+      <span class={`inline-block h-[13px] w-[9px] rounded-[2px] ${type === 'gult' ? 'bg-kort-gult' : 'bg-kort-rodt'}`} />
+    )
+  }
+</span>

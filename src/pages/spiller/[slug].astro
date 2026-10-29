@@ -1,0 +1,248 @@
+---
+import Avatar from '../../components/Avatar.astro';
+import Icon from '../../components/Icon.astro';
+import Kort from '../../components/Kort.astro';
+import Utfall from '../../components/Utfall.astro';
+import Layout from '../../layouts/Layout.astro';
+import type { Person } from '../../lib/db.ts';
+import { datoKort, getDb, kampUrl, prosent } from '../../lib/site.ts';
+import { filtrerSesong, lederRoller, spillerStat } from '../../lib/stats.ts';
+
+export function getStaticPaths() {
+  return getDb().personer.map((person) => ({ params: { slug: person.slug }, props: { person } }));
+}
+interface Props {
+  person: Person;
+}
+const { person: p } = Astro.props;
+const total = spillerStat(p.spillerKamper);
+const sesonger = total.sesonger.slice().reverse();
+const perSesong = sesonger.map((s) => ({ s, st: spillerStat(filtrerSesong(p.spillerKamper, s)) }));
+const roller = lederRoller(p);
+const lederSesonger = [...new Set(p.lederKamper.map((x) => x.kamp.sesong))].sort((a, b) => b - a);
+const alleSesonger = [...new Set([...total.sesonger, ...lederSesonger])].sort();
+const erSpiller = total.kamper > 0;
+const posisjoner = new Map<string, number>();
+for (const { s } of p.spillerKamper) if (s.posisjon) posisjoner.set(s.posisjon, (posisjoner.get(s.posisjon) ?? 0) + 1);
+const kampListe = [...p.spillerKamper].sort((a, b) => b.kamp.dato.localeCompare(a.kamp.dato));
+const lederListe = [...p.lederKamper].sort((a, b) => b.kamp.dato.localeCompare(a.kamp.dato));
+const min = (xs: number[]) => xs.map((m) => `${m}'`).join(', ');
+const spenn = alleSesonger.length ? (alleSesonger.length === 1 ? `${alleSesonger[0]}` : `${alleSesonger[0]}–${alleSesonger.at(-1)}`) : '';
+const tiles = erSpiller
+  ? [
+      ['Kamper i troppen', total.kamper],
+      ['Mål', total.mal],
+      ['Startet', total.startet],
+      ['Gule kort', total.gule],
+      ['Røde kort', total.rode],
+      ['Seier %', prosent(total.seiersprosent)],
+    ]
+  : [];
+const beskrivelse = erSpiller
+  ? `${p.navn}: ${total.kamper} kamper og ${total.mal} mål for ${getDb().settings.lagnavn} (${spenn}).`
+  : `${p.navn}: ${roller.map((r) => r.funksjon).join(', ')} i ${getDb().settings.lagnavn}.`;
+---
+
+<Layout title={p.navn} description={beskrivelse} aktiv="spillere">
+  <section class="card flex flex-col items-center gap-4 p-5 text-center sm:flex-row sm:text-left">
+    <Avatar navn={p.navn} bilde={p.bilde} size={96} />
+    <div class="min-w-0">
+      <h1 class="text-2xl font-bold tracking-tight">{p.navn}</h1>
+      <div class="mt-2 flex flex-wrap justify-center gap-1.5 sm:justify-start">
+        {erSpiller && <span class="chip">Spiller</span>}
+        {roller.map((r) => <span class="chip">{r.funksjon}</span>)}
+        {spenn && <span class="chip !bg-surface-2 !text-muted">Aktiv {spenn}</span>}
+      </div>
+      {p.varianter.length > 1 && <p class="mt-2 text-xs text-muted">Også registrert som: {p.varianter.filter((v) => v !== p.navn).join(', ')}</p>}
+    </div>
+  </section>
+
+  {
+    erSpiller && (
+      <>
+        <section class="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-6" aria-label="Nøkkeltall">
+          {tiles.map(([label, v]) => (
+            <div class="card px-2 py-3 text-center">
+              <div class="num text-2xl font-extrabold tracking-tight">{v}</div>
+              <div class="mt-0.5 text-[0.7rem] font-medium leading-tight text-muted">{label}</div>
+            </div>
+          ))}
+        </section>
+
+        <section class="card mt-4 p-4" aria-labelledby="detaljer">
+          <h2 id="detaljer" class="sr-only">Detaljer</h2>
+          <dl class="grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
+            <div class="flex justify-between gap-3">
+              <dt class="text-muted">Første kamp</dt>
+              <dd>{total.forste && <a class="link" href={kampUrl(total.forste.kampnr)}>{datoKort(total.forste.dato)} mot {total.forste.motstander}</a>}</dd>
+            </div>
+            <div class="flex justify-between gap-3">
+              <dt class="text-muted">Siste kamp</dt>
+              <dd>{total.siste && <a class="link" href={kampUrl(total.siste.kampnr)}>{datoKort(total.siste.dato)} mot {total.siste.motstander}</a>}</dd>
+            </div>
+            <div class="flex justify-between gap-3">
+              <dt class="text-muted">Start / innbytter</dt>
+              <dd class="num">{total.startet} / {total.innbytter}</dd>
+            </div>
+            <div class="flex justify-between gap-3">
+              <dt class="text-muted">Kamper som kaptein</dt>
+              <dd class="num">{total.kaptein}</dd>
+            </div>
+            <div class="flex justify-between gap-3">
+              <dt class="text-muted">Lagets resultater med spilleren</dt>
+              <dd class="num">{total.seire} S · {total.uavgjort} U · {total.tap} T</dd>
+            </div>
+            <div class="flex justify-between gap-3">
+              <dt class="text-muted">Røde kort (2 gule / direkte)</dt>
+              <dd class="num">{total.rodeAdv2} / {total.rodeDirekte}</dd>
+            </div>
+            {posisjoner.size > 0 && (
+              <div class="flex justify-between gap-3 sm:col-span-2">
+                <dt class="text-muted">Oppstilt som (fra mediarapport)</dt>
+                <dd>{[...posisjoner.entries()].map(([pos, n]) => `${pos} ${n}`).join(' · ')}</dd>
+              </div>
+            )}
+          </dl>
+        </section>
+
+        <section class="mt-6" aria-labelledby="per-sesong">
+          <h2 id="per-sesong" class="h-section mb-2">Per sesong</h2>
+          <div class="card overflow-x-auto">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th scope="col">Sesong</th>
+                  <th scope="col" class="r" title="Kamper i troppen">Kamper</th>
+                  <th scope="col" class="r">Start</th>
+                  <th scope="col" class="r" title="I troppen som innbytter">Innb.</th>
+                  <th scope="col" class="r">Mål</th>
+                  <th scope="col" class="r">Gule</th>
+                  <th scope="col" class="r" title="Rødt kort etter to gule">Rødt (2 g.)</th>
+                  <th scope="col" class="r" title="Direkte rødt kort">Rødt (dir.)</th>
+                  <th scope="col" class="r">Kaptein</th>
+                  <th scope="col" class="r" title="Lagets seiersprosent med spilleren i troppen">Seier %</th>
+                </tr>
+              </thead>
+              <tbody>
+                {perSesong.map(({ s, st }) => (
+                  <tr>
+                    <th scope="row" class="!text-sm !font-semibold !normal-case !tracking-normal !text-ink">{s}</th>
+                    <td class="r">{st.kamper}</td>
+                    <td class="r">{st.startet}</td>
+                    <td class="r">{st.innbytter}</td>
+                    <td class="r font-semibold">{st.mal}</td>
+                    <td class="r">{st.gule}</td>
+                    <td class="r">{st.rodeAdv2}</td>
+                    <td class="r">{st.rodeDirekte}</td>
+                    <td class="r">{st.kaptein}</td>
+                    <td class="r">{prosent(st.seiersprosent)}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr class="bg-surface-2 font-semibold">
+                  <th scope="row" class="!text-sm !font-bold !normal-case !tracking-normal !text-ink">Totalt</th>
+                  <td class="r">{total.kamper}</td>
+                  <td class="r">{total.startet}</td>
+                  <td class="r">{total.innbytter}</td>
+                  <td class="r">{total.mal}</td>
+                  <td class="r">{total.gule}</td>
+                  <td class="r">{total.rodeAdv2}</td>
+                  <td class="r">{total.rodeDirekte}</td>
+                  <td class="r">{total.kaptein}</td>
+                  <td class="r">{prosent(total.seiersprosent)}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </section>
+      </>
+    )
+  }
+
+  {
+    roller.length > 0 && (
+      <section class="mt-6" aria-labelledby="lederroller">
+        <h2 id="lederroller" class="h-section mb-2">Roller som leder</h2>
+        <div class="card overflow-x-auto">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th scope="col">Sesong</th>
+                <th scope="col">Funksjon</th>
+                <th scope="col" class="r">Kamper</th>
+              </tr>
+            </thead>
+            <tbody>
+              {lederSesonger.flatMap((s) =>
+                lederRoller(p, s).map((r) => (
+                  <tr>
+                    <td>{s}</td>
+                    <td>{r.funksjon}</td>
+                    <td class="r">{r.kamper}</td>
+                  </tr>
+                )),
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    kampListe.length > 0 && (
+      <section class="mt-6" aria-labelledby="kamper">
+        <h2 id="kamper" class="h-section mb-2">Kamper som spiller</h2>
+        <ul class="card divide-y divide-line overflow-hidden">
+          {kampListe.map(({ kamp: k, s }) => (
+            <li>
+              <a href={kampUrl(k.kampnr)} class="flex items-center gap-3 px-4 py-3 text-sm hover:bg-surface-2">
+                <Utfall utfall={k.utfall} />
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate font-medium">
+                    {k.side === 'hjemme' ? 'Hjemme' : 'Borte'} mot {k.motstander} <span class="num text-muted">{k.malFor}–{k.malMot}</span>
+                  </span>
+                  <span class="block text-xs text-muted">
+                    <span class="num">{datoKort(k.dato)}</span> · nr. {s.draktnr ?? '?'} · {s.innbytter ? 'innbytter' : 'startet'}
+                    {s.kaptein && ' · kaptein'}
+                    {s.posisjon && ` · ${s.posisjon.toLowerCase()}`}
+                  </span>
+                </span>
+                <span class="flex shrink-0 flex-wrap items-center justify-end gap-2 text-xs text-muted">
+                  {s.mal.length > 0 && <span class="inline-flex items-center gap-1 font-semibold text-ink"><Icon name="ball" class="h-4 w-4" label="Mål" /> {min(s.mal)}</span>}
+                  {s.gule.length > 0 && <span class="inline-flex items-center gap-1"><Kort type="gult" /> {min(s.gule)}</span>}
+                  {s.rodeAdv2.length > 0 && <span class="inline-flex items-center gap-1"><Kort type="rodt2" /> {min(s.rodeAdv2)}</span>}
+                  {s.rodeDirekte.length > 0 && <span class="inline-flex items-center gap-1"><Kort type="rodt" /> {min(s.rodeDirekte)}</span>}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    lederListe.length > 0 && (
+      <section class="mt-6" aria-labelledby="lederkamper">
+        <h2 id="lederkamper" class="h-section mb-2">Kamper som leder</h2>
+        <ul class="card divide-y divide-line overflow-hidden">
+          {lederListe.map(({ kamp: k, l }) => (
+            <li>
+              <a href={kampUrl(k.kampnr)} class="flex items-center gap-3 px-4 py-3 text-sm hover:bg-surface-2">
+                <Utfall utfall={k.utfall} />
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate font-medium">
+                    {k.side === 'hjemme' ? 'Hjemme' : 'Borte'} mot {k.motstander} <span class="num text-muted">{k.malFor}–{k.malMot}</span>
+                  </span>
+                  <span class="block text-xs text-muted"><span class="num">{datoKort(k.dato)}</span> · {l.funksjon || 'Leder'}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</Layout>

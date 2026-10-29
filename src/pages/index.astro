@@ -1,0 +1,163 @@
+---
+import Avatar from '../components/Avatar.astro';
+import Icon from '../components/Icon.astro';
+import KampRad from '../components/KampRad.astro';
+import Utfall from '../components/Utfall.astro';
+import Layout from '../layouts/Layout.astro';
+import { datoLang, getDb, kampUrl, spillerUrl, stor, url } from '../lib/site.ts';
+import { kamperISesong, lagStat, toppliste } from '../lib/stats.ts';
+
+const db = getDb();
+const siste = db.kamper.at(-1) ?? null;
+const sesong = db.sesonger[0] ?? null;
+const sesongKamper = sesong ? kamperISesong(db, sesong) : [];
+const lag = lagStat(sesongKamper, db.settings.poeng);
+const form = db.kamper.slice(-5);
+const nyeste = db.kamper.slice(-6, -1).reverse();
+const scorere = toppliste(db.personer, 'mal', sesong).slice(0, 3);
+const kort = toppliste(db.personer, 'kortPerKamp', sesong)
+  .sort((a, b) => b.stat.gule + b.stat.rode - (a.stat.gule + a.stat.rode) || b.verdi - a.verdi)
+  .slice(0, 3);
+const ossSide = siste ? (siste.side === 'hjemme' ? siste.hjemme : siste.borte) : null;
+const malscorere = siste
+  ? siste.hendelser
+      .filter((e) => e.type === 'mal' && e.side === siste.side)
+      .map((e) => `${e.navn?.split(' ').at(-1) ?? 'Ukjent'} ${e.minutt ?? '?'}'`)
+  : [];
+---
+
+<Layout aktiv="hjem">
+  <h1 class="sr-only">{db.settings.sidetittel} – statistikk og kamparkiv</h1>
+
+  {
+    siste ? (
+      <a href={kampUrl(siste.kampnr)} class="card block overflow-hidden hover:border-accent" aria-label="Siste kamp">
+        <div class="bg-header px-4 pb-5 pt-4 text-header-ink">
+          <p class="flex items-center justify-between text-xs font-medium opacity-85">
+            <span>Siste kamp</span>
+            <span>{stor(datoLang(siste.dato))}</span>
+          </p>
+          <div class="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+            <p class="text-right text-lg font-bold leading-tight sm:text-2xl">{siste.hjemme.navn}</p>
+            <p class="num text-4xl font-extrabold sm:text-5xl">
+              {siste.resultat.hjemme}<span class="mx-1 opacity-60">–</span>{siste.resultat.borte}
+            </p>
+            <p class="text-lg font-bold leading-tight sm:text-2xl">{siste.borte.navn}</p>
+          </div>
+          {siste.pause && <p class="num mt-1 text-center text-xs opacity-80">Pause {siste.pause.hjemme}–{siste.pause.borte}</p>}
+          {malscorere.length > 0 && (
+            <p class="mt-3 flex items-center justify-center gap-1.5 text-center text-xs opacity-90">
+              <Icon name="ball" class="h-3.5 w-3.5 shrink-0" />
+              {malscorere.join(' · ')}
+            </p>
+          )}
+        </div>
+        <div class="flex items-center justify-between gap-2 px-4 py-2.5 text-sm">
+          <span class="flex items-center gap-2">
+            <Utfall utfall={siste.utfall} />
+            <span class="text-muted">{siste.bane}</span>
+          </span>
+          <span class="font-semibold text-accent">Se kampen →</span>
+        </div>
+      </a>
+    ) : (
+      <div class="card p-6 text-center text-muted">Ingen kamper er importert ennå. Se README for hvordan du legger inn kamper.</div>
+    )
+  }
+
+  {
+    sesong && (
+      <section class="mt-6" aria-labelledby="sesongen">
+        <div class="mb-2 flex items-baseline justify-between">
+          <h2 id="sesongen" class="h-section">Sesongen {sesong}</h2>
+          <a href={url(`statistikk/${sesong}/`)} class="link text-sm">All statistikk</a>
+        </div>
+        <div class="grid grid-cols-3 gap-2 sm:grid-cols-6">
+          {(
+            [
+              ['Seire', lag.seire, 'text-win'],
+              ['Uavgjort', lag.uavgjort, 'text-draw'],
+              ['Tap', lag.tap, 'text-loss'],
+              ['Mål for', lag.malFor, ''],
+              ['Mål mot', lag.malMot, ''],
+              ['Poeng', lag.poeng, 'text-accent'],
+            ] as const
+          ).map(([label, v, cls]) => (
+            <div class="card px-2 py-3 text-center">
+              <div class={`num text-2xl font-extrabold ${cls}`}>{v}</div>
+              <div class="text-[0.7rem] font-medium text-muted">{label}</div>
+            </div>
+          ))}
+        </div>
+        <div class="card mt-2 flex items-center justify-between gap-3 px-4 py-3">
+          <span class="text-sm font-semibold">Form</span>
+          <span class="flex gap-1.5" aria-label="Resultater i de siste kampene, eldste først">
+            {form.map((k) => (
+              <a href={kampUrl(k.kampnr)} title={`${k.hjemme.navn} ${k.resultat.hjemme}-${k.resultat.borte} ${k.borte.navn}`}>
+                <Utfall utfall={k.utfall} />
+              </a>
+            ))}
+          </span>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    sesong && (
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {[
+          { tittel: `Toppscorer ${sesong}`, rader: scorere, verdi: (r: (typeof scorere)[number]) => `${r.stat.mal} mål`, anker: 'toppscorere', tom: 'Ingen mål ennå.' },
+          {
+            tittel: `Flest kort ${sesong}`,
+            rader: kort,
+            verdi: (r: (typeof kort)[number]) => `${r.stat.gule} gule${r.stat.rode ? `, ${r.stat.rode} røde` : ''}`,
+            anker: 'disiplin',
+            tom: 'Ingen kort ennå.',
+          },
+        ].map((b) => (
+          <section class="card p-4" aria-label={b.tittel}>
+            <div class="mb-2 flex items-baseline justify-between">
+              <h2 class="font-bold">{b.tittel}</h2>
+              <a href={url(`statistikk/${sesong}/#${b.anker}`)} class="link text-xs">Se alle</a>
+            </div>
+            {b.rader.length === 0 ? (
+              <p class="text-sm text-muted">{b.tom}</p>
+            ) : (
+              <ol class="space-y-2">
+                {b.rader.map((r, i) => (
+                  <li>
+                    <a href={spillerUrl(r.person.slug)} class="flex items-center gap-3 hover:text-accent">
+                      <span class="num w-4 text-sm font-bold text-muted">{i + 1}</span>
+                      <Avatar navn={r.person.navn} bilde={r.person.bilde} size={36} />
+                      <span class="min-w-0 flex-1 truncate font-medium">{r.person.navn}</span>
+                      <span class="num text-sm font-semibold">{b.verdi(r as any)}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </section>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    nyeste.length > 0 && (
+      <section class="mt-6" aria-labelledby="resultater">
+        <div class="mb-2 flex items-baseline justify-between">
+          <h2 id="resultater" class="h-section">Tidligere resultater</h2>
+          <a href={url('kamper/')} class="link text-sm">Alle kamper</a>
+        </div>
+        <ul class="card divide-y divide-line overflow-hidden">
+          {nyeste.map((k) => (
+            <li>
+              <KampRad kamp={k} />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</Layout>

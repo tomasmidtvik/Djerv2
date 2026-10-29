@@ -1,0 +1,92 @@
+---
+import Icon from '../../components/Icon.astro';
+import Utfall from '../../components/Utfall.astro';
+import Layout from '../../layouts/Layout.astro';
+import { datoKort, getDb, kampTittel, kampUrl } from '../../lib/site.ts';
+import { opptakTyper, parseVideo } from '../../lib/video.ts';
+
+const db = getDb();
+const nyesteForst = [...db.kamper].reverse();
+const med = nyesteForst.filter((k) => k.opptak.length > 0);
+const uten = nyesteForst.filter((k) => k.opptak.length === 0);
+---
+
+<Layout title="Opptak" description={`Video av kampene til ${db.settings.lagnavn}.`} aktiv="opptak">
+  <h1 class="text-2xl font-bold tracking-tight">Opptak</h1>
+  <p class="mt-1 text-sm text-muted">{med.length} av {db.kamper.length} kamper har opptak.</p>
+
+  <label class="mt-4 flex w-fit flex-col gap-1 text-xs font-semibold text-muted">
+    Sesong
+    <select id="sesong" class="field">
+      <option value="alle">Alle sesonger</option>
+      {db.sesonger.map((s) => <option value={s}>{s}</option>)}
+    </select>
+  </label>
+
+  <section class="mt-5" aria-labelledby="med-opptak">
+    <h2 id="med-opptak" class="h-section mb-2">Kamper med opptak</h2>
+    {med.length === 0 && <p class="card p-5 text-sm text-muted">Ingen opptak er lagt inn ennå. Opptak legges inn i data/matches-meta.yaml (se README).</p>}
+    <ul class="grid gap-3 sm:grid-cols-2">
+      {
+        med.map((k) => {
+          const v = parseVideo(k.opptak[0].url);
+          return (
+            <li data-sesong={k.sesong}>
+              <a href={kampUrl(k.kampnr)} class="card block overflow-hidden hover:border-accent">
+                <div class="relative bg-black" style="aspect-ratio: 16 / 9">
+                  {v.kind === 'youtube' && <img src={v.thumb} alt="" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover opacity-90" />}
+                  <span class="absolute inset-0 flex items-center justify-center">
+                    <span class="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-on-accent shadow-lg">
+                      <Icon name="play" class="ml-0.5 h-6 w-6" />
+                    </span>
+                  </span>
+                </div>
+                <div class="flex items-center gap-3 p-3">
+                  <Utfall utfall={k.utfall} />
+                  <span class="min-w-0 flex-1">
+                    <span class="block truncate font-semibold">{kampTittel(k)}</span>
+                    <span class="block text-xs text-muted">
+                      {datoKort(k.dato)} · {k.opptak.map((o) => opptakTyper[o.type] ?? o.type).join(', ')}
+                    </span>
+                  </span>
+                </div>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
+
+  <section class="mt-8" aria-labelledby="uten-opptak">
+    <h2 id="uten-opptak" class="h-section mb-2">Mangler opptak</h2>
+    <ul class="card divide-y divide-line overflow-hidden">
+      {
+        uten.map((k) => (
+          <li data-sesong={k.sesong}>
+            <a href={kampUrl(k.kampnr)} class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-surface-2">
+              <span class="num w-20 shrink-0 text-muted">{datoKort(k.dato)}</span>
+              <span class="min-w-0 flex-1 truncate">{kampTittel(k)}</span>
+              <Utfall utfall={k.utfall} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    {uten.length === 0 && <p class="text-sm text-muted">Alle kamper har opptak.</p>}
+  </section>
+</Layout>
+
+<script>
+  const sel = document.getElementById('sesong') as HTMLSelectElement;
+  const params = new URLSearchParams(location.search);
+  if (params.get('sesong')) sel.value = params.get('sesong')!;
+  function apply() {
+    for (const li of document.querySelectorAll<HTMLElement>('li[data-sesong]')) {
+      li.hidden = sel.value !== 'alle' && li.dataset.sesong !== sel.value;
+    }
+    history.replaceState(null, '', sel.value === 'alle' ? location.pathname : `?sesong=${sel.value}`);
+  }
+  sel.addEventListener('change', apply);
+  apply();
+</script>

@@ -1,0 +1,14 @@
+# Slå sammen stavemåter av samme person.
+#
+# Importen foreslår mulige duplikater (se data/review.md), men slår aldri sammen selv.
+# Venstre side: navnet slik det står i en rapport. Høyre side: navnet personen skal vises med.
+# Navnet til høyre kan selv stå i en rapport (da brukes det som det er).
+#
+# Eksempel (fjern # foran linjene for å slå sammen):
+alias:
+  # "Kay Magne Pedersen": "Kay-Magne Larsen Pedersen"
+  # "Øystein Midtvik": "Øystein Emdal Midtvik"
+
+# Par som IKKE er samme person (fjerner forslaget fra review-listen):
+ikke_samme_person:
+  # - ["Ola Nordmann", "Ola Nordmann Hansen"]

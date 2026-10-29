@@ -1,0 +1,40 @@
+---
+// Spillerbilde, eller initialer som plassholder hvis bildet mangler.
+import { initials } from '../lib/names.ts';
+import { url } from '../lib/site.ts';
+interface Props {
+  navn: string;
+  bilde: string | null;
+  size?: number;
+  class?: string;
+}
+const { navn, bilde, size = 48, class: cls = '' } = Astro.props;
+// Fast farge per navn, i blåtoner
+let hash = 0;
+for (const ch of navn) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+const hue = 205 + (hash % 30);
+const fontSize = Math.round(size * 0.38);
+---
+
+{
+  bilde ? (
+    <img
+      src={url(bilde)}
+      alt=""
+      width={size}
+      height={size}
+      loading="lazy"
+      decoding="async"
+      class={`shrink-0 rounded-full object-cover bg-accent-soft ${cls}`}
+      style={`width:${size}px;height:${size}px`}
+    />
+  ) : (
+    <span
+      aria-hidden="true"
+      class={`inline-flex shrink-0 select-none items-center justify-center rounded-full font-bold text-white ${cls}`}
+      style={`width:${size}px;height:${size}px;font-size:${fontSize}px;background:linear-gradient(135deg,hsl(${hue} 70% 42%),hsl(${hue + 12} 75% 30%))`}
+    >
+      {initials(navn)}
+    </span>
+  )
+}
