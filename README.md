@@ -38,6 +38,8 @@ npm run import -- --force
 - **Rødt kort etter to gule** («Utv. (Adv. 2)») er ikke sett i praksis ennå. Havner et kort i den kolonnen, får du en tydelig **KONTROLLER**-advarsel, så du kan sjekke at det stemmer med PDF-en.
 - **Mulige duplikater**: navn som ligner (f.eks. «Kay Magne Pedersen» og «Kay-Magne Larsen Pedersen»). Importen slår aldri sammen personer selv.
 - Telefonnummer og e-post blir aldri lagret, selv om de skulle stå i en PDF.
+- **Reservert mot publisering:** Står det «Personinfo ikke tilgjengelig» i mediarapporten, har personen reservert seg hos NFF. Importen fjerner da navnet fra kampdataene (kamprapporten har det likevel), og siden viser «Navn ikke tilgjengelig». Mangler mediarapporten, kan du skjule en spiller med `skjul` i `matches-meta.yaml`.
+- **Feil filer** (f.eks. en PDF som ikke er en rapport) gir en feilmelding. Flytt dem ut av mappen.
 
 Review-listen lagres også i `data/review.md`. Når du har sjekket en kamp og alt er i orden, sett `godkjent: true` på kampen i `data/matches-meta.yaml`, så forsvinner den fra listen.
 
@@ -70,6 +72,9 @@ Nøkkelen er kampnummeret (står i URL-en til kampen, f.eks. `/kamp/12120604081/
     - navn: Even Klubben Sortland # minutt er valgfritt
   ikke_spilt:                     # står i rapporten, men spilte ikke i det hele tatt
     - Ola Nordmann
+  skjul:                          # skjul navnet på en spiller (angis med draktnr, så navnet ikke står i repoet)
+    - lag: motstander             # djerv | motstander
+      draktnr: 20
   tilskuere: 40                   # vises bare hvis over 0
   mediarapport: 2026-10-18_djerv-2_kvernbit-2   # tving kobling (eller false for å ignorere)
   godkjent: true                  # fjerner kampen fra review-listen

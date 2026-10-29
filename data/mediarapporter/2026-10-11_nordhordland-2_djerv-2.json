@@ -1,0 +1,258 @@
+{
+  "type": "mediarapport",
+  "versjon": 1,
+  "id": "2026-10-11_nordhordland-2_djerv-2",
+  "turnering": "6. div. menn avd. 04",
+  "dato": "2026-10-11",
+  "avspark": "15:00",
+  "bane": "Knarvik gress",
+  "dommer": "Kjell Gudvangen",
+  "hjemmelag": {
+    "navn": "Nordhordland 2",
+    "spillere": [
+      {
+        "draktnr": 12,
+        "navn": "KRISTIAN LINDÅS",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Vetle Simon Seljestad",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Håvard Sivertsen Grymyr",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 6,
+        "navn": "Henrik Reigstad",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 15,
+        "navn": "Scott Alexander Menzies",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 23,
+        "navn": "Christian Sterri Veland",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 8,
+        "navn": "Gustav Dolve Moen",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Vetle Bjørsvik Rath",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 13,
+        "navn": "Joachim Rongved Smørdal",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 9,
+        "navn": "Sebastian Krogh Frantzen",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 20,
+        "navn": "Tarjei Valdersnes",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Mathias Sjursæter Seljelid",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 16,
+        "navn": "Oliver Grimset Johannesen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 19,
+        "navn": "Magnus Langeland Johansen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 22,
+        "navn": "Simen Guldbrandsøy",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Alexander Kjesæth",
+    "formasjon": "5-3-2"
+  },
+  "bortelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "navn": "Kajus Degutis",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Håvard Waage Hjelmeland",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Even Klubben Sortland",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 22,
+        "navn": "Kristoffer Mørch Hobæk",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 77,
+        "navn": "Emil Skåthun-Valsø",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Daniel Strømmen",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Eirik Flatråker Møgster",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 13,
+        "navn": "Mattis Bo Reinhardt",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 18,
+        "navn": "Kasper Lødemel",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 19,
+        "navn": "Isak Steen-Olsen Teigland",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 42,
+        "navn": "Tord Fares Jonsson Abd Rabo",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 11,
+        "navn": "Simen Elias Knutsvik Håvåg",
+        "posisjon": "Keeper",
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 8,
+        "navn": "Liam Eikill",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Magnus Bjørdal",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 15,
+        "navn": "Marius Kjørsvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 28,
+        "navn": "Bilal Abdiqani Said",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 41,
+        "navn": "Benjamin Leirvik Nygård",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 73,
+        "navn": "Marius Claudey",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Øystein Emdal Midtvik",
+    "formasjon": "4-3-3"
+  },
+  "kampnrHint": "12120604077",
+  "advarsler": [],
+  "kilde": "kamprapporter/2026/Mediareport_12120604077-30102026-0024.pdf"
+}

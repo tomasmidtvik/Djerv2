@@ -1,0 +1,272 @@
+{
+  "type": "mediarapport",
+  "versjon": 1,
+  "id": "2026-04-26_djerv-2_hausvik",
+  "turnering": "6. div. menn avd. 04",
+  "dato": "2026-04-26",
+  "avspark": "15:00",
+  "bane": "Møhlenpris idrettsplass",
+  "dommer": "Raymond Aksnes Nesse",
+  "hjemmelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "navn": "Kajus Degutis",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 2,
+        "navn": "Aoss Ehmad Saion",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Benjamin Leirvik Nygård",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 19,
+        "navn": "Olav Gudmundsen",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 23,
+        "navn": "Emil Skåthun-Valsø",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Isak Steen-Olsen Teigland",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Eirik Flatråker Møgster",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 18,
+        "navn": "Håvard Waage Hjelmeland",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Bilal Abdiqani Said",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 13,
+        "navn": "Mattis Bo Reinhardt",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Alan Yildiz",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Abdoulrahmane Diallo",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 8,
+        "navn": "Liam Eikill",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 15,
+        "navn": "Marius Kjørsvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 16,
+        "navn": "Ahmed Mohamoud Ali",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 17,
+        "navn": "Øystein Emdal Midtvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 19,
+        "navn": "Nahom Gizachew Mengesta",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 22,
+        "navn": "Simen Elias Knutsvik Håvåg",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 25,
+        "navn": "Kristian Pallesen Knudsen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Kay-Magne Larsen Pedersen",
+    "formasjon": "4-3-3"
+  },
+  "bortelag": {
+    "navn": "Hausvik",
+    "spillere": [
+      {
+        "draktnr": 21,
+        "navn": "Elias Eknes",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 2,
+        "navn": "Arnstein Borge",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 16,
+        "navn": "Alexander Thunestvedt",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 19,
+        "navn": "Martin Bruvik Skjoldal",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 27,
+        "navn": "Even Sakstad Bruvik",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 18,
+        "navn": "Verner Mostraum Stokke",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 31,
+        "navn": "René Daltveit Kvalsvik",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 43,
+        "navn": "Aleksander Hole Holsen",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Kristian Mjelde",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 23,
+        "navn": "Erlend Vikne",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 47,
+        "navn": "Martin Evensen",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 1,
+        "navn": "Leander Hetlevik Bøe",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Steffen Riple Fanebust",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Sivert Klovning Rød",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 66,
+        "navn": "Håkon Mjelde",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 67,
+        "navn": "Andreas Mjelde",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Victor Thunestvedt",
+    "formasjon": "4-3-3"
+  },
+  "kampnrHint": "12120604007",
+  "advarsler": [],
+  "kilde": "kamprapporter/2026/Mediareport_12120604007-30102026-0017.pdf"
+}

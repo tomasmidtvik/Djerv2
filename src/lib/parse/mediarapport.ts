@@ -6,6 +6,9 @@ import type { PdfPage, TextToken } from './pdf-text.ts';
 import { ParseError } from './kamprapport.ts';
 
 export const KJENTE_POSISJONER = ['Keeper', 'Forsvar', 'Midtbane', 'Angrep', 'Strøket'];
+/** Teksten NFF bruker i stedet for navnet når en person er reservert mot publisering. */
+export const SKJULT_TEKST = 'Personinfo ikke tilgjengelig';
+export const erSkjultNavn = (navn: string) => cleanText(navn).toLowerCase() === SKJULT_TEKST.toLowerCase();
 const POS_SET = new Set(KJENTE_POSISJONER.map((p) => p.toLowerCase()));
 const KAPTEIN = /^\(?K\.?\)?$/;
 
@@ -106,7 +109,8 @@ function parseSide(lines: Line[], navn: string, navnX: number, warn: (m: string)
       continue;
     }
     if (section === 'trener') {
-      if (!hovedtrener) hovedtrener = scrub(joinText(line.tokens), warn, 'hovedtrener') || null;
+      const t = joinText(line.tokens);
+      if (!hovedtrener && !erSkjultNavn(t)) hovedtrener = scrub(t, warn, 'hovedtrener') || null;
       continue;
     }
     let toks = line.tokens;
@@ -131,9 +135,10 @@ function parseSide(lines: Line[], navn: string, navnX: number, warn: (m: string)
     const posisjon = posText ? (KJENTE_POSISJONER.find((p) => p.toLowerCase() === posText.toLowerCase()) ?? posText) : null;
     if (posisjon && !KJENTE_POSISJONER.includes(posisjon)) warn(`Ukjent posisjon "${posisjon}" for ${spillerNavn} (${navn})`);
     if (section === 'start' && !posisjon) warn(`${spillerNavn} (${navn}) står i startoppstillingen uten posisjon`);
-    spillere.push({ draktnr, navn: spillerNavn, posisjon, start: section === 'start', kaptein });
+    const skjult = erSkjultNavn(spillerNavn);
+    spillere.push({ draktnr, navn: spillerNavn, posisjon, start: section === 'start', kaptein, ...(skjult ? { skjult } : {}) });
   }
-  if (!hovedtrener) warn(`Fant ikke hovedtrener for ${navn}`);
+  // Hovedtrener kan mangle i rapporten (feltet er tomt) – det er ikke en feil
   return { navn, spillere, hovedtrener, formasjon: formasjon(spillere, navn, warn) };
 }
 

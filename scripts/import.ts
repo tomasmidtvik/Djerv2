@@ -5,6 +5,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSy
 import { join, relative } from 'node:path';
 import { loadRaw, loadSettings, PATHS } from '../src/lib/data.ts';
 import { buildDb } from '../src/lib/db.ts';
+import { skjulNavn, skjulteSpillere } from '../src/lib/link.ts';
 import { foreslaDuplikater, reviewList, type Duplikat, type ReviewItem } from '../src/lib/review.ts';
 import type { Kamprapport, Mediarapport } from '../src/lib/types.ts';
 import { parsePdfFile } from './lib/parse-file.ts';
@@ -49,6 +50,20 @@ const nyeMedia: Mediarapport[] = [];
 const hoppetOver: string[] = [];
 const feil: { fil: string; melding: string }[] = [];
 const merknader: string[] = [];
+const feilMappe: { rel: string; type: string }[] = [];
+
+/** Er en nylig parset rapport lik den som allerede er lagret? (filnavn og skjulte navn telles ikke) */
+function sammeInnhold(lagret: Kamprapport | Mediarapport, ny: Kamprapport | Mediarapport): boolean {
+  const kopi = structuredClone(ny);
+  if (kopi.type === 'kamprapport' && lagret.type === 'kamprapport') {
+    for (const side of ['hjemme', 'borte'] as const) {
+      const lag = side === 'hjemme' ? lagret.hjemmelag : lagret.bortelag;
+      skjulNavn(kopi, lag.spillere.filter((p) => p.skjult && p.draktnr !== null).map((p) => ({ side, draktnr: p.draktnr! })));
+    }
+  }
+  const strip = (r: Kamprapport | Mediarapport) => JSON.stringify({ ...r, kilde: '' });
+  return strip(lagret) === strip(kopi);
+}
 
 const files = [
   ...walk('kamprapporter').map((f) => ({ f, folder: 'kamprapport' as const })),
@@ -80,9 +95,7 @@ for (const { f, folder } of files) {
     continue;
   }
 
-  if (result.type !== folder) {
-    merknader.push(`${rel} ligger i ${folder}er-mappen, men er en ${result.type} – importert som ${result.type}`);
-  }
+  if (result.type !== folder) feilMappe.push({ rel, type: result.type });
   const yearFolder = rel.match(/\/(\d{4})\//)?.[1];
   const year = result.type === 'kamprapport' ? result.sesong : Number(result.dato.slice(0, 4));
   if (yearFolder && Number(yearFolder) !== year) {
@@ -93,18 +106,41 @@ for (const { f, folder } of files) {
     result.type === 'kamprapport' ? `${PATHS.matches}/${result.kampnr}.json` : `${PATHS.media}/${result.id}.json`;
   const owner = Object.entries(log).find(([p, e]) => p !== rel && e.output === output && existsSync(e.output));
   if (owner && !force) {
-    merknader.push(`${rel}: ${output} finnes allerede fra ${owner[0]} – hoppet over (bruk --force for å overskrive)`);
-    hoppetOver.push(rel);
+    // Samme kamp lastet ned på nytt (nytt filnavn). Samme innhold = hopp over i stillhet.
+    if (sammeInnhold(JSON.parse(readFileSync(output, 'utf8')), result)) {
+      log[rel] = { sha256, type: result.type, output, importert: new Date().toISOString() };
+      hoppetOver.push(`${rel} ${c.dim(`(samme ${result.type} som ${owner[0]})`)}`);
+    } else {
+      merknader.push(
+        `${rel}: ${output} finnes allerede fra ${owner[0]}, men innholdet er ulikt – hoppet over. ` +
+          'Er den nye riktig: slett den gamle PDF-en og kjør "npm run import -- --force".',
+      );
+      hoppetOver.push(rel);
+    }
     continue;
   }
   writeFileSync(output, JSON.stringify(result, null, 2) + '\n', 'utf8');
   log[rel] = { sha256, type: result.type, output, importert: new Date().toISOString() };
-  if (owner) delete log[owner[0]];
   if (result.type === 'kamprapport') nyeKamper.push(result);
   else nyeMedia.push(result);
 }
 
 writeFileSync(PATHS.importLog, JSON.stringify(log, null, 2) + '\n', 'utf8');
+
+// ---- Personvern: fjern navn på spillere som er reservert mot publisering ----
+const skjultInfo: string[] = [];
+{
+  const r0 = loadRaw();
+  for (const [kampnr, liste] of skjulteSpillere(r0.media, r0.matches, r0.meta)) {
+    const path = `${PATHS.matches}/${kampnr}.json`;
+    const k = JSON.parse(readFileSync(path, 'utf8')) as Kamprapport;
+    const n = skjulNavn(k, liste);
+    if (n) {
+      writeFileSync(path, JSON.stringify(k, null, 2) + '\n', 'utf8');
+      skjultInfo.push(`kamp ${kampnr}: ${n} ${n === 1 ? 'spiller' : 'spillere'}`);
+    }
+  }
+}
 
 // ---- Kontroll av alle data (ikke bare de nye) ----
 const raw = loadRaw();
@@ -133,9 +169,21 @@ if (feil.length) {
   out.push(c.bold(c.red(`Feil (${feil.length})`)));
   for (const e of feil) out.push(`  ${c.red('x')} ${e.fil}: ${e.melding}`);
 }
+if (feilMappe.length) {
+  const typer = [...new Set(feilMappe.map((f) => f.type))];
+  merknader.push(
+    `${feilMappe.length} ${typer.join('/')}${feilMappe.length === 1 ? '' : 'er'} lå i feil mappe (f.eks. ${feilMappe[0].rel}). ` +
+      'De ble importert riktig likevel, men du kan gjerne flytte dem.',
+  );
+}
 if (merknader.length) {
   out.push(c.bold(c.yellow(`Advarsler (${merknader.length})`)));
   for (const m of merknader) out.push(`  ${c.yellow('!')} ${m}`);
+}
+if (skjultInfo.length) {
+  out.push(c.bold(`Skjulte navn (${skjultInfo.length})`));
+  out.push(`  NFF viser "Personinfo ikke tilgjengelig" for disse (reservert mot publisering). Navnet er fjernet fra data/matches/:`);
+  for (const s of skjultInfo) out.push(`  ${c.dim('-')} ${s}`);
 }
 out.push('');
 if (review.length) {

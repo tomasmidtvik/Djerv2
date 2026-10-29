@@ -35,6 +35,8 @@ export interface SpillerIKamp extends Hendelser {
   /** fra matches-meta.yaml: true = kom inn, false = kom ikke inn, null = ukjent */
   innbyttet: boolean | null;
   innMinutt: number | null;
+  /** navnet vises ikke (reservert mot publisering) */
+  skjult: boolean;
 }
 
 export interface LederIKamp extends Hendelser {
@@ -178,7 +180,7 @@ export function buildDb(raw: RawData): Db {
   for (const m of ours) {
     const lag = m.djerv === 'hjemme' ? m.hjemmelag : m.bortelag;
     const ikkeSpilt = new Set((metaOf(m.kampnr).ikke_spilt ?? []).map(keyOf));
-    for (const s of lag.spillere) if (s.spilt && !ikkeSpilt.has(keyOf(s.navn))) touch(s.navn, m.dato);
+    for (const s of lag.spillere) if (s.spilt && !s.skjult && !ikkeSpilt.has(keyOf(s.navn))) touch(s.navn, m.dato);
     for (const l of lag.ledere) touch(l.navn, m.dato);
   }
 
@@ -225,11 +227,12 @@ export function buildDb(raw: RawData): Db {
           if (!p.spilt || ikkeSpilt.has(keyOf(p.navn))) return;
           const ms = lineup?.koblet.get(i);
           const key = keyOf(p.navn);
+          const egen = erOss && !p.skjult;
           spillere.push({
-            navn: erOss ? reg.get(key)!.navn : p.navn,
+            navn: egen ? reg.get(key)!.navn : p.navn,
             rapportNavn: p.navn,
-            etternavn: p.etternavn,
-            slug: erOss ? slugByKey.get(key) ?? null : null,
+            etternavn: p.skjult ? '' : p.etternavn,
+            slug: egen ? slugByKey.get(key) ?? null : null,
             draktnr: p.draktnr,
             kaptein: p.kaptein || Boolean(ms?.kaptein),
             innbytter: p.innbytter,
@@ -240,6 +243,7 @@ export function buildDb(raw: RawData): Db {
             posisjon: ms && ms.start && ms.posisjon !== 'Strøket' ? ms.posisjon : null,
             innbyttet: p.innbytter && brukte ? brukte.has(key) : null,
             innMinutt: p.innbytter && brukte ? brukte.get(key) ?? null : null,
+            skjult: Boolean(p.skjult),
           });
         });
         const ledere: LederIKamp[] = rl.ledere.map((l) => {

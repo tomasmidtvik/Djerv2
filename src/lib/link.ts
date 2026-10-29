@@ -1,6 +1,9 @@
 // Kobler mediarapporter til kamper, og spillere i mediarapporten til spillere i kamprapporten.
 import { isSubsetName, normName, sameParts, sameTeam } from './names.ts';
+import { erSkjultNavn } from './parse/mediarapport.ts';
 import type { Kamprapport, MatchesMeta, MediaLag, MediaSpiller, Mediarapport, RapportLag } from './types.ts';
+
+export const SKJULT_VISNING = 'Navn ikke tilgjengelig';
 
 export interface MediaLink {
   media: Mediarapport;
@@ -85,6 +88,57 @@ export function linkMedia(media: Mediarapport[], matches: Kamprapport[], meta: M
   return links;
 }
 
+/**
+ * Finner spillere som ikke skal vises med navn:
+ * - NFF skriver "Personinfo ikke tilgjengelig" i mediarapporten (personen er reservert mot publisering)
+ * - eller de står under "skjul" (lag + draktnr) i matches-meta.yaml
+ */
+export function skjulteSpillere(media: Mediarapport[], matches: Kamprapport[], meta: MatchesMeta) {
+  const out = new Map<string, { side: 'hjemme' | 'borte'; draktnr: number }[]>();
+  const add = (kampnr: string, side: 'hjemme' | 'borte', draktnr: number | null) => {
+    if (draktnr === null) return;
+    if (!out.has(kampnr)) out.set(kampnr, []);
+    out.get(kampnr)!.push({ side, draktnr });
+  };
+  for (const l of linkMedia(media, matches, meta)) {
+    if (!l.kampnr) continue;
+    for (const [mside, mlag] of [
+      ['hjemme', l.media.hjemmelag],
+      ['borte', l.media.bortelag],
+    ] as const) {
+      const side = l.byttet ? (mside === 'hjemme' ? 'borte' : 'hjemme') : mside;
+      for (const s of mlag.spillere) if (s.skjult || erSkjultNavn(s.navn)) add(l.kampnr, side, s.draktnr);
+    }
+  }
+  for (const k of matches) {
+    for (const s of meta[k.kampnr]?.skjul ?? []) {
+      if (!k.djerv) continue;
+      const side = s.lag === 'djerv' ? k.djerv : k.djerv === 'hjemme' ? 'borte' : 'hjemme';
+      add(k.kampnr, side, Number(s.draktnr));
+    }
+  }
+  return out;
+}
+
+/** Fjerner navnet på skjulte spillere fra kampdataene. Returnerer antall spillere som ble skjult nå. */
+export function skjulNavn(k: Kamprapport, skjulte: { side: 'hjemme' | 'borte'; draktnr: number }[]): number {
+  let n = 0;
+  for (const { side, draktnr } of skjulte) {
+    const lag = side === 'hjemme' ? k.hjemmelag : k.bortelag;
+    for (const p of lag.spillere) {
+      if (p.draktnr !== draktnr || p.skjult) continue;
+      const navn = p.navn;
+      k.advarsler = k.advarsler.map((a) => a.split(navn).join(SKJULT_VISNING));
+      p.navn = SKJULT_VISNING;
+      p.fornavn = '';
+      p.etternavn = '';
+      p.skjult = true;
+      n++;
+    }
+  }
+  return n;
+}
+
 export interface LineupMatch {
   /** indeks i RapportLag.spillere -> spiller i mediarapporten */
   koblet: Map<number, MediaSpiller>;
@@ -102,6 +156,16 @@ export function matchLineup(lag: RapportLag, mlag: MediaLag): LineupMatch {
   };
   for (const ms of mlag.spillere) {
     const sp = lag.spillere;
+    // Navnet er skjult av NFF: koble bare på draktnr
+    if (erSkjultNavn(ms.navn) || ms.skjult) {
+      const i = pick((x) => sp[x].draktnr === ms.draktnr);
+      if (i === null) merknader.push(`Skjult spiller (nr. ${ms.draktnr ?? '?'}) i mediarapporten finnes ikke i kamprapporten for ${lag.navn}`);
+      else {
+        used.add(i);
+        koblet.set(i, ms);
+      }
+      continue;
+    }
     let i = pick((x) => sp[x].draktnr === ms.draktnr && sameParts(sp[x].navn, ms.navn));
     if (i === null) {
       i = pick((x) => sameParts(sp[x].navn, ms.navn));

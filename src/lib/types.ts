@@ -18,6 +18,8 @@ export interface RapportSpiller extends Hendelser {
   kaptein: boolean;
   innbytter: boolean;
   mal: number[];
+  /** navnet er fjernet fordi personen er reservert mot publisering (se link.ts) */
+  skjult?: boolean;
 }
 
 export interface RapportLeder extends Hendelser {
@@ -86,6 +88,8 @@ export interface MediaSpiller {
   /** oppført over "Innbyttere" */
   start: boolean;
   kaptein: boolean;
+  /** NFF viser "Personinfo ikke tilgjengelig" (personen er reservert mot publisering) */
+  skjult?: boolean;
 }
 
 export interface MediaLag {
@@ -145,6 +149,8 @@ export interface KampMeta {
   brukte_innbyttere?: BruktInnbytter[];
   /** spillere som står i rapporten, men ikke spilte */
   ikke_spilt?: string[];
+  /** skjul navnet på spillere som ikke vil vises (angis med draktnr, så navnet ikke står i repoet) */
+  skjul?: { lag: 'djerv' | 'motstander'; draktnr: number }[];
   tilskuere?: number;
   /** tving kobling til en mediarapport-id, eller false for å ignorere */
   mediarapport?: string | false;

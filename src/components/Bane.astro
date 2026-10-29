@@ -22,7 +22,7 @@ const lag = [
   { lag: k.hjemme, rader: rader(k.hjemme, true) },
   { lag: k.borte, rader: rader(k.borte, false) },
 ].filter((l) => l.lag.harMedia && l.rader.length);
-const kortNavn = (s: SpillerIKamp) => s.etternavn || s.navn.split(' ').at(-1) || s.navn;
+const kortNavn = (s: SpillerIKamp) => (s.skjult ? '–' : s.etternavn || s.navn.split(' ').at(-1) || s.navn);
 ---
 
 {

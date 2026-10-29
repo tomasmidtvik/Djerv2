@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { buildDb } from '../src/lib/db.ts';
-import { linkMedia } from '../src/lib/link.ts';
+import { linkMedia, skjulNavn, skjulteSpillere } from '../src/lib/link.ts';
 import { foreslaDuplikater, malSjekk } from '../src/lib/review.ts';
 import { filtrerSesong, lagStat, plasseringer, spillerStat, toppliste } from '../src/lib/stats.ts';
 import type { Mediarapport } from '../src/lib/types.ts';
@@ -261,5 +261,42 @@ describe('kobling av mediarapport', () => {
 
   it('kan tvinges via matches-meta.yaml', () => {
     expect(linkMedia([media({ avspark: '18:00' })], [K1], { '1001': { mediarapport: 'm1' } })[0].kampnr).toBe('1001');
+  });
+
+  it('skjuler navn som NFF har skjult ("Personinfo ikke tilgjengelig"), koblet på draktnr', () => {
+    const k = structuredClone(K1);
+    k.bortelag.spillere[0].draktnr = 20;
+    k.advarsler = ['Noe om Xavier Scorer'];
+    const m = media({
+      bortelag: {
+        navn: 'Motstander A',
+        spillere: [{ draktnr: 20, navn: 'Personinfo ikke tilgjengelig', posisjon: 'Forsvar', start: true, kaptein: false, skjult: true }],
+        hovedtrener: null,
+        formasjon: null,
+      },
+    });
+    const skjulte = skjulteSpillere([m], [k], {});
+    expect(skjulte.get('1001')).toEqual([{ side: 'borte', draktnr: 20 }]);
+    expect(skjulNavn(k, skjulte.get('1001')!)).toBe(1);
+    const p = k.bortelag.spillere[0];
+    expect([p.navn, p.fornavn, p.etternavn, p.skjult]).toEqual(['Navn ikke tilgjengelig', '', '', true]);
+    expect(JSON.stringify(k)).not.toContain('Xavier');
+    // Målet teller fortsatt, men uten navn og uten koblingsmerknader
+    const d = buildDb(raw([k], { media: [m] }));
+    const e = d.kamper[0].hendelser.find((h) => h.side === 'borte' && h.type === 'mal')!;
+    expect([e.navn, e.slug]).toEqual(['Navn ikke tilgjengelig', null]);
+    expect(d.lineupMerknader.get('1001') ?? []).not.toContainEqual(expect.stringContaining('Navn ikke tilgjengelig'));
+    expect(skjulNavn(k, skjulte.get('1001')!)).toBe(0);
+  });
+
+  it('skjuler egne spillere via "skjul" i metadata, uten egen spillerside', () => {
+    const k = structuredClone(K1);
+    k.hjemmelag.spillere[1].draktnr = 5;
+    const meta = { '1001': { skjul: [{ lag: 'djerv' as const, draktnr: 5 }] } };
+    skjulNavn(k, skjulteSpillere([], [k], meta).get('1001')!);
+    const d = buildDb(raw([k], { meta }));
+    expect(d.personer.map((p) => p.navn)).not.toContain('Kari Hansen');
+    expect(d.personer.map((p) => p.navn)).not.toContain('Navn ikke tilgjengelig');
+    expect(d.kamper[0].hjemme.spillere.find((s) => s.skjult)?.slug).toBeNull();
   });
 });

@@ -39,7 +39,11 @@ const min = (xs: number[]) => xs.map((m) => `${m}'`).join(', ');
                 <span class="num w-6 shrink-0 text-right font-semibold text-muted">{s.draktnr ?? ''}</span>
                 <span class="min-w-0 flex-1">
                   <span class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                    {s.slug ? <a href={spillerUrl(s.slug)} class="link font-medium text-ink">{s.navn}</a> : <span class="font-medium">{s.navn}</span>}
+                    {s.slug ? (
+                      <a href={spillerUrl(s.slug)} class="link font-medium text-ink">{s.navn}</a>
+                    ) : (
+                      <span class={s.skjult ? 'italic text-muted' : 'font-medium'} title={s.skjult ? 'Personen er reservert mot publisering hos NFF' : undefined}>{s.navn}</span>
+                    )}
                     {s.kaptein && <span class="chip !px-1.5 !py-0 text-[0.65rem]" title="Kaptein">K</span>}
                   </span>
                   <span class="block text-xs text-muted">
