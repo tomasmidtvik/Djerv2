@@ -38,7 +38,7 @@ const nav = [
     <meta property="og:locale" content="nb_NO" />
     {canonical && <link rel="canonical" href={canonical} />}
     {canonical && <meta property="og:url" content={canonical} />}
-    <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={url('favicon.png')} type="image/png" />
     <script is:inline>
       (() => {
         let t = null;
@@ -56,11 +56,7 @@ const nav = [
     <header class="sticky top-0 z-40 bg-header text-header-ink shadow-sm">
       <div class="mx-auto flex h-14 max-w-5xl items-center gap-3 px-4">
         <a href={url()} class="flex items-center gap-2.5 font-bold tracking-tight" aria-label={`${lag} – til forsiden`}>
-          <svg viewBox="0 0 32 36" class="h-8 w-7" aria-hidden="true">
-            <path d="M16 1 2 6v11c0 8.5 6 14.8 14 18 8-3.2 14-9.5 14-18V6z" fill="#fff" />
-            <path d="M16 4.2 5 8.1V17c0 6.8 4.7 12 11 14.8 6.3-2.8 11-8 11-14.8V8.1z" fill="#0a4ea6" />
-            <text x="16" y="22" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="system-ui, sans-serif">D2</text>
-          </svg>
+          <img src={url('logo.webp')} alt="" width="79" height="43" class="h-[43px] w-auto" />
           <span class="leading-tight">
             <span class="block text-[1.05rem]">{lag}</span>
             <span class="block text-[0.7rem] font-medium opacity-80">Statistikk og kamparkiv</span>
