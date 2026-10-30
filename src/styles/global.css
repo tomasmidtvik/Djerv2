@@ -28,6 +28,14 @@
   --pitch: #2e7d4b;
   --pitch-dark: #2a7345;
   --pitch-line: rgba(255, 255, 255, 0.6);
+  /* Figurer: mål for/mot, og sesonger (i fast rekkefølge). Sjekket for fargeblindhet mot flatene her. */
+  --fig-for: #0a4ea6;
+  --fig-mot: #d9690f;
+  --ser-1: #2a78d6;
+  --ser-2: #eb6834;
+  --ser-3: #1baf7a;
+  --ser-4: #eda100;
+  --ser-5: #e87ba4;
   color-scheme: light;
 }
 
@@ -54,6 +62,13 @@
   --pitch: #1c4f31;
   --pitch-dark: #1a492d;
   --pitch-line: rgba(255, 255, 255, 0.35);
+  --fig-for: #3987e5;
+  --fig-mot: #d95926;
+  --ser-1: #3987e5;
+  --ser-2: #d95926;
+  --ser-3: #199e70;
+  --ser-4: #c98500;
+  --ser-5: #d55181;
   color-scheme: dark;
 }
 
@@ -190,5 +205,17 @@
   }
   .tbl .r {
     text-align: right;
+  }
+  /* Tall inne i mørke celler i varmekartene */
+  .varme-for {
+    color: #fff;
+    font-weight: 700;
+  }
+  .varme-mot {
+    color: #1a1205;
+    font-weight: 700;
+  }
+  .dark .varme-mot {
+    color: #fff;
   }
 }

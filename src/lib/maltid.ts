@@ -9,6 +9,8 @@ export interface MalPunkt {
   n: string | null;
   /** selvmål */
   s?: 1;
+  /** omgang */
+  o?: 1 | 2;
 }
 
 /** Kompakt kampdata som sendes til nettleseren. */
@@ -22,6 +24,9 @@ export interface KampData {
   trener: string | null;
   poeng: number;
   tittel: string;
+  /** mål i sluttresultatet, også de uten målscorer og minutt */
+  antallFor: number;
+  antallMot: number;
   for: MalPunkt[];
   motMal: MalPunkt[];
   /** alle egne/motstanderens mål har minutt */
@@ -38,7 +43,7 @@ export function tilKampData(k: Kamp, poeng: { seier: number; uavgjort: number; t
     sortert(
       k.hendelser
         .filter((e) => e.type === 'mal' && e.minutt !== null && (e.side === k.side) === ossSide)
-        .map((e) => ({ m: e.minutt!, n: e.navn, ...(e.selvmal ? { s: 1 as const } : {}) })),
+        .map((e) => ({ m: e.minutt!, n: e.navn, ...(e.selvmal ? { s: 1 as const } : {}), ...(e.omgang ? { o: e.omgang } : {}) })),
     );
   const kort = (ossSide: boolean) =>
     k.hendelser.filter((e) => e.type !== 'mal' && e.minutt !== null && (e.side === k.side) === ossSide).map((e) => e.minutt!).sort((a, b) => a - b);
@@ -53,6 +58,8 @@ export function tilKampData(k: Kamp, poeng: { seier: number; uavgjort: number; t
     trener: k.trener?.navn ?? null,
     poeng: k.utfall === 'S' ? poeng.seier : k.utfall === 'U' ? poeng.uavgjort : poeng.tap,
     tittel: `${k.hjemme.navn} ${k.resultat.hjemme}–${k.resultat.borte} ${k.borte.navn}`,
+    antallFor: k.malFor,
+    antallMot: k.malMot,
     for: punkt(true),
     motMal: punkt(false),
     forKomplett: k.ukjenteMal[k.side] === 0,

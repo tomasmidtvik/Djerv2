@@ -142,6 +142,16 @@ Venstre side er navnet slik det står i rapporten, høyre side er navnet persone
 - **Tid til første mål:** Kamper uten mål telles ikke som minutt 90. De blir stående igjen i kurven, og medianen leses av der halvparten av kampene har hatt mål.
 - **Opp- og nedrykk** utledes av divisjonsnummeret fra sesong til sesong.
 
+## Figurene
+
+Figurene tegnes som SVG i nettleseren, uten eksterne bibliotek. Koden ligger i `src/lib/figurer.ts` (tegning) og `src/lib/figurdata.ts` (utregning). Fargene står øverst i `src/styles/global.css` (`--fig-for`, `--fig-mot` og `--ser-1` til `--ser-5` for sesonger), med egne verdier for mørk modus.
+
+- **Mål og tid:** ballediagram (én ball er ett mål), overlevelseskurver for første mål, målfordeling, kampforløp for alle kamper og varmekart. Filtrene øverst gjelder alt på siden.
+- **Laget:** rullerende målsnitt og sesongkurver.
+- **Kampsiden:** kampforløp og ballediagram for den ene kampen.
+
+Ballediagrammet viser 1-minuttsbolker på bred skjerm og 3-minuttersbolker på mobil, og du kan bytte selv. Figurene tåler tastatur og skjermleser, og animasjonen slås av hvis enheten er satt til redusert bevegelse.
+
 ---
 
 ## Publisering på GitHub Pages (første gang)

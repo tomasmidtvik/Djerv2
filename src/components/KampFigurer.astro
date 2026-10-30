@@ -1,0 +1,76 @@
+---
+// Figurer for én kamp: ballediagram og kampforløp.
+import type { Kamp } from '../lib/db.ts';
+import { tilKampData } from '../lib/maltid.ts';
+import { getDb } from '../lib/site.ts';
+interface Props {
+  kamp: Kamp;
+}
+const { kamp } = Astro.props;
+const data = tilKampData(kamp, getDb().settings.poeng);
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+const harMal = data.for.length + data.motMal.length > 0;
+---
+
+{
+  harMal && (
+    <section class="card p-4" aria-labelledby="kampfigur-t" id="kampfigurer" data-oss={kamp.side === 'hjemme' ? kamp.hjemme.navn : kamp.borte.navn} data-mot={kamp.motstander}>
+      <h2 id="kampfigur-t" class="h-section mb-2">Kampforløp</h2>
+      <div id="kamp-forklaring" />
+      <div id="kamp-forlop" />
+      <h3 class="mb-2 mt-4 text-sm font-semibold">Når målene falt</h3>
+      <div id="kamp-baller" />
+      {!data.forKomplett || !data.motKomplett ? <p class="mt-2 text-xs text-muted">Rapporten mangler minutt for noen av målene, så figurene viser ikke hele kampen.</p> : null}
+      <script type="application/json" id="kamp-data" set:html={json} />
+    </section>
+  )
+}
+
+<script>
+  import { forlop } from '../lib/figurdata.ts';
+  import { autoBolk, ballediagram, FARGE, forklaring, linjediagram, vedResize } from '../lib/figurer.ts';
+  import type { KampData } from '../lib/maltid.ts';
+
+  const rot = document.getElementById('kampfigurer');
+  if (rot) {
+    const d = JSON.parse(document.getElementById('kamp-data')!.textContent!) as KampData;
+    const $ = (id: string) => document.getElementById(id)!;
+    const oss = rot.dataset.oss!;
+    const mot = rot.dataset.mot!;
+    const serie = forlop(d);
+    const tegn = () => {
+      forklaring($('kamp-forklaring'), [
+        { navn: `Mål ${oss}`, farge: FARGE.for },
+        { navn: `Mål ${mot}`, farge: FARGE.mot },
+      ]);
+      const min = Math.min(-1, ...serie);
+      const maks = Math.max(1, ...serie);
+      const yTicks = [];
+      for (let y = min; y <= maks; y++) yTicks.push({ y, tekst: y > 0 ? `+${y}` : String(y) });
+      const utvalgteTicks = yTicks.length > 7 ? yTicks.filter((t) => t.y % 2 === 0) : yTicks;
+      const merker = [
+        ...d.for.map((p) => ({ x: Math.min(90, p.m), y: serie[Math.min(90, p.m)], farge: FARGE.for, tekst: `${p.m}' ${p.n ?? 'Ukjent'}${p.s ? ' (selvmål)' : ''}` })),
+        ...d.motMal.map((p) => ({ x: Math.min(90, p.m), y: serie[Math.min(90, p.m)], farge: FARGE.mot, tekst: `${p.m}' ${p.n ?? 'Ukjent'}${p.s ? ' (selvmål)' : ''}` })),
+      ];
+      linjediagram($('kamp-forlop'), {
+        etikett: `Målforskjellen gjennom kampen for ${oss} mot ${mot}. Den ender på ${serie[90]}.`,
+        serier: [{ navn: 'Målforskjell', farge: 'var(--text)', punkter: serie.map((y, x) => ({ x, y })), trapp: true }],
+        hoyde: 190,
+        xMin: 0,
+        xMaks: 90,
+        yMin: min,
+        yMaks: maks,
+        xTicks: [0, 15, 30, 45, 60, 75, 90].map((x) => ({ x, tekst: `${x}'` })),
+        yTicks: utvalgteTicks,
+        xTekst: (x) => `Minutt ${x}`,
+        yTekst: (y) => (y > 0 ? `+${y}` : String(y)),
+        nivaa: { y: 0 },
+        merker,
+      });
+      const b = $('kamp-baller');
+      ballediagram(b, [d], { bolk: autoBolk(b.clientWidth), maksHoyde: 120, ring: false });
+    };
+    tegn();
+    vedResize($('kamp-forlop'), tegn);
+  }
+</script>

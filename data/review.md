@@ -1,6 +1,6 @@
 # Review-liste
 
-Generert av `npm run import` 30.10.2026, 11:33:20. Filen skrives på nytt ved hver import.
+Generert av `npm run import` 30.10.2026, 11:44:17. Filen skrives på nytt ved hver import.
 
 Når du har sjekket en kamp og alt stemmer, sett `godkjent: true` på kampen i `data/matches-meta.yaml`.
 

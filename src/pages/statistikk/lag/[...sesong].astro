@@ -5,6 +5,7 @@ import Tall from '../../../components/Tall.astro';
 import Utfall from '../../../components/Utfall.astro';
 import { bilanse, omganger, rekker, rekorder, resultatFordeling, sesongRader, type Rekke } from '../../../lib/analyse.ts';
 import { datoKort, getDb, kampTittel, kampUrl, tall, url } from '../../../lib/site.ts';
+import { tilKampData } from '../../../lib/maltid.ts';
 import { kamperISesong } from '../../../lib/stats.ts';
 
 export function getStaticPaths() {
@@ -14,6 +15,7 @@ const sesong = Astro.params.sesong ? Number(Astro.params.sesong) : null;
 const db = getDb();
 const regel = db.settings.poeng;
 const kamper = kamperISesong(db, sesong);
+const json = JSON.stringify(kamper.map((k) => tilKampData(k, regel))).replace(/</g, '\\u003c');
 const b = bilanse(kamper, regel);
 const hjemme = bilanse(kamper.filter((k) => k.side === 'hjemme'), regel);
 const borte = bilanse(kamper.filter((k) => k.side === 'borte'), regel);
@@ -61,6 +63,43 @@ const minuttRader = [
       ['Mål mot/kamp', tall(b.malMotSnitt ?? 0, 2)],
     ]}
   />
+
+  <section class="card p-4" aria-labelledby="formkurve">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <h2 id="formkurve" class="h-section">Form</h2>
+      <span class="flex items-center gap-1.5 text-xs text-muted">
+        Siste 5:
+        {kamper.slice(-5).map((k) => <a href={kampUrl(k.kampnr)} title={kampTittel(k)}><Utfall utfall={k.utfall} /></a>)}
+      </span>
+    </div>
+    {kamper.length >= 5 ? (
+      <>
+        <p class="mb-2 mt-1 text-sm text-muted">Snitt mål for og mot de siste fem kampene, gjennom {sesong ? 'sesongen' : 'hele arkivet'}.</p>
+        <div id="rullerende-forklaring"></div>
+        <div id="rullerende"></div>
+      </>
+    ) : (
+      <p class="mt-1 text-sm text-muted">Ikke nok data: kurven vises fra 5 kamper.</p>
+    )}
+  </section>
+
+  {
+    !sesong && (
+      <section class="grid gap-3 lg:grid-cols-2" aria-label="Sesongkurver">
+        <div class="card min-w-0 p-4">
+          <h2 class="font-semibold">Mål per kamp, per sesong</h2>
+          <div id="sesong-mal-forklaring" class="mt-1"></div>
+          <div id="sesong-mal"></div>
+        </div>
+        <div class="card min-w-0 p-4">
+          <h2 class="font-semibold">Poeng per kamp, per sesong</h2>
+          <div id="sesong-poeng"></div>
+        </div>
+      </section>
+    )
+  }
+
+  <script type="application/json" id="lag-data" set:html={json}></script>
 
   <section aria-labelledby="hjemmeborte">
     <h2 id="hjemmeborte" class="h-section mb-2">Hjemme og borte</h2>
@@ -172,3 +211,89 @@ const minuttRader = [
     </ul>
   </section>
 </StatSeksjon>
+
+<script>
+  import { rullerende, sesongKurver } from '../../../lib/figurdata.ts';
+  import { datoTekst, FARGE, forklaring, linjediagram, tallTekst, vedResize } from '../../../lib/figurer.ts';
+  import type { KampData } from '../../../lib/maltid.ts';
+
+  const data = JSON.parse(document.getElementById('lag-data')!.textContent!) as KampData[];
+  const $ = (id: string) => document.getElementById(id);
+  const toppen = (maks: number) => Math.max(1, Math.ceil(maks));
+
+  function tegnRullerende() {
+    const el = $('rullerende');
+    if (!el) return;
+    const r = rullerende(data, 5);
+    forklaring($('rullerende-forklaring')!, [
+      { navn: 'Mål for', farge: FARGE.for, form: 'strek' },
+      { navn: 'Mål mot', farge: FARGE.mot, form: 'strek' },
+    ]);
+    const maks = toppen(Math.max(...r.flatMap((x) => [x.for, x.mot])));
+    const sesonger = [...new Set(data.map((d) => d.sesong))];
+    const xTicks =
+      sesonger.length > 1
+        ? sesonger.flatMap((s) => {
+            const p = r.find((x) => x.kamp.sesong === s);
+            return p ? [{ x: p.i, tekst: String(s) }] : [];
+          })
+        : r.filter((_, i) => i % 3 === 0).map((x) => ({ x: x.i, tekst: `${x.kamp.dato.slice(8, 10)}.${x.kamp.dato.slice(5, 7)}` }));
+    linjediagram(el, {
+      etikett: `Rullerende snitt over fem kamper. Siste verdi er ${tallTekst(r.at(-1)?.for ?? 0)} mål for og ${tallTekst(r.at(-1)?.mot ?? 0)} mål mot per kamp.`,
+      serier: [
+        { navn: 'Mål for', farge: FARGE.for, punkter: r.map((x) => ({ x: x.i, y: x.for })) },
+        { navn: 'Mål mot', farge: FARGE.mot, punkter: r.map((x) => ({ x: x.i, y: x.mot })) },
+      ],
+      xMin: r[0]?.i ?? 0,
+      xMaks: r.at(-1)?.i ?? 1,
+      yMin: 0,
+      yMaks: maks,
+      xTicks,
+      yTicks: Array.from({ length: maks + 1 }, (_, y) => ({ y, tekst: String(y) })),
+      xTekst: (x) => {
+        const p = r.find((k) => k.i === x);
+        return p ? `${p.kamp.tittel}, ${datoTekst(p.kamp.dato)}` : '';
+      },
+      yTekst: (y) => tallTekst(y),
+    });
+  }
+
+  function tegnSesong() {
+    const a = $('sesong-mal');
+    const b = $('sesong-poeng');
+    if (!a || !b) return;
+    const k = sesongKurver(data);
+    const xTicks = k.map((x) => ({ x: x.sesong, tekst: String(x.sesong) }));
+    const felles = { xMin: k[0].sesong, xMaks: k.at(-1)!.sesong, xTicks, xTekst: (x: number) => `Sesong ${x}`, yTekst: (y: number) => tallTekst(y, 2), yMin: 0, hoyde: 210 };
+    forklaring($('sesong-mal-forklaring')!, [
+      { navn: 'Mål for', farge: FARGE.for, form: 'strek' },
+      { navn: 'Mål mot', farge: FARGE.mot, form: 'strek' },
+    ]);
+    const maks = toppen(Math.max(...k.flatMap((x) => [x.malFor, x.malMot])));
+    linjediagram(a, {
+      ...felles,
+      etikett: `Mål for og mot per kamp per sesong. ${k.map((x) => `${x.sesong}: ${tallTekst(x.malFor, 2)} for og ${tallTekst(x.malMot, 2)} mot`).join('. ')}.`,
+      serier: [
+        { navn: 'Mål for', farge: FARGE.for, punkter: k.map((x) => ({ x: x.sesong, y: x.malFor })) },
+        { navn: 'Mål mot', farge: FARGE.mot, punkter: k.map((x) => ({ x: x.sesong, y: x.malMot })) },
+      ],
+      yMaks: maks,
+      yTicks: Array.from({ length: maks + 1 }, (_, y) => ({ y, tekst: String(y) })),
+    });
+    linjediagram(b, {
+      ...felles,
+      etikett: `Poeng per kamp per sesong. ${k.map((x) => `${x.sesong}: ${tallTekst(x.poeng, 2)}`).join('. ')}.`,
+      serier: [{ navn: 'Poeng per kamp', farge: FARGE.for, punkter: k.map((x) => ({ x: x.sesong, y: x.poeng })) }],
+      yMaks: 3,
+      yTicks: [0, 1, 2, 3].map((y) => ({ y, tekst: String(y) })),
+    });
+  }
+
+  const tegn = () => {
+    tegnRullerende();
+    tegnSesong();
+  };
+  tegn();
+  const rot = $('rullerende') ?? $('sesong-mal');
+  if (rot) vedResize(rot, tegn);
+</script>

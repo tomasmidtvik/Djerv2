@@ -1,6 +1,7 @@
 ---
 import Bane from '../../components/Bane.astro';
 import Icon from '../../components/Icon.astro';
+import KampFigurer from '../../components/KampFigurer.astro';
 import Opptak from '../../components/Opptak.astro';
 import Tidslinje from '../../components/Tidslinje.astro';
 import Tropp from '../../components/Tropp.astro';
@@ -128,6 +129,8 @@ const beskrivelse = `${kampTittel(k)} (pause ${k.pause ? `${k.pause.hjemme}-${k.
           )
         }
       </section>
+
+      <KampFigurer kamp={k} />
 
       {
         k.referat && (

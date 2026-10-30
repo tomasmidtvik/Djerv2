@@ -10,7 +10,7 @@ const motstandere = [...new Map(data.map((d) => [d.motSlug, d.mot]))].sort((a, b
 const trenere = [...new Set(data.map((d) => d.trener).filter((t): t is string => Boolean(t)))].sort((a, b) => a.localeCompare(b, 'nb'));
 ---
 
-<StatSeksjon seksjon="mal" tittel="Mål og tid" medSesong={false} beskrivelse="Når vi scorer og slipper inn. Filtrene gjelder alle tallene.">
+<StatSeksjon seksjon="mal" tittel="Mål og tid" medSesong={false} beskrivelse="Når vi scorer og slipper inn. Filtrene gjelder alle tallene og figurene.">
   <form id="filter" class="flex flex-wrap items-end gap-3" aria-label="Filtrer" onsubmit="return false">
     <label class="flex flex-col gap-1 text-xs font-semibold text-muted">
       Sesong
@@ -44,98 +44,363 @@ const trenere = [...new Set(data.map((d) => d.trener).filter((t): t is string =>
   </form>
 
   <p id="grunnlag" class="text-sm text-muted" aria-live="polite"></p>
-  <noscript><p class="card p-4 text-sm">Denne siden trenger JavaScript for å regne ut tallene.</p></noscript>
-  <div id="resultat" class="space-y-6"></div>
+  <noscript><p class="card p-4 text-sm">Denne siden trenger JavaScript for å regne ut tallene og tegne figurene.</p></noscript>
+
+  <section class="card p-4" aria-labelledby="balle-t">
+    <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+      <h2 id="balle-t" class="h-section">Når målene faller</h2>
+      <div class="seg" role="group" aria-label="Bredde på tidsbolkene" id="bolk-valg">
+        <button type="button" data-v="1" aria-pressed="false">1 min</button>
+        <button type="button" data-v="3" aria-pressed="false">3 min</button>
+      </div>
+    </div>
+    <p class="mb-2 text-sm text-muted">Én ball er ett mål. Pek på en ball for å se målet, og klikk for å åpne kampen. Med tastatur: piltaster og Enter.</p>
+    <label class="mb-2 flex w-fit flex-col gap-1 text-xs font-semibold text-muted">
+      Fremhev målscorer
+      <select id="fremhev" class="field max-w-[16rem]"><option value="">Ingen</option></select>
+    </label>
+    <div id="balle-forklaring"></div>
+    <div id="balle"></div>
+    <div id="balle-tall" class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6"></div>
+  </section>
+
+  <section aria-labelledby="forste">
+    <h2 id="forste" class="h-section mb-2">Tid til første mål</h2>
+    <div id="forste-tabell"></div>
+    <p class="mt-1 text-xs text-muted">Kamper uten mål telles ikke som minutt 90. Snitt gjelder bare kamper med mål. Kamper der rapporten mangler mål er ikke med. Median «–» betyr at under halvparten av kampene hadde slikt mål.</p>
+    <div id="kurver" class="mt-3 grid gap-3 lg:grid-cols-2">
+      <div class="card min-w-0 p-4">
+        <h3 class="font-semibold">Kamper uten eget mål etter hvert minutt</h3>
+        <div id="kurve-for-forklaring" class="mt-1"></div>
+        <div id="kurve-for"></div>
+      </div>
+      <div class="card min-w-0 p-4">
+        <h3 class="font-semibold">Kamper uten baklengsmål etter hvert minutt</h3>
+        <div id="kurve-mot-forklaring" class="mt-1"></div>
+        <div id="kurve-mot"></div>
+      </div>
+    </div>
+    <label class="mt-2 flex items-center gap-2 text-sm"><input type="checkbox" id="per-sesong" /> Vis én linje per sesong</label>
+  </section>
+
+  <section aria-labelledby="forstscorer">
+    <h2 id="forstscorer" class="h-section mb-2">Hvem scorer først</h2>
+    <div id="forst-tall"></div>
+  </section>
+
+  <section class="card p-4" aria-labelledby="soyle-t">
+    <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+      <h2 id="soyle-t" class="h-section">Målfordeling</h2>
+      <div class="seg" role="group" aria-label="Bredde på tidsbolkene" id="soyle-valg">
+        <button type="button" data-v="15" aria-pressed="true">15 min</button>
+        <button type="button" data-v="5" aria-pressed="false">5 min</button>
+      </div>
+    </div>
+    <div id="soyle-forklaring"></div>
+    <div id="soyle"></div>
+    <details class="mt-2 text-sm">
+      <summary class="cursor-pointer font-semibold text-accent">Vis som tabell</summary>
+      <div id="soyle-tabell" class="mt-2 overflow-x-auto"></div>
+    </details>
+  </section>
+
+  <section class="card p-4" aria-labelledby="forlop-t">
+    <h2 id="forlop-t" class="h-section">Kampforløp</h2>
+    <p id="forlop-tekst" class="mb-2 text-sm text-muted"></p>
+    <div id="forlop-forklaring"></div>
+    <div id="forlop"></div>
+  </section>
+
+  <section aria-labelledby="varme-t">
+    <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+      <h2 id="varme-t" class="h-section">Sesong og tidsbolker</h2>
+      <div class="seg" role="group" aria-label="Velg mål for eller mot" id="varme-valg">
+        <button type="button" data-v="for" aria-pressed="true">Mål for</button>
+        <button type="button" data-v="mot" aria-pressed="false">Mål mot</button>
+      </div>
+    </div>
+    <div id="varme-sesong"></div>
+    <h2 class="h-section mb-2 mt-5">Toppscorerne og tidsbolker</h2>
+    <div id="varme-spillere"></div>
+    <p class="mt-1 text-xs text-muted">Sterkere farge betyr flere mål. Tallene står i cellene.</p>
+  </section>
+
   <script type="application/json" id="kampdata" set:html={json}></script>
 </StatSeksjon>
 
 <script>
-  import { forsteKort, forsteMal, malTett, scorerForst, type ForsteMal, type KampData } from '../../../lib/maltid.ts';
+  import { alleForlop, fordeling, malNokkel, scorere, varmeSesong, varmeSpillere, VARME_BOLKER } from '../../../lib/figurdata.ts';
+  import { autoBolk, ballediagram, FARGE, forklaring, linjediagram, soyler, varmekart, vedResize, type Serie } from '../../../lib/figurer.ts';
+  import { forsteKort, forsteMal, malTett, medianFraKurve, overlevelse, scorerForst, type ForsteMal, type KampData, type MalSide } from '../../../lib/maltid.ts';
 
   const data = JSON.parse(document.getElementById('kampdata')!.textContent!) as KampData[];
   const form = document.getElementById('filter') as HTMLFormElement;
-  const ut = document.getElementById('resultat')!;
-  const grunnlag = document.getElementById('grunnlag')!;
+  const $ = (id: string) => document.getElementById(id)!;
   const MIN = 5;
+  const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+  const SESONGER = [...new Set(data.map((d) => d.sesong))].sort((a, b) => a - b);
   const el = (n: string) => form.elements.namedItem(n) as HTMLSelectElement;
   const tall = (x: number | null, d = 0) => (x === null ? '–' : x.toLocaleString('nb-NO', { minimumFractionDigits: d, maximumFractionDigits: d }));
-  const pst = (x: number) => `${Math.round(x * 100)} %`;
-  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+  const pst = (x: number | null) => (x === null ? '–' : `${Math.round(x * 100)} %`);
+  const pstKort = (x: number) => `${Math.round(x * 100)} %`;
 
   const params = new URLSearchParams(location.search);
   for (const n of ['sesong', 'sted', 'mot', 'trener']) if (params.get(n)) el(n).value = params.get(n)!;
+  const fremhev = $('fremhev') as HTMLSelectElement;
+  let bolk: number | null = null;
+  let soyleBolk = 15;
+  let varmeSide: MalSide = 'for';
+  let forsteTegning = true;
 
-  const tile = (l: string, v: string, m = '') =>
-    `<div class="card px-2 py-3 text-center"><div class="num text-xl font-extrabold">${esc(v)}</div><div class="text-[0.7rem] font-medium leading-tight text-muted">${esc(l)}</div>${m ? `<div class="mt-0.5 text-[0.65rem] leading-tight text-muted">${esc(m)}</div>` : ''}</div>`;
+  function tile(l: string, v: string, m = '') {
+    const d = document.createElement('div');
+    d.className = 'card px-2 py-3 text-center';
+    const a = document.createElement('div');
+    a.className = 'text-xl font-extrabold';
+    a.textContent = v;
+    const b = document.createElement('div');
+    b.className = 'text-[0.7rem] font-medium leading-tight text-muted';
+    b.textContent = l;
+    d.append(a, b);
+    if (m) {
+      const c = document.createElement('div');
+      c.className = 'mt-0.5 text-[0.65rem] leading-tight text-muted';
+      c.textContent = m;
+      d.append(c);
+    }
+    return d;
+  }
 
-  const rad = (navn: string, f: ForsteMal) => `
-    <tr>
-      <th scope="row" class="!text-sm !normal-case !tracking-normal !text-ink">${navn}</th>
-      <td class="r">${f.grunnlag}</td>
-      <td class="r">${f.utenMal}</td>
-      <td class="r">${tall(f.snitt)}</td>
-      <td class="r font-bold">${f.median === null ? '–' : `${f.median}'`}</td>
-      ${f.innen.map((i) => `<td class="r">${pst(i.andel)}</td>`).join('')}
-    </tr>`;
+  function tabell(hode: string[], rader: string[][], forsteVenstre = true) {
+    const wrap = document.createElement('div');
+    wrap.className = 'overflow-x-auto';
+    const t = document.createElement('table');
+    t.className = 'tbl';
+    const tr = t.createTHead().insertRow();
+    hode.forEach((h, i) => {
+      const th = document.createElement('th');
+      th.scope = 'col';
+      th.textContent = h;
+      if (i || !forsteVenstre) th.className = 'r';
+      tr.appendChild(th);
+    });
+    const b = t.createTBody();
+    for (const r of rader) {
+      const rad = b.insertRow();
+      r.forEach((v, i) => {
+        const c = rad.insertCell();
+        c.textContent = v;
+        c.className = i ? 'r num' : 'font-medium';
+      });
+    }
+    wrap.appendChild(t);
+    return wrap;
+  }
 
-  function tegn() {
+  const utvalg = () => {
     const f = { sesong: el('sesong').value, sted: el('sted').value, mot: el('mot').value, trener: el('trener').value };
-    const valgt = data.filter(
+    const q = new URLSearchParams(Object.entries(f).filter(([, v]) => v));
+    history.replaceState(null, '', q.size ? `?${q}` : location.pathname);
+    return data.filter(
       (d) =>
         (!f.sesong || String(d.sesong) === f.sesong) &&
         (!f.sted || d.sted === f.sted) &&
         (!f.mot || d.motSlug === f.mot) &&
         (!f.trener || d.trener === f.trener),
     );
-    const q = new URLSearchParams(Object.entries(f).filter(([, v]) => v));
-    history.replaceState(null, '', q.size ? `?${q}` : location.pathname);
+  };
 
-    grunnlag.textContent = `${valgt.length} av ${data.length} kamper valgt.`;
-    if (valgt.length < MIN) {
-      ut.innerHTML = `<p class="card p-5 text-center text-sm text-muted">Ikke nok data: tallene vises fra ${MIN} kamper.</p>`;
-      return;
-    }
-    const fm = forsteMal(valgt, 'for');
-    const bm = forsteMal(valgt, 'mot');
-    const s = scorerForst(valgt);
-    const t = malTett(valgt);
-    const k = forsteKort(valgt);
-    const andelVi = s.grunnlag ? s.vi / s.grunnlag : 0;
-    ut.innerHTML = `
-      <section aria-labelledby="forste">
-        <h2 id="forste" class="h-section mb-2">Tid til første mål</h2>
-        <div class="card overflow-x-auto">
-          <table class="tbl">
-            <thead><tr>
-              <th scope="col"></th><th scope="col" class="r">Kamper</th><th scope="col" class="r" title="Kamper uten slikt mål">Uten</th>
-              <th scope="col" class="r" title="Snitt minutt i kamper med mål">Snitt</th><th scope="col" class="r" title="Der halvparten av kampene har hatt mål">Median</th>
-              <th scope="col" class="r">Innen 10'</th><th scope="col" class="r">15'</th><th scope="col" class="r">30'</th><th scope="col" class="r">45'</th>
-            </tr></thead>
-            <tbody>${rad('Første mål for', fm)}${rad('Første baklengs', bm)}</tbody>
-          </table>
-        </div>
-        <p class="mt-1 text-xs text-muted">Kamper uten mål telles ikke som minutt 90. Snitt gjelder bare kamper med mål. Kamper der rapporten mangler mål er ikke med. Median «–» betyr at under halvparten av kampene hadde slikt mål.</p>
-      </section>
-      <section aria-labelledby="forstscorer">
-        <h2 id="forstscorer" class="h-section mb-2">Hvem scorer først</h2>
-        <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          ${tile('Vi scorer først', `${s.vi}`, pst(andelVi))}
-          ${tile('De scorer først', `${s.de}`, s.grunnlag ? pst(s.de / s.grunnlag) : '')}
-          ${tile('Poeng/kamp når vi scorer først', s.vi >= MIN ? tall(s.poengVi, 2) : '–', s.vi >= MIN ? '' : 'ikke nok data')}
-          ${tile('Poeng/kamp når de scorer først', s.de >= MIN ? tall(s.poengDe, 2) : '–', s.de >= MIN ? '' : 'ikke nok data')}
-        </div>
-        <p class="mt-1 text-xs text-muted">Basert på ${s.grunnlag} av ${valgt.length} kamper: kamper uten mål og kamper der rapporten mangler mål er ikke med.</p>
-      </section>
-      <section aria-labelledby="tett">
-        <h2 id="tett" class="h-section mb-2">Tid mellom mål og første kort</h2>
-        <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          ${tile('Snitt minutter mellom våre mål', tall(t.snittMellom), `${t.kamperMedFlere} kamper med flere mål`)}
-          ${tile('Kamper med to mål innen 5 min', `${t.toInnen5}`)}
-          ${tile('Median første kort', k.median === null ? '–' : `${k.median}'`, `${k.medKort} kamper med kort`)}
-          ${tile('Snitt første kort', k.snitt === null ? '–' : `${tall(k.snitt)}'`)}
-        </div>
-      </section>`;
+  function tegnBalle(valgt: KampData[], animer: boolean) {
+    const figur = $('balle');
+    const b = bolk ?? autoBolk(figur.clientWidth);
+    for (const k of $('bolk-valg').querySelectorAll('button')) k.setAttribute('aria-pressed', String(Number(k.dataset.v) === b));
+    forklaring($('balle-forklaring'), [
+      { navn: 'Mål for (oppover)', farge: FARGE.for },
+      { navn: 'Mål mot (nedover)', farge: FARGE.mot },
+      { navn: 'Første mål i kampen har mørk ring', farge: 'var(--text)', form: 'ring' },
+      { navn: 'Median minutt', farge: 'var(--text)', form: 'strek' },
+    ]);
+    ballediagram(figur, valgt, { bolk: b, fremhev: fremhev.value, animer, median: valgt.length >= MIN, kampUrl: (id) => `${BASE}kamp/${id}/` });
   }
+
+  function tegnKurve(valgt: KampData[], side: MalSide, id: string, perSesong: boolean) {
+    const kurve = overlevelse(valgt, side);
+    const med = medianFraKurve(kurve);
+    const punkt = (k: number[]) => k.map((y, x) => ({ x, y }));
+    const serier: Serie[] = [{ navn: 'Alle', farge: side === 'for' ? FARGE.for : FARGE.mot, punkter: punkt(kurve), trapp: true, bredde: perSesong ? 3 : 2 }];
+    const brukt = [...new Set(valgt.map((d) => d.sesong))].sort((a, b) => a - b);
+    if (perSesong && brukt.length > 1) {
+      serier[0].farge = 'var(--text)';
+      for (const s of brukt) {
+        const ks = valgt.filter((d) => d.sesong === s);
+        if (ks.length < MIN) continue;
+        serier.push({ navn: String(s), farge: `var(--ser-${SESONGER.indexOf(s) + 1})`, punkter: punkt(overlevelse(ks, side)), trapp: true, bredde: 1.5 });
+      }
+    }
+    if (serier.length > 1) forklaring($(`${id}-forklaring`), serier.map((s) => ({ navn: s.navn, farge: s.farge, form: 'strek' as const })));
+    else $(`${id}-forklaring`).replaceChildren();
+    const f = forsteMal(valgt, side);
+    linjediagram($(id), {
+      etikett: `Overlevelseskurve for ${side === 'for' ? 'første eget mål' : 'første baklengsmål'} i ${f.grunnlag} kamper. ${med === null ? 'Under halvparten av kampene hadde slikt mål.' : `Median er minutt ${med}.`} ${f.utenMal} kamper uten slikt mål blir stående igjen ved minutt 90.`,
+      serier,
+      xMin: 0,
+      xMaks: 90,
+      yMin: 0,
+      yMaks: 1,
+      xTicks: [0, 15, 30, 45, 60, 75, 90].map((x) => ({ x, tekst: `${x}'` })),
+      yTicks: [0, 0.25, 0.5, 0.75, 1].map((y) => ({ y, tekst: pstKort(y) })),
+      xTekst: (x) => `Etter ${x} minutter`,
+      yTekst: (y) => pstKort(y),
+      markeringer: med === null ? [] : [{ x: med, tekst: `Median ${med}'` }],
+    });
+  }
+
+  function tegnSoyler(valgt: KampData[]) {
+    const b = fordeling(valgt, soyleBolk);
+    forklaring($('soyle-forklaring'), [
+      { navn: 'Mål for', farge: FARGE.for },
+      { navn: 'Mål mot', farge: FARGE.mot },
+    ]);
+    soyler($('soyle'), b);
+    $('soyle-tabell').replaceChildren(tabell(['Minutt', 'Mål for', 'Mål mot'], b.map((x) => [x.navn, String(x.for), String(x.mot)])));
+  }
+
+  function tegnForlop(valgt: KampData[]) {
+    const r = alleForlop(valgt);
+    $('forlop-tekst').textContent = `Tynne linjer er enkeltkamper, tykk linje er snittet. Over null leder vi. Basert på ${r.grunnlag} av ${valgt.length} kamper: kamper der rapporten mangler mål er ikke med.`;
+    forklaring($('forlop-forklaring'), [
+      { navn: 'Enkeltkamper', farge: 'var(--muted)', form: 'strek' },
+      { navn: 'Snitt', farge: FARGE.for, form: 'strek' },
+    ]);
+    const min = Math.min(-1, ...r.linjer.flat());
+    const maks = Math.max(1, ...r.linjer.flat());
+    const steg = maks - min > 10 ? 4 : 2;
+    const yTicks: { y: number; tekst: string }[] = [];
+    for (let y = Math.ceil(min / steg) * steg; y <= maks; y += steg) yTicks.push({ y, tekst: y > 0 ? `+${y}` : String(y) });
+    const serier: Serie[] = r.linjer.map((l, i) => ({
+      navn: String(i),
+      farge: 'var(--muted)',
+      punkter: l.map((y, x) => ({ x, y })),
+      trapp: true,
+      bredde: 1,
+      opasitet: 0.22,
+      bakgrunn: true,
+    }));
+    serier.push({ navn: 'Snitt målforskjell', farge: FARGE.for, punkter: r.snitt.map((y, x) => ({ x, y })), bredde: 2.5 });
+    const slutt = r.snitt[90] ?? 0;
+    linjediagram($('forlop'), {
+      etikett: `Kampforløp for ${r.grunnlag} kamper. Snittet av målforskjellen ender på ${tall(slutt, 2)} etter 90 minutter.`,
+      serier,
+      hoyde: 280,
+      xMin: 0,
+      xMaks: 90,
+      yMin: min,
+      yMaks: maks,
+      xTicks: [0, 15, 30, 45, 60, 75, 90].map((x) => ({ x, tekst: `${x}'` })),
+      yTicks,
+      xTekst: (x) => `Minutt ${x}`,
+      yTekst: (y) => (y > 0 ? `+${tall(y, 2)}` : tall(y, 2)),
+      nivaa: { y: 0 },
+    });
+  }
+
+  function tegnVarme(valgt: KampData[]) {
+    varmekart($('varme-sesong'), VARME_BOLKER, varmeSesong(valgt, varmeSide), varmeSide === 'for' ? FARGE.for : FARGE.mot, 'Sesong', `Antall ${varmeSide === 'for' ? 'mål for' : 'mål mot'} per sesong og tidsbolk`);
+    varmekart($('varme-spillere'), VARME_BOLKER, varmeSpillere(valgt), FARGE.for, 'Spiller', 'Antall mål per spiller og tidsbolk');
+  }
+
+  function forsteRad(navn: string, f: ForsteMal) {
+    return [navn, String(f.grunnlag), String(f.utenMal), tall(f.snitt), f.median === null ? '–' : `${f.median}'`, ...f.innen.map((i) => pstKort(i.andel))];
+  }
+
+  function tegn() {
+    const valgt = utvalg();
+    $('grunnlag').textContent = `${valgt.length} av ${data.length} kamper valgt.`;
+    const nok = valgt.length >= MIN;
+
+    // Fremhev-listen følger utvalget
+    const forrige = fremhev.value;
+    const navn = scorere(valgt);
+    fremhev.replaceChildren(new Option('Ingen', ''), ...navn.map((n) => new Option(`${n.navn} (${n.mal})`, n.navn)));
+    fremhev.value = navn.some((n) => n.navn === forrige) ? forrige : '';
+
+    tegnBalle(valgt, forsteTegning);
+    forsteTegning = false;
+    const n = malNokkel(valgt);
+    $('balle-tall').replaceChildren(
+      tile('Mål for', String(n.antallFor)),
+      tile('Mål mot', String(n.antallMot)),
+      tile('Median mål for', nok && n.medianFor !== null ? `${n.medianFor}'` : '–'),
+      tile('Median mål mot', nok && n.medianMot !== null ? `${n.medianMot}'` : '–'),
+      tile('Mål for i 2. omgang', nok ? pst(n.andreFor) : '–'),
+      tile('Mål mot i 2. omgang', nok ? pst(n.andreMot) : '–'),
+    );
+
+    const ikkeNok = () => {
+      const p = document.createElement('p');
+      p.className = 'card p-4 text-center text-sm text-muted';
+      p.textContent = `Ikke nok data: vises fra ${MIN} kamper.`;
+      return p;
+    };
+
+    if (!nok) {
+      $('forste-tabell').replaceChildren(ikkeNok());
+      $('forst-tall').replaceChildren(ikkeNok());
+      $('kurver').hidden = true;
+    } else {
+      $('kurver').hidden = false;
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.append(tabell(['', 'Kamper', 'Uten', 'Snitt', 'Median', "Innen 10'", "15'", "30'", "45'"], [forsteRad('Første mål for', forsteMal(valgt, 'for')), forsteRad('Første baklengs', forsteMal(valgt, 'mot'))]));
+      $('forste-tabell').replaceChildren(card);
+      const per = ($('per-sesong') as HTMLInputElement).checked;
+      tegnKurve(valgt, 'for', 'kurve-for', per);
+      tegnKurve(valgt, 'mot', 'kurve-mot', per);
+
+      const s = scorerForst(valgt);
+      const t = malTett(valgt);
+      const k = forsteKort(valgt);
+      const rutenett = document.createElement('div');
+      rutenett.className = 'grid grid-cols-2 gap-2 sm:grid-cols-4';
+      rutenett.append(
+        tile('Vi scorer først', String(s.vi), s.grunnlag ? pstKort(s.vi / s.grunnlag) : ''),
+        tile('De scorer først', String(s.de), s.grunnlag ? pstKort(s.de / s.grunnlag) : ''),
+        tile('Poeng/kamp når vi scorer først', s.vi >= MIN ? tall(s.poengVi, 2) : '–', s.vi >= MIN ? '' : 'ikke nok data'),
+        tile('Poeng/kamp når de scorer først', s.de >= MIN ? tall(s.poengDe, 2) : '–', s.de >= MIN ? '' : 'ikke nok data'),
+        tile('Snitt minutter mellom våre mål', tall(t.snittMellom), `${t.kamperMedFlere} kamper med flere mål`),
+        tile('Kamper med to mål innen 5 min', String(t.toInnen5)),
+        tile('Median første kort', k.median === null ? '–' : `${k.median}'`, `${k.medKort} kamper med kort`),
+        tile('Snitt første kort', k.snitt === null ? '–' : `${tall(k.snitt)}'`),
+      );
+      const merk = document.createElement('p');
+      merk.className = 'mt-1 text-xs text-muted';
+      merk.textContent = `Hvem som scorer først er basert på ${s.grunnlag} av ${valgt.length} kamper: kamper uten mål og kamper der rapporten mangler mål er ikke med.`;
+      $('forst-tall').replaceChildren(rutenett, merk);
+    }
+    tegnSoyler(valgt);
+    tegnForlop(valgt);
+    tegnVarme(valgt);
+  }
+
   form.addEventListener('change', tegn);
+  fremhev.addEventListener('change', () => tegnBalle(utvalg(), false));
+  $('per-sesong').addEventListener('change', tegn);
+  $('bolk-valg').addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest('button');
+    if (!b) return;
+    bolk = Number(b.dataset.v);
+    tegnBalle(utvalg(), false);
+  });
+  const veksle = (id: string, sett: (v: string) => void, tegner: () => void) =>
+    $(id).addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest('button');
+      if (!b) return;
+      for (const k of $(id).querySelectorAll('button')) k.setAttribute('aria-pressed', String(k === b));
+      sett(b.dataset.v!);
+      tegner();
+    });
+  veksle('soyle-valg', (v) => (soyleBolk = Number(v)), () => tegnSoyler(utvalg()));
+  veksle('varme-valg', (v) => (varmeSide = v as MalSide), () => tegnVarme(utvalg()));
   tegn();
+  vedResize($('balle'), tegn);
 </script>
