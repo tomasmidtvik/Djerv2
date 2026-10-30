@@ -30,6 +30,8 @@ export interface SpillerIKamp extends Hendelser {
   /** startet ikke (stod som innbytter) */
   innbytter: boolean;
   mal: number[];
+  /** selvmål scoret av spilleren (teller for det andre laget) */
+  selvmal: number[];
   /** fra mediarapporten: "oppstilt som" */
   posisjon: string | null;
   /** fra matches-meta.yaml: true = kom inn, false = kom ikke inn, null = ukjent */
@@ -237,10 +239,13 @@ export function buildDb(raw: RawData): Db {
             kaptein: p.kaptein || Boolean(ms?.kaptein),
             innbytter: p.innbytter,
             mal: p.mal,
+            selvmal: p.selvmal ?? [],
             gule: p.gule,
             rodeAdv2: p.rodeAdv2,
             rodeDirekte: p.rodeDirekte,
-            posisjon: ms && ms.start && ms.posisjon !== 'Strøket' ? ms.posisjon : null,
+            // "Oppstilt som" bare når begge rapportene er enige om at spilleren startet,
+            // og laget ikke har ført opp hele troppen med posisjon
+            posisjon: ms && ms.start && !p.innbytter && ml?.formasjon && ms.posisjon !== 'Strøket' ? ms.posisjon : null,
             innbyttet: p.innbytter && brukte ? brukte.has(key) : null,
             innMinutt: p.innbytter && brukte ? brukte.get(key) ?? null : null,
             skjult: Boolean(p.skjult),
@@ -379,7 +384,13 @@ function buildEvents(
     ['hjemme', hjemme],
     ['borte', borte],
   ] as const) {
-    for (const p of lag.spillere) add(s, p.navn, p.slug, p, false);
+    for (const p of lag.spillere) {
+      add(s, p.navn, p.slug, p, false);
+      // Selvmål fra rapporten ("11 (s)"): målet tilhører det andre laget
+      for (const minutt of p.selvmal) {
+        ev.push({ minutt, type: 'mal', side: other(s), navn: p.navn, slug: p.slug, selvmal: true, leder: false });
+      }
+    }
     for (const l of lag.ledere) add(s, l.navn, l.slug, l, true);
   }
   // Selvmål fra metadata: målet tilhører laget som fikk det

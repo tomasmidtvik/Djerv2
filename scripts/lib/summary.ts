@@ -3,9 +3,10 @@ import type { Hendelser, Kamprapport, Mediarapport, RapportLag } from '../../src
 
 const min = (xs: number[]) => xs.map((m) => `${m}'`).join(', ');
 
-function events(p: Hendelser & { mal?: number[] }): string {
+function events(p: Hendelser & { mal?: number[]; selvmal?: number[] }): string {
   const out: string[] = [];
   if (p.mal?.length) out.push(`mål ${min(p.mal)}`);
+  if (p.selvmal?.length) out.push(`selvmål ${min(p.selvmal)}`);
   if (p.gule.length) out.push(`gult ${min(p.gule)}`);
   if (p.rodeAdv2.length) out.push(`rødt (2 gule) ${min(p.rodeAdv2)}`);
   if (p.rodeDirekte.length) out.push(`direkte rødt ${min(p.rodeDirekte)}`);

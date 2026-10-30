@@ -134,25 +134,30 @@ function parseSide(lines: Line[], navn: string, navnX: number, warn: (m: string)
     const posText = cleanText(joinText(posToks));
     const posisjon = posText ? (KJENTE_POSISJONER.find((p) => p.toLowerCase() === posText.toLowerCase()) ?? posText) : null;
     if (posisjon && !KJENTE_POSISJONER.includes(posisjon)) warn(`Ukjent posisjon "${posisjon}" for ${spillerNavn} (${navn})`);
-    if (section === 'start' && !posisjon) warn(`${spillerNavn} (${navn}) står i startoppstillingen uten posisjon`);
+    // Lange navn brytes til neste linje, uten draktnr: "Sigve Alexander Wergeland" / "Strand"
+    const forrige = spillere.at(-1);
+    if (draktnr === null && forrige && forrige.start === (section === 'start')) {
+      forrige.navn = cleanText(`${forrige.navn} ${spillerNavn}`);
+      forrige.posisjon ??= posisjon;
+      if (kaptein) forrige.kaptein = true;
+      continue;
+    }
     const skjult = erSkjultNavn(spillerNavn);
     spillere.push({ draktnr, navn: spillerNavn, posisjon, start: section === 'start', kaptein, ...(skjult ? { skjult } : {}) });
   }
   // Hovedtrener kan mangle i rapporten (feltet er tomt) – det er ikke en feil
-  return { navn, spillere, hovedtrener, formasjon: formasjon(spillere, navn, warn) };
+  return { navn, spillere, hovedtrener, formasjon: formasjon(spillere) };
 }
 
-/** Formasjon fra startelleveren uten keeper og strøkne, f.eks. "4-3-3". */
-export function formasjon(spillere: MediaSpiller[], navn = '', warn: (m: string) => void = () => {}): string | null {
+/**
+ * Formasjon fra startelleveren uten keeper og strøkne, f.eks. "4-3-3".
+ * Har laget ført opp flere enn 10 utespillere med posisjon (hele troppen), finnes ingen formasjon.
+ */
+export function formasjon(spillere: MediaSpiller[]): string | null {
   const start = spillere.filter((s) => s.start && s.posisjon && s.posisjon !== 'Strøket');
-  if (!start.length) return null;
   const count = (p: string) => start.filter((s) => s.posisjon === p).length;
-  const keepers = count('Keeper');
   const linjer = [count('Forsvar'), count('Midtbane'), count('Angrep')];
   const utespillere = linjer.reduce((a, b) => a + b, 0);
-  if (keepers !== 1 || utespillere !== 10) {
-    warn(`Startelleveren for ${navn} har ${keepers} keeper(e) og ${utespillere} utespillere – sjekk formasjonen`);
-  }
-  if (utespillere === 0) return null;
+  if (utespillere === 0 || utespillere > 10 || count('Keeper') > 1) return null;
   return linjer.filter((n) => n > 0).join('-');
 }

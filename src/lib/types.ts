@@ -18,6 +18,8 @@ export interface RapportSpiller extends Hendelser {
   kaptein: boolean;
   innbytter: boolean;
   mal: number[];
+  /** selvmål scoret av denne spilleren ("11 (s)" i rapporten) – teller for det andre laget */
+  selvmal?: number[];
   /** navnet er fjernet fordi personen er reservert mot publisering (se link.ts) */
   skjult?: boolean;
 }

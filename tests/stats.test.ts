@@ -183,6 +183,23 @@ describe('hendelser og målsjekk', () => {
     expect(malSjekk(K4)).toHaveLength(1);
   });
 
+  it('selvmål merket "(s)" i rapporten teller for det andre laget', () => {
+    const k = kamp(
+      '4001',
+      '2024-04-07',
+      lag('Sleipner', [spiller('Sven Sleip', { mal: [30] })]),
+      lag('Djerv 2', [spiller('Ola Nordmann', { mal: [50], selvmal: [11] })]),
+      [2, 1],
+    );
+    expect(malSjekk(k)).toEqual([]);
+    const d = buildDb(raw([k]));
+    const sm = d.kamper[0].hendelser.find((e) => e.selvmal)!;
+    expect([sm.side, sm.minutt, sm.navn]).toEqual(['hjemme', 11, 'Ola Nordmann']);
+    expect(d.kamper[0].ukjenteMal).toEqual({ hjemme: 0, borte: 0 });
+    // Selvmålet teller ikke som mål for spilleren
+    expect(spillerStat(d.personer[0].spillerKamper).mal).toBe(1);
+  });
+
   it('viser ukjent målscorer i stedet for å gjette', () => {
     const d = buildDb(raw([K4]));
     expect(d.kamper[0].ukjenteMal.hjemme).toBe(1);

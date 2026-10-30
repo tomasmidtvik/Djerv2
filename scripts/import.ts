@@ -51,6 +51,8 @@ const hoppetOver: string[] = [];
 const feil: { fil: string; melding: string }[] = [];
 const merknader: string[] = [];
 const feilMappe: { rel: string; type: string }[] = [];
+/** filer i data/ som er skrevet i denne kjøringen */
+const skrevetNa = new Set<string>();
 
 /** Er en nylig parset rapport lik den som allerede er lagret? (filnavn og skjulte navn telles ikke) */
 function sammeInnhold(lagret: Kamprapport | Mediarapport, ny: Kamprapport | Mediarapport): boolean {
@@ -78,12 +80,13 @@ for (const { f, folder } of files) {
     hoppetOver.push(rel);
     continue;
   }
-  if (!force) {
-    const dup = Object.entries(log).find(([p, e]) => p !== rel && e.sha256 === sha256 && existsSync(e.output));
-    if (dup) {
-      hoppetOver.push(`${rel} ${c.dim(`(samme fil som ${dup[0]})`)}`);
-      continue;
-    }
+  // Samme fil et annet sted (f.eks. en kopi i feil mappe). Med --force vinner den første filen i denne kjøringen.
+  const dup = Object.entries(log).find(
+    ([p, e]) => p !== rel && e.sha256 === sha256 && existsSync(e.output) && (!force || skrevetNa.has(e.output)),
+  );
+  if (dup) {
+    hoppetOver.push(`${rel} ${c.dim(`(samme fil som ${dup[0]})`)}`);
+    continue;
   }
   if (entry && entry.sha256 !== sha256) merknader.push(`${rel} er endret siden forrige import – leses på nytt`);
 
@@ -105,7 +108,7 @@ for (const { f, folder } of files) {
   const output =
     result.type === 'kamprapport' ? `${PATHS.matches}/${result.kampnr}.json` : `${PATHS.media}/${result.id}.json`;
   const owner = Object.entries(log).find(([p, e]) => p !== rel && e.output === output && existsSync(e.output));
-  if (owner && !force) {
+  if (owner && (!force || skrevetNa.has(output))) {
     // Samme kamp lastet ned på nytt (nytt filnavn). Samme innhold = hopp over i stillhet.
     if (sammeInnhold(JSON.parse(readFileSync(output, 'utf8')), result)) {
       log[rel] = { sha256, type: result.type, output, importert: new Date().toISOString() };
@@ -120,6 +123,7 @@ for (const { f, folder } of files) {
     continue;
   }
   writeFileSync(output, JSON.stringify(result, null, 2) + '\n', 'utf8');
+  skrevetNa.add(output);
   log[rel] = { sha256, type: result.type, output, importert: new Date().toISOString() };
   if (result.type === 'kamprapport') nyeKamper.push(result);
   else nyeMedia.push(result);
@@ -164,7 +168,7 @@ for (const m of nyeMedia) {
   );
 }
 out.push(c.bold(`Hoppet over, allerede importert (${hoppetOver.length})`));
-for (const h of hoppetOver) out.push(`  ${c.dim('=')} ${h}`);
+if (hoppetOver.length <= 10) for (const h of hoppetOver) out.push(`  ${c.dim('=')} ${h}`);
 if (feil.length) {
   out.push(c.bold(c.red(`Feil (${feil.length})`)));
   for (const e of feil) out.push(`  ${c.red('x')} ${e.fil}: ${e.melding}`);

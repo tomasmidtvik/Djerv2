@@ -16,15 +16,11 @@ All data ligger som tekstfiler i `data/`, så alt er versjonert og kan rettes fo
    Har du mediarapporten, legg den i `mediarapporter/<år>/`. Rekkefølgen spiller ingen rolle.
 2. Åpne en terminal i prosjektmappen og kjør:
    ```bash
-   npm run import
-   ```
-3. Les oppsummeringen. Står det noe under **Review-liste**, sjekk det (se under).
-4. Se på siden lokalt (valgfritt):
-   ```bash
    npm run dev
    ```
-   og åpne http://localhost:4321/
-5. Commit og push (f.eks. i GitHub Desktop). Siden bygges og publiseres automatisk etter et par minutter.
+   og åpne http://localhost:4321/. Importen kjøres automatisk når siden starter, og hver gang du legger nye PDF-er i mappene mens den kjører. Siden lastes da på nytt av seg selv. (Vil du bare importere uten å starte siden: `npm run import`.)
+3. Les oppsummeringen i terminalen. Står det noe under **Review-liste**, sjekk det (se under).
+4. Commit og push (f.eks. i GitHub Desktop). Siden bygges og publiseres automatisk etter et par minutter.
 
 Importen hopper over filer som allerede er importert. Vil du lese alle PDF-ene på nytt (f.eks. etter en oppdatering av parseren):
 ```bash
@@ -33,7 +29,8 @@ npm run import -- --force
 
 ### Hva importen sjekker
 
-- **Antall mål per lag** må stemme med sluttresultatet. Stemmer det ikke (typisk et selvmål), havner kampen i review-listen. Siden viser da målet som «ukjent målscorer» i stedet for å gjette.
+- **Antall mål per lag** må stemme med sluttresultatet. Selvmål som NFF har merket med «(s)» i målkolonnen (f.eks. «11 (s)») telles automatisk for det andre laget. Stemmer det likevel ikke (rapporten mangler en målscorer), havner kampen i review-listen, og siden viser målet som «ukjent målscorer» i stedet for å gjette.
+- **Formasjon:** Har et lag ført opp hele troppen med posisjon i mediarapporten (flere enn 10 utespillere), vises ingen formasjon eller banevisning for det laget.
 - **Mediarapporten** kobles til kampen på dato, avspark og lagnavn (og bane). Finnes ingen eller flere kamper som passer, havner den i review-listen. Kommer mediarapporten før kamprapporten, kobles den automatisk ved neste import.
 - **Rødt kort etter to gule** («Utv. (Adv. 2)») er ikke sett i praksis ennå. Havner et kort i den kolonnen, får du en tydelig **KONTROLLER**-advarsel, så du kan sjekke at det stemmer med PDF-en.
 - **Mulige duplikater**: navn som ligner (f.eks. «Kay Magne Pedersen» og «Kay-Magne Larsen Pedersen»). Importen slår aldri sammen personer selv.

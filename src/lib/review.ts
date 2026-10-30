@@ -16,12 +16,16 @@ export function malSjekk(r: Kamprapport, meta: KampMeta = {}): string[] {
   const problems: string[] = [];
   for (const side of ['hjemme', 'borte'] as const) {
     const lag = side === 'hjemme' ? r.hjemmelag : r.bortelag;
+    const motlag = side === 'hjemme' ? r.bortelag : r.hjemmelag;
     const spillerMal = lag.spillere.reduce((n, p) => n + p.mal.length, 0);
-    const selvmal = (meta.selvmal ?? []).filter((s) => {
-      if (!r.djerv) return false;
-      const til = s.til === 'djerv' ? r.djerv : r.djerv === 'hjemme' ? 'borte' : 'hjemme';
-      return til === side;
-    }).length;
+    // Selvmål fra rapporten ("(s)" hos motstanderen) + selvmål lagt inn i metadata
+    const selvmal =
+      motlag.spillere.reduce((n, p) => n + (p.selvmal?.length ?? 0), 0) +
+      (meta.selvmal ?? []).filter((s) => {
+        if (!r.djerv) return false;
+        const til = s.til === 'djerv' ? r.djerv : r.djerv === 'hjemme' ? 'borte' : 'hjemme';
+        return til === side;
+      }).length;
     const fasit = r.resultat[side];
     if (spillerMal + selvmal !== fasit) {
       problems.push(

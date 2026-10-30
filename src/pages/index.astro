@@ -22,7 +22,7 @@ const ossSide = siste ? (siste.side === 'hjemme' ? siste.hjemme : siste.borte) :
 const malscorere = siste
   ? siste.hendelser
       .filter((e) => e.type === 'mal' && e.side === siste.side)
-      .map((e) => `${e.navn?.split(' ').at(-1) ?? 'Ukjent'} ${e.minutt ?? '?'}'`)
+      .map((e) => `${e.navn?.split(' ').at(-1) ?? 'Ukjent'} ${e.minutt ?? '?'}'${e.selvmal ? ' (selvmål)' : ''}`)
   : [];
 ---
 

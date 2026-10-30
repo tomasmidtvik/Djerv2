@@ -91,6 +91,22 @@ export function parseMinutes(text: string, warn: (msg: string) => void): number[
 }
 
 /**
+ * Leser målkolonnen. NFF markerer selvmål med "(s)": "11 (s)" betyr at spilleren scoret selvmål i 11'
+ * (målet teller for det andre laget). "29, 11 (s)" gir mal [29] og selvmal [11].
+ */
+export function parseGoals(text: string, warn: (msg: string) => void): { mal: number[]; selvmal: number[] } {
+  const mal: string[] = [];
+  const selvmal: number[] = [];
+  for (const part of cleanText(text).split(/[,;]+/)) {
+    const p = part.trim();
+    const sm = p.match(/^(\d{1,3})\s*\(\s*s\s*\)$/i);
+    if (sm) selvmal.push(Number(sm[1]));
+    else if (p) mal.push(p);
+  }
+  return { mal: parseMinutes(mal.join(', '), warn), selvmal };
+}
+
+/**
  * Mønstre som ligner telefonnummer (8 sifre, ev. med mellomrom og +47) eller e-post.
  * Slike opplysninger skal aldri lagres. Datoer (med punktum) og kampnummer (11 sifre) slipper gjennom.
  */

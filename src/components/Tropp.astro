@@ -59,6 +59,12 @@ const min = (xs: number[]) => xs.map((m) => `${m}'`).join(', ');
                       <span class="num">{min(s.mal)}</span>
                     </span>
                   )}
+                  {s.selvmal.length > 0 && (
+                    <span class="inline-flex items-center gap-1" title="Selvmål">
+                      <Icon name="ball" class="h-4 w-4 opacity-60" label="Selvmål" />
+                      <span class="num">{min(s.selvmal)} (s.m.)</span>
+                    </span>
+                  )}
                   {s.gule.length > 0 && <span class="inline-flex items-center gap-1"><Kort type="gult" /><span class="num">{min(s.gule)}</span></span>}
                   {s.rodeAdv2.length > 0 && <span class="inline-flex items-center gap-1"><Kort type="rodt2" /><span class="num">{min(s.rodeAdv2)}</span></span>}
                   {s.rodeDirekte.length > 0 && <span class="inline-flex items-center gap-1"><Kort type="rodt" /><span class="num">{min(s.rodeDirekte)}</span></span>}

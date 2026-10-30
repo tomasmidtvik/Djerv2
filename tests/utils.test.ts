@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { looksPrivate, parseMinutes } from '../src/lib/parse/layout.ts';
+import { looksPrivate, parseGoals, parseMinutes } from '../src/lib/parse/layout.ts';
+import { formasjon } from '../src/lib/parse/mediarapport.ts';
+import type { MediaSpiller } from '../src/lib/types.ts';
 import { cleanText, initials, isOurTeam, isSubsetName, sameParts, slugify } from '../src/lib/names.ts';
 import { parseVideo } from '../src/lib/video.ts';
 
@@ -41,12 +43,39 @@ describe('minutter og personvern', () => {
     expect(w).toHaveLength(1);
   });
 
+  it('skiller selvmål "(s)" fra vanlige mål', () => {
+    const w: string[] = [];
+    expect(parseGoals('11 (s)', (m) => w.push(m))).toEqual({ mal: [], selvmal: [11] });
+    expect(parseGoals('29, 80', (m) => w.push(m))).toEqual({ mal: [29, 80], selvmal: [] });
+    expect(parseGoals('29, 70(s)', (m) => w.push(m))).toEqual({ mal: [29], selvmal: [70] });
+    expect(parseGoals('', (m) => w.push(m))).toEqual({ mal: [], selvmal: [] });
+    expect(w).toEqual([]);
+  });
+
   it('kjenner igjen telefonnummer og e-post, men ikke datoer og kampnummer', () => {
     expect(looksPrivate('Tlf 912 34 567')).toBe(true);
     expect(looksPrivate('+47 91234567')).toBe(true);
     expect(looksPrivate('ola@example.com')).toBe(true);
     expect(looksPrivate('28.10.2023 13:00')).toBe(false);
     expect(looksPrivate('Kampnr: 12120601129')).toBe(false);
+  });
+});
+
+describe('formasjon', () => {
+  const lag = (antall: Record<string, number>): MediaSpiller[] =>
+    Object.entries(antall).flatMap(([posisjon, n]) =>
+      Array.from({ length: n }, (_, i) => ({ draktnr: i, navn: `${posisjon} ${i}`, posisjon, start: true, kaptein: false })),
+    );
+
+  it('regner ut formasjon uten keeper', () => {
+    expect(formasjon(lag({ Keeper: 1, Forsvar: 4, Midtbane: 3, Angrep: 3 }))).toBe('4-3-3');
+    expect(formasjon(lag({ Keeper: 1, Forsvar: 4, Midtbane: 5, Angrep: 1, Strøket: 1 }))).toBe('4-5-1');
+  });
+
+  it('godtar manglende keeper, men ikke hele troppen med posisjon', () => {
+    expect(formasjon(lag({ Forsvar: 4, Midtbane: 3, Angrep: 3 }))).toBe('4-3-3');
+    expect(formasjon(lag({ Keeper: 1, Forsvar: 9, Midtbane: 5, Angrep: 1 }))).toBeNull();
+    expect(formasjon([])).toBeNull();
   });
 });
 

@@ -302,6 +302,21 @@ describe('mediarapport 18.10.2026 (Djerv 2 - Kvernbit 2)', () => {
 
   it('gir ingen advarsler', () => expect(m.advarsler).toEqual([]));
 
+  it('slår sammen navn som er brutt over to linjer', () => {
+    const page = pages['Mediareport_12120604081'];
+    // Flytt "Hjelmeland" ned på en egen linje uten draktnr, rett under raden
+    const tok = page.tokens.find((t) => t.text === 'Hjelmeland')!;
+    const moved = { ...tok, x0: 75.3, x1: 75.3 + (tok.x1 - tok.x0), y: tok.y + 6, y0: tok.y0 + 6, y1: tok.y1 + 6 };
+    const r = parseMediarapport(
+      { ...page, tokens: page.tokens.map((t) => (t === tok ? moved : t)) },
+      { kilde: 'x', kampnrHint: null },
+    );
+    const p = r.hjemmelag.spillere.find((s) => s.draktnr === 15)!;
+    expect([p.navn, p.posisjon]).toEqual(['Håvard Waage Hjelmeland', 'Midtbane']);
+    expect(r.hjemmelag.spillere).toHaveLength(18);
+    expect(r.hjemmelag.formasjon).toBe('4-3-3');
+  });
+
   it('leser kapteinsmerket "K."', () => {
     const page = pages['Mediareport_12120604081'];
     const name = page.tokens.find((t) => t.text === 'Hjelmeland')!;

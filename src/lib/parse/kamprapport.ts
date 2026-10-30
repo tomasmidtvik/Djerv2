@@ -1,7 +1,7 @@
 // Parser for NFF-kamprapporter (PDF). Kolonnene finnes fra overskriftene, ikke fra faste pikselverdier.
 import { cleanText, fullName, isOurTeam } from '../names.ts';
 import type { Kamprapport, PersonMedKlubb, RapportLag, RapportLeder, RapportSpiller, Score } from '../types.ts';
-import { assignColumns, joinText, looksPrivate, parseMinutes, scrub, toLines, type Column } from './layout.ts';
+import { assignColumns, joinText, looksPrivate, parseGoals, parseMinutes, scrub, toLines, type Column } from './layout.ts';
 import type { PdfPage, TextToken } from './pdf-text.ts';
 
 /** Ord som starter et nytt felt i toppen av rapporten. */
@@ -86,8 +86,10 @@ export function parseKamprapport(page: PdfPage, opts: ParseOptions): Kamprapport
 
   const resultat = parseScore(joinText(valueAfter(find('Sluttresultat'), rightX)));
   if (!resultat) throw new ParseError('Fant ikke sluttresultat');
-  const pause = parseScore(joinText(valueAfter(find('Pauseresultat'), rightX)));
-  if (!pause) warn('Fant ikke pauseresultat');
+  // Pauseresultatet er tomt i en del rapporter – det er ikke en feil, men tekst vi ikke forstår er det
+  const pauseTekst = joinText(valueAfter(find('Pauseresultat'), rightX));
+  const pause = parseScore(pauseTekst);
+  if (!pause && pauseTekst) warn(`Kunne ikke lese pauseresultatet "${pauseTekst}"`);
 
   const eeoTekst = joinText(valueAfter(find('e.e.o'), rightX));
   const straffeTekst = joinText(valueAfter(find('straffekonk.'), rightX));
@@ -304,6 +306,7 @@ function parseTeam(
     const navnFull = fullName(fornavn, etternavn);
     if (unassigned.length) warn(`Ukjent tekst i raden for ${navnFull} (${side}): ${joinText(unassigned)}`);
     const w = (m: string) => warn(`${navnFull} (${side}): ${m}`);
+    const { mal, selvmal } = parseGoals(text('mal'), w);
     spillere.push({
       draktnr: /^\d+$/.test(nrText) ? Number(nrText) : null,
       etternavn,
@@ -312,7 +315,8 @@ function parseTeam(
       spilt: Boolean(text('spilt')),
       kaptein: Boolean(text('kaptein')),
       innbytter: Boolean(text('innbytter')),
-      mal: parseMinutes(text('mal'), w),
+      mal,
+      ...(selvmal.length ? { selvmal } : {}),
       gule: parseMinutes(text('adv1'), w),
       rodeAdv2: parseMinutes(text('adv2'), w),
       rodeDirekte: parseMinutes(text('direkte'), w),
