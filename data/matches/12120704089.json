@@ -1,0 +1,506 @@
+{
+  "type": "kamprapport",
+  "versjon": 1,
+  "kampnr": "12120704089",
+  "dato": "2022-10-23",
+  "avspark": "18:00",
+  "sesong": 2022,
+  "turnering": "7. div. Menn avd. 04",
+  "bane": "Møhlenpris idrettsplass",
+  "resultat": {
+    "hjemme": 1,
+    "borte": 4
+  },
+  "pause": {
+    "hjemme": 0,
+    "borte": 2
+  },
+  "eeo": null,
+  "straffekonk": null,
+  "tilskuere": 0,
+  "kampvertTilstede": "Mangler informasjon",
+  "dommer": {
+    "navn": "Vegard Aa Albretsen",
+    "klubb": "Kaupanger Idrettslag"
+  },
+  "dommerveileder": null,
+  "hjemmelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 69,
+        "etternavn": "Refvik",
+        "fornavn": "Marcus Kvalheim",
+        "navn": "Marcus Kvalheim Refvik",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [
+          26
+        ],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 3,
+        "etternavn": "Pedersen",
+        "fornavn": "Kay-Magne Larsen",
+        "navn": "Kay-Magne Larsen Pedersen",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 9,
+        "etternavn": "Qvale",
+        "fornavn": "Erling Stavn",
+        "navn": "Erling Stavn Qvale",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 14,
+        "etternavn": "Saion",
+        "fornavn": "Aoss Ehmad",
+        "navn": "Aoss Ehmad Saion",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [
+          34
+        ],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 30,
+        "etternavn": "Claudey",
+        "fornavn": "Marius",
+        "navn": "Marius Claudey",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": [
+          90
+        ]
+      },
+      {
+        "draktnr": 10,
+        "etternavn": "Abd Rabo",
+        "fornavn": "Tord Fares Jonsson",
+        "navn": "Tord Fares Jonsson Abd Rabo",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 17,
+        "etternavn": "Midtvik",
+        "fornavn": "Øystein Emdal",
+        "navn": "Øystein Emdal Midtvik",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 26,
+        "etternavn": "Halln",
+        "fornavn": "Robin Sebastian",
+        "navn": "Robin Sebastian Halln",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 28,
+        "etternavn": "Møgster",
+        "fornavn": "Eirik Flatråker",
+        "navn": "Eirik Flatråker Møgster",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [
+          50
+        ],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 41,
+        "etternavn": "Kjørsvik",
+        "fornavn": "Marius",
+        "navn": "Marius Kjørsvik",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 80,
+        "etternavn": "Laci",
+        "fornavn": "Arlind Gjervik",
+        "navn": "Arlind Gjervik Laci",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [
+          54
+        ],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 4,
+        "etternavn": "Mjør",
+        "fornavn": "Sjur",
+        "navn": "Sjur Mjør",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 7,
+        "etternavn": "Westli",
+        "fornavn": "Willem Percyval",
+        "navn": "Willem Percyval Westli",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 13,
+        "etternavn": "Meyer",
+        "fornavn": "Joachim Danholm Larsen",
+        "navn": "Joachim Danholm Larsen Meyer",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 18,
+        "etternavn": "Andresen",
+        "fornavn": "Simen Økland",
+        "navn": "Simen Økland Andresen",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 25,
+        "etternavn": "Midtvik",
+        "fornavn": "Tomas Emdal",
+        "navn": "Tomas Emdal Midtvik",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      }
+    ],
+    "ledere": []
+  },
+  "bortelag": {
+    "navn": "Ny-Krohnborg 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "etternavn": "Førland",
+        "fornavn": "Eilert Vetle Walter",
+        "navn": "Eilert Vetle Walter Førland",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 4,
+        "etternavn": "Sletner",
+        "fornavn": "Sander Espeland",
+        "navn": "Sander Espeland Sletner",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [
+          90
+        ],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 5,
+        "etternavn": "Pedersen",
+        "fornavn": "Nain",
+        "navn": "Nain Pedersen",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [
+          43
+        ],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 6,
+        "etternavn": "Davik",
+        "fornavn": "Siver",
+        "navn": "Siver Davik",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [
+          14
+        ],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 7,
+        "etternavn": "Vikingstad",
+        "fornavn": "Jon",
+        "navn": "Jon Vikingstad",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 8,
+        "etternavn": "Chimiwisas",
+        "fornavn": "Junus Supot",
+        "navn": "Junus Supot Chimiwisas",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 11,
+        "etternavn": "Simonsen",
+        "fornavn": "Isaac Leon Bjordal",
+        "navn": "Isaac Leon Bjordal Simonsen",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 15,
+        "etternavn": "Notøy",
+        "fornavn": "Trym",
+        "navn": "Trym Notøy",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 19,
+        "etternavn": "Furland",
+        "fornavn": "Trygve Johan Erga",
+        "navn": "Trygve Johan Erga Furland",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [
+          69
+        ],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 20,
+        "etternavn": "Pettersen",
+        "fornavn": "Victor Selvåg",
+        "navn": "Victor Selvåg Pettersen",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 21,
+        "etternavn": "Hamsund",
+        "fornavn": "Tobias",
+        "navn": "Tobias Hamsund",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 28,
+        "etternavn": "Hagen",
+        "fornavn": "Svein Erik",
+        "navn": "Svein Erik Hagen",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [
+          81
+        ],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 29,
+        "etternavn": "Tandstad",
+        "fornavn": "Håkon Sæther",
+        "navn": "Håkon Sæther Tandstad",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 98,
+        "etternavn": "Helgesen",
+        "fornavn": "Natdanai",
+        "navn": "Natdanai Helgesen",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [
+          32
+        ],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 16,
+        "etternavn": "Valberg",
+        "fornavn": "Lukas Dyrstad",
+        "navn": "Lukas Dyrstad Valberg",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 2,
+        "etternavn": "Valderrama",
+        "fornavn": "Emmanuel",
+        "navn": "Emmanuel Valderrama",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 4,
+        "etternavn": "Notøy",
+        "fornavn": "Ask",
+        "navn": "Ask Notøy",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [
+          39
+        ],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      }
+    ],
+    "ledere": [
+      {
+        "nr": 1,
+        "etternavn": "Kleveland",
+        "fornavn": "Terje",
+        "navn": "Terje Kleveland",
+        "funksjon": "Kontaktperson",
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      }
+    ]
+  },
+  "djerv": "hjemme",
+  "advarsler": [],
+  "kilde": "kamprapporter/2022/Kamprapport-12120704089-30102026-0120.pdf"
+}

@@ -1,8 +1,20 @@
 # Review-liste
 
-Generert av `npm run import` 30.10.2026, 01:13:39. Filen skrives på nytt ved hver import.
+Generert av `npm run import` 30.10.2026, 01:21:11. Filen skrives på nytt ved hver import.
 
 Når du har sjekket en kamp og alt stemmer, sett `godkjent: true` på kampen i `data/matches-meta.yaml`.
+
+## Kamp 12120601017: Djerv 2 - Utsikten (2023-05-02)
+
+- Øystein Emdal Midtvik (Djerv 2) er krysset av som spilt, men står som strøket i mediarapporten
+
+## Kamp 12120601044: Djerv 2 - Austevoll 2 (2023-06-04)
+
+- Mål stemmer ikke for Djerv 2: 5 registrert på spillere, men resultatet er 6-2. Selvmål? Legg det inn under "selvmal" i data/matches-meta.yaml.
+
+## Kamp 12120601053: Loddefjord 3 - Djerv 2 (2023-06-09)
+
+- Mål stemmer ikke for Loddefjord 3: 0 registrert på spillere, men resultatet er 6-6. Selvmål? Legg det inn under "selvmal" i data/matches-meta.yaml.
 
 ## Kamp 12120602007: Djerv 2 - NHHI 2 (2024-04-14)
 
@@ -32,6 +44,14 @@ Når du har sjekket en kamp og alt stemmer, sett `godkjent: true` på kampen i `
 
 - Mål stemmer ikke for Neptun: 3 registrert på spillere, men resultatet er 5-4. Selvmål? Legg det inn under "selvmal" i data/matches-meta.yaml.
 
+## Kamp 12120704028: Djerv 2 - Voss 3 (2022-05-29)
+
+- KONTROLLER: kort i kolonnen "Utv. (Adv. 2)" (rødt etter to gule) for Heming Lunestad Syse (bortelag) i 87'. Denne kolonnen er ikke sett i praksis før – sjekk mot PDF-en.
+
+## Kamp 12120704046: Viking 2 - Djerv 2 (2022-08-27)
+
+- Mål stemmer ikke for Viking 2: 0 registrert på spillere, men resultatet er 3-3. Selvmål? Legg det inn under "selvmal" i data/matches-meta.yaml.
+
 # Mulige duplikater
 
 Er det samme person, legg til en linje under `alias:` i `data/spiller-alias.yaml`.
@@ -49,6 +69,8 @@ Er det ulike personer, legg paret under `ikke_samme_person:` så forsvinner fors
 - "Kay Magne Pedersen" og "Kay-Magne Larsen Pedersen" – det ene navnet er en del av det andre
 - "Marcus Kvalheim Refvik" og "Marcus Refvik" – det ene navnet er en del av det andre
 - "Peter Bull" og "Peter Schau Bull" – det ene navnet er en del av det andre
+- "Sjur Mjød" og "Sjur Mjør" – nesten likt navn (1 tegn forskjell)
 - "Tomas Emdal Midtvik" og "Tomas Midtvik" – det ene navnet er en del av det andre
 - "Tord Fares Jonsson Abd Rabo" og "Tord Jonsson" – det ene navnet er en del av det andre
+- "Ulrik Opheim" og "Ulrik Opheim Heggli" – det ene navnet er en del av det andre
 - "Øystein Emdal Midtvik" og "Øystein Midtvik" – det ene navnet er en del av det andre

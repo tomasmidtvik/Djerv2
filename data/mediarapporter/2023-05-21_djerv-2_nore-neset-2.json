@@ -1,0 +1,272 @@
+{
+  "type": "mediarapport",
+  "versjon": 1,
+  "id": "2023-05-21_djerv-2_nore-neset-2",
+  "turnering": "6. div. Menn avd. 01",
+  "dato": "2023-05-21",
+  "avspark": "18:00",
+  "bane": "Møhlenpris idrettsplass",
+  "dommer": "Benjamin Andreas Pedersen",
+  "hjemmelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 69,
+        "navn": "Marcus Kvalheim Refvik",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 2,
+        "navn": "Simen Elias Knutsvik Håvåg",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Joachim Alexander Hafstad Karlsson",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 4,
+        "navn": "Peter Schau Bull",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 13,
+        "navn": "Arne Ravnå",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Mazin Ahmed Saeed Daar",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 8,
+        "navn": "Liam Folmann Østvik",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Isak Steen-Olsen Teigland",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 18,
+        "navn": "Hamse Mohamoud Ali",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 42,
+        "navn": "Tord Fares Jonsson Abd Rabo",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 9,
+        "navn": "El-Neil Ismail",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Erik Sandvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 11,
+        "navn": "Mamadee King Kabba",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 15,
+        "navn": "Lars Lønnebotn Svendsgård",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 16,
+        "navn": "Sjur Mjør",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 20,
+        "navn": "Oskar Johann Rasmussen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 99,
+        "navn": "Marius Claudey",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": null,
+    "formasjon": "4-5-1"
+  },
+  "bortelag": {
+    "navn": "Nore Neset 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "navn": "Frode Moberg Øvredal",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Eric Aarebrot Skorpen",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 11,
+        "navn": "Fabian Reiertsen",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 30,
+        "navn": "Thomas Vivås Håvardstun",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 38,
+        "navn": "ADRIAN KALLEKLEIV VALLE",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Harry James Moore",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 16,
+        "navn": "Johannes Lie",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 19,
+        "navn": "Marius Østgulen Hevrøy",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 32,
+        "navn": "Oliver Martin Linde",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 52,
+        "navn": "Emil Alvsaker Bøyum",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 29,
+        "navn": "Lasse Styrvoll",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Erlend Sørås Storebø",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 18,
+        "navn": "Børge Benjaminsen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 25,
+        "navn": "Baste Elias Moberg Træen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 27,
+        "navn": "Tom Gabriel Østgulen Rondestveit",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 36,
+        "navn": "Erik Mortensbakke Mjelva",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 40,
+        "navn": "Lars Kristian Rennesvik Bruarøy",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 51,
+        "navn": "Liam Samuel Askvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Tom Gabriel Østgulen Rondestveit",
+    "formasjon": "4-5-1"
+  },
+  "kampnrHint": "12120601031",
+  "advarsler": [],
+  "kilde": "mediarapporter/2023/Mediareport_12120601031-30102026-0110.pdf"
+}

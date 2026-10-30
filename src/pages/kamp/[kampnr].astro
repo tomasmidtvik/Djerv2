@@ -10,13 +10,12 @@ import type { Kamp } from '../../lib/db.ts';
 import { datoKort, datoLang, getDb, kampTittel, kampUrl, spillerUrl, stor, url } from '../../lib/site.ts';
 
 export function getStaticPaths() {
-  return getDb().kamper.map((kamp) => ({ params: { kampnr: kamp.kampnr }, props: { kamp } }));
+  return getDb().kamper.map((kamp) => ({ params: { kampnr: kamp.kampnr } }));
 }
-interface Props {
-  kamp: Kamp;
-}
-const { kamp: k } = Astro.props;
+// Hent kampen på nytt (ikke via props), så endringer i data/ vises uten omstart under "npm run dev"
 const db = getDb();
+const k: Kamp | undefined = db.kampMap.get(Astro.params.kampnr!);
+if (!k) return Astro.redirect(url('kamper/'));
 const forrige = k.forrige ? db.kampMap.get(k.forrige)! : null;
 const neste = k.neste ? db.kampMap.get(k.neste)! : null;
 

@@ -1,0 +1,237 @@
+{
+  "type": "mediarapport",
+  "versjon": 1,
+  "id": "2023-10-08_austevoll-2_djerv-2",
+  "turnering": "6. div. Menn avd. 01",
+  "dato": "2023-10-08",
+  "avspark": "17:00",
+  "bane": "Austevoll kunstgras 1",
+  "dommer": "Zoran Radojkic",
+  "hjemmelag": {
+    "navn": "Austevoll 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "navn": "Ruben Aleksander Werner Pettersen",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Sondre Nordstrand Tøsse",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 20,
+        "navn": "Jonathan Skår",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 21,
+        "navn": "Aaron Alvin Ssabunyo",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 9,
+        "navn": "Joachim Veivåg",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Tomas Helleseth Vassnes",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 18,
+        "navn": "Nicolas Moldestad Hylin",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 25,
+        "navn": "Herman Hestvik Birkeland",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 28,
+        "navn": "Wan Bagos Imam Wibowo Bin Sodik",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 2,
+        "navn": "William Veivåg",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 7,
+        "navn": "William Konrad Bjånesø",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 13,
+        "navn": "Martin Storebø Koh",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 15,
+        "navn": "Petter Botnedal Tonning",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 16,
+        "navn": "Esrom Gebremedhn Weldu",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 17,
+        "navn": "Daniel Hufthammer",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Endre Blindheim Haugland",
+    "formasjon": "3-5-2"
+  },
+  "bortelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 69,
+        "navn": "Sebastian Monsen",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 2,
+        "navn": "Simen Elias Knutsvik Håvåg",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Joachim Alexander Hafstad Karlsson",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Peter Schau Bull",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 20,
+        "navn": "Arne Ravnå",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Eirik Flatråker Møgster",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 8,
+        "navn": "Liam Folmann Østvik",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Håvard Waage Hjelmeland",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 42,
+        "navn": "Tord Fares Jonsson Abd Rabo",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 9,
+        "navn": "Abdoulrahmane Diallo",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Isak Steen-Olsen Teigland",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Willem Percyval Westli",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 11,
+        "navn": "Oskar Johann Rasmussen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 15,
+        "navn": "Marius Kjørsvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 99,
+        "navn": "Kay-Magne Larsen Pedersen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Mads Didrik Hafstad Storebø",
+    "formasjon": "4-4-2"
+  },
+  "kampnrHint": "12120601110",
+  "advarsler": [],
+  "kilde": "mediarapporter/2023/Mediareport_12120601110-30102026-0113.pdf"
+}

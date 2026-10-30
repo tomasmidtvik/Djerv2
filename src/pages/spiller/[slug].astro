@@ -5,16 +5,16 @@ import Kort from '../../components/Kort.astro';
 import Utfall from '../../components/Utfall.astro';
 import Layout from '../../layouts/Layout.astro';
 import type { Person } from '../../lib/db.ts';
-import { datoKort, getDb, kampUrl, prosent } from '../../lib/site.ts';
+import { datoKort, getDb, kampUrl, prosent, url } from '../../lib/site.ts';
 import { filtrerSesong, lederRoller, spillerStat } from '../../lib/stats.ts';
 
 export function getStaticPaths() {
-  return getDb().personer.map((person) => ({ params: { slug: person.slug }, props: { person } }));
+  return getDb().personer.map((person) => ({ params: { slug: person.slug } }));
 }
-interface Props {
-  person: Person;
-}
-const { person: p } = Astro.props;
+// Hent personen på nytt (ikke via props): under "npm run dev" huskes props fra første lasting,
+// og da ville nye bilder og endringer i data/ ikke vises før omstart.
+const p: Person | undefined = getDb().personMap.get(Astro.params.slug!);
+if (!p) return Astro.redirect(url('spillere/'));
 const total = spillerStat(p.spillerKamper);
 const sesonger = total.sesonger.slice().reverse();
 const perSesong = sesonger.map((s) => ({ s, st: spillerStat(filtrerSesong(p.spillerKamper, s)) }));

@@ -1,0 +1,258 @@
+{
+  "type": "mediarapport",
+  "versjon": 1,
+  "id": "2023-05-28_baune-2_djerv-2",
+  "turnering": "6. div. Menn avd. 01",
+  "dato": "2023-05-28",
+  "avspark": "14:00",
+  "bane": "Lægdebanen",
+  "dommer": "Hadi Abdullah",
+  "hjemmelag": {
+    "navn": "Baune 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "navn": "Anders Magnus Elde Walaker",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Lars Thorsnes Lefdal",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Eirik Espe Stensvand",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 31,
+        "navn": "Erlend Andreas Grimestad",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Eirik Kristoffersen",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Darko Stojkovic",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 18,
+        "navn": "Jørgen Døskeland",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 28,
+        "navn": "Jan Åge Langeset",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 34,
+        "navn": "Erlend Morken",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Vebjørn Litsheim Løkkebø",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 23,
+        "navn": "Johannes Ringstad Flacke",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Patrik Fritzon",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 13,
+        "navn": "Sivert Stokke Iversen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 20,
+        "navn": "Torstein Lunde",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 21,
+        "navn": "Amund Tangnes",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 281,
+        "navn": "Kjetil Andre Moen Eide",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Erlend Orrestad Nilsen",
+    "formasjon": "3-5-2"
+  },
+  "bortelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 69,
+        "navn": "Marcus Kvalheim Refvik",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Joachim Alexander Hafstad Karlsson",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Peter Schau Bull",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Arne Ravnå",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 18,
+        "navn": "Aron Hogrenning Kristiansen",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 2,
+        "navn": "Simen Elias Knutsvik Håvåg",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Eirik Flatråker Møgster",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Willem Percyval Westli",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 9,
+        "navn": "Mazin Ahmed Saeed Daar",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 42,
+        "navn": "Tord Fares Jonsson Abd Rabo",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Erik Sandvik",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 8,
+        "navn": "Mads Didrik Hafstad Storebø",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 11,
+        "navn": "Oskar Johann Rasmussen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Lars Henrik Hafstad Karlsson",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 17,
+        "navn": "Øystein Emdal Midtvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 19,
+        "navn": "Njord Tvedt Eidsheim",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 99,
+        "navn": "Tomas Emdal Midtvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Tomas Emdal Midtvik",
+    "formasjon": "4-5-1"
+  },
+  "kampnrHint": "12120601038",
+  "advarsler": [],
+  "kilde": "mediarapporter/2023/Mediareport_12120601038-30102026-0110.pdf"
+}

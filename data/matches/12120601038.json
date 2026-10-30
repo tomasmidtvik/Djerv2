@@ -1,0 +1,543 @@
+{
+  "type": "kamprapport",
+  "versjon": 1,
+  "kampnr": "12120601038",
+  "dato": "2023-05-28",
+  "avspark": "14:00",
+  "sesong": 2023,
+  "turnering": "6. div. Menn avd. 01",
+  "bane": "Lægdebanen",
+  "resultat": {
+    "hjemme": 1,
+    "borte": 3
+  },
+  "pause": {
+    "hjemme": 0,
+    "borte": 0
+  },
+  "eeo": null,
+  "straffekonk": null,
+  "tilskuere": 0,
+  "kampvertTilstede": "Mangler informasjon",
+  "dommer": {
+    "navn": "Hadi Abdullah",
+    "klubb": "Ørnen idrettslag"
+  },
+  "dommerveileder": null,
+  "hjemmelag": {
+    "navn": "Baune 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "etternavn": "Walaker",
+        "fornavn": "Anders Magnus Elde",
+        "navn": "Anders Magnus Elde Walaker",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [
+          65
+        ],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 6,
+        "etternavn": "Lefdal",
+        "fornavn": "Lars Thorsnes",
+        "navn": "Lars Thorsnes Lefdal",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 10,
+        "etternavn": "Stensvand",
+        "fornavn": "Eirik Espe",
+        "navn": "Eirik Espe Stensvand",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [
+          65
+        ],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 31,
+        "etternavn": "Grimestad",
+        "fornavn": "Erlend Andreas",
+        "navn": "Erlend Andreas Grimestad",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 7,
+        "etternavn": "Kristoffersen",
+        "fornavn": "Eirik",
+        "navn": "Eirik Kristoffersen",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [
+          82
+        ],
+        "gule": [
+          76
+        ],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 14,
+        "etternavn": "Stojkovic",
+        "fornavn": "Darko",
+        "navn": "Darko Stojkovic",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 18,
+        "etternavn": "Døskeland",
+        "fornavn": "Jørgen",
+        "navn": "Jørgen Døskeland",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [
+          79
+        ],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 28,
+        "etternavn": "Langeset",
+        "fornavn": "Jan Åge",
+        "navn": "Jan Åge Langeset",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 34,
+        "etternavn": "Morken",
+        "fornavn": "Erlend",
+        "navn": "Erlend Morken",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 14,
+        "etternavn": "Løkkebø",
+        "fornavn": "Vebjørn Litsheim",
+        "navn": "Vebjørn Litsheim Løkkebø",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 23,
+        "etternavn": "Flacke",
+        "fornavn": "Johannes Ringstad",
+        "navn": "Johannes Ringstad Flacke",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 5,
+        "etternavn": "Fritzon",
+        "fornavn": "Patrik",
+        "navn": "Patrik Fritzon",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 13,
+        "etternavn": "Iversen",
+        "fornavn": "Sivert Stokke",
+        "navn": "Sivert Stokke Iversen",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 20,
+        "etternavn": "Lunde",
+        "fornavn": "Torstein",
+        "navn": "Torstein Lunde",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 21,
+        "etternavn": "Tangnes",
+        "fornavn": "Amund",
+        "navn": "Amund Tangnes",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 281,
+        "etternavn": "Eide",
+        "fornavn": "Kjetil Andre Moen",
+        "navn": "Kjetil Andre Moen Eide",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      }
+    ],
+    "ledere": [
+      {
+        "nr": 1,
+        "etternavn": "Lefdal",
+        "fornavn": "Lars Thorsnes",
+        "navn": "Lars Thorsnes Lefdal",
+        "funksjon": "Trener",
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "nr": 2,
+        "etternavn": "Fritzon",
+        "fornavn": "Patrik",
+        "navn": "Patrik Fritzon",
+        "funksjon": "Trener",
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "nr": 3,
+        "etternavn": "Nilsen",
+        "fornavn": "Erlend Orrestad",
+        "navn": "Erlend Orrestad Nilsen",
+        "funksjon": "Trener",
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      }
+    ]
+  },
+  "bortelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 69,
+        "etternavn": "Refvik",
+        "fornavn": "Marcus Kvalheim",
+        "navn": "Marcus Kvalheim Refvik",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 3,
+        "etternavn": "Karlsson",
+        "fornavn": "Joachim Alexander Hafstad",
+        "navn": "Joachim Alexander Hafstad Karlsson",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [
+          63
+        ],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 4,
+        "etternavn": "Bull",
+        "fornavn": "Peter Schau",
+        "navn": "Peter Schau Bull",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 5,
+        "etternavn": "Ravnå",
+        "fornavn": "Arne",
+        "navn": "Arne Ravnå",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [
+          72
+        ],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 18,
+        "etternavn": "Kristiansen",
+        "fornavn": "Aron Hogrenning",
+        "navn": "Aron Hogrenning Kristiansen",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 2,
+        "etternavn": "Håvåg",
+        "fornavn": "Simen Elias Knutsvik",
+        "navn": "Simen Elias Knutsvik Håvåg",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 6,
+        "etternavn": "Møgster",
+        "fornavn": "Eirik Flatråker",
+        "navn": "Eirik Flatråker Møgster",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [
+          90
+        ],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 7,
+        "etternavn": "Westli",
+        "fornavn": "Willem Percyval",
+        "navn": "Willem Percyval Westli",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 9,
+        "etternavn": "Daar",
+        "fornavn": "Mazin Ahmed Saeed",
+        "navn": "Mazin Ahmed Saeed Daar",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [
+          92
+        ],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 42,
+        "etternavn": "Abd Rabo",
+        "fornavn": "Tord Fares Jonsson",
+        "navn": "Tord Fares Jonsson Abd Rabo",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": false,
+        "mal": [],
+        "gule": [
+          67
+        ],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 10,
+        "etternavn": "Sandvik",
+        "fornavn": "Erik",
+        "navn": "Erik Sandvik",
+        "spilt": true,
+        "kaptein": true,
+        "innbytter": false,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 8,
+        "etternavn": "Storebø",
+        "fornavn": "Mads Didrik Hafstad",
+        "navn": "Mads Didrik Hafstad Storebø",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 11,
+        "etternavn": "Rasmussen",
+        "fornavn": "Oskar Johann",
+        "navn": "Oskar Johann Rasmussen",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 14,
+        "etternavn": "Karlsson",
+        "fornavn": "Lars Henrik Hafstad",
+        "navn": "Lars Henrik Hafstad Karlsson",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 17,
+        "etternavn": "Midtvik",
+        "fornavn": "Øystein Emdal",
+        "navn": "Øystein Emdal Midtvik",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 19,
+        "etternavn": "Eidsheim",
+        "fornavn": "Njord Tvedt",
+        "navn": "Njord Tvedt Eidsheim",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "draktnr": 99,
+        "etternavn": "Midtvik",
+        "fornavn": "Tomas Emdal",
+        "navn": "Tomas Emdal Midtvik",
+        "spilt": true,
+        "kaptein": false,
+        "innbytter": true,
+        "mal": [],
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      }
+    ],
+    "ledere": [
+      {
+        "nr": 1,
+        "etternavn": "Storebø",
+        "fornavn": "Mads Didrik Hafstad",
+        "navn": "Mads Didrik Hafstad Storebø",
+        "funksjon": "Trener",
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      },
+      {
+        "nr": 2,
+        "etternavn": "Midtvik",
+        "fornavn": "Tomas Emdal",
+        "navn": "Tomas Emdal Midtvik",
+        "funksjon": "Trener",
+        "gule": [],
+        "rodeAdv2": [],
+        "rodeDirekte": []
+      }
+    ]
+  },
+  "djerv": "borte",
+  "advarsler": [],
+  "kilde": "kamprapporter/2023/Kamprapport-12120601038-30102026-0110.pdf"
+}

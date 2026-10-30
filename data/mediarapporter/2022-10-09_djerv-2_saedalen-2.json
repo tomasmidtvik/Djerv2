@@ -1,0 +1,265 @@
+{
+  "type": "mediarapport",
+  "versjon": 1,
+  "id": "2022-10-09_djerv-2_saedalen-2",
+  "turnering": "7. div. Menn avd. 04",
+  "dato": "2022-10-09",
+  "avspark": "18:00",
+  "bane": "Møhlenpris idrettsplass",
+  "dommer": "Abdurezak Kemar",
+  "hjemmelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 69,
+        "navn": "Marcus Kvalheim Refvik",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Aron Hogrenning Kristiansen",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 9,
+        "navn": "Erling Stavn Qvale",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 18,
+        "navn": "Marius Claudey",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 25,
+        "navn": "Lars Kolbjørn Beltestad",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Abdoulrahmane Diallo",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 13,
+        "navn": "Eirik Flatråker Møgster",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Tord Fares Jonsson Abd Rabo",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 23,
+        "navn": "Mads Didrik Hafstad Storebø",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 26,
+        "navn": "Jens Mathias Turøy Kleppe",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Erik Sandvik",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 3,
+        "navn": "Kay-Magne Larsen Pedersen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Willem Percyval Westli",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 17,
+        "navn": "Øystein Emdal Midtvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 30,
+        "navn": "Aoss Ehmad Saion",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 41,
+        "navn": "Marius Kjørsvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 80,
+        "navn": "Sjur Mjør",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 91,
+        "navn": "Peter Schau Bull",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Mads Didrik Hafstad Storebø",
+    "formasjon": "4-5-1"
+  },
+  "bortelag": {
+    "navn": "Sædalen 2",
+    "spillere": [
+      {
+        "draktnr": 12,
+        "navn": "Vegard Rognaldsen",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Marius Heddeland",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Simen Skjælaaen Dahl",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Jonas Schjøtt Olsaker",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 15,
+        "navn": "Erik Hodneland Kildehaug",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 16,
+        "navn": "Paal Eithun Hartmann",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 30,
+        "navn": "Theodor Forberg",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Nore Ludvig Vindheim",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 9,
+        "navn": "Tor Martin Johansen Ørnegård",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 11,
+        "navn": "Bo Lahn-Johannessen",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 21,
+        "navn": "Jonas Vedeler Gudmunson",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 34,
+        "navn": "Tom Soma Tysnes",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 41,
+        "navn": "Nicolai Trovåg Lekven",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Sander Tharaldsen",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Andreas Teigland Nilsen",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 15,
+        "navn": "Ole Martin Overøie Tvedt",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Stein Olsaker",
+    "formasjon": null
+  },
+  "kampnrHint": "12120704079",
+  "advarsler": [],
+  "kilde": "mediarapporter/2022/Mediareport_12120704079-30102026-0120.pdf"
+}

@@ -1,0 +1,237 @@
+{
+  "type": "mediarapport",
+  "versjon": 1,
+  "id": "2023-05-13_eikelandsfjorden_djerv-2",
+  "turnering": "6. div. Menn avd. 01",
+  "dato": "2023-05-13",
+  "avspark": "13:00",
+  "bane": "Eikelandsosen kunstgress",
+  "dommer": "Cato Andre Lekven",
+  "hjemmelag": {
+    "navn": "Eikelandsfjorden",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "navn": "Trygve Samnøy",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Sander Schjølberg Ådland",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 16,
+        "navn": "Bjørnar Langhelle Straumsnes",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 69,
+        "navn": "Martin Haugen",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 77,
+        "navn": "Brynjar Jones Rød",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Even Samnøen",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Even Jentoft",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Nils-Andreas Næss",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Hans Petter Gjøn",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 19,
+        "navn": "Christoffer Leikvoll Storvik",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 22,
+        "navn": "Joachim Brekke Tveit",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 32,
+        "navn": "Thomas Boge Bekken",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 17,
+        "navn": "Mats Boge",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Otto Ådland",
+    "formasjon": null
+  },
+  "bortelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 69,
+        "navn": "Marcus Kvalheim Refvik",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Joachim Alexander Hafstad Karlsson",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Peter Schau Bull",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Erling Stavn Qvale",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 13,
+        "navn": "Arne Ravnå",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Eirik Flatråker Møgster",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Willem Percyval Westli",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 14,
+        "navn": "Isak Steen-Olsen Teigland",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 19,
+        "navn": "Njord Tvedt Eidsheim",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 42,
+        "navn": "Tord Fares Jonsson Abd Rabo",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 8,
+        "navn": "Liam Folmann Østvik",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 2,
+        "navn": "Marius Claudey",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Erik Sandvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 11,
+        "navn": "Mamadee King Kabba",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 15,
+        "navn": "Lars Lønnebotn Svendsgård",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 17,
+        "navn": "Øystein Emdal Midtvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 99,
+        "navn": "Kay-Magne Larsen Pedersen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Mads Didrik Hafstad Storebø",
+    "formasjon": "4-5-1"
+  },
+  "kampnrHint": "12120601028",
+  "advarsler": [],
+  "kilde": "mediarapporter/2023/Mediareport_12120601028-30102026-0109.pdf"
+}

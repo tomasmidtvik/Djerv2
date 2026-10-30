@@ -1,0 +1,244 @@
+{
+  "type": "mediarapport",
+  "versjon": 1,
+  "id": "2022-05-15_djerv-2_bjarg-3",
+  "turnering": "7. div. Menn avd. 04",
+  "dato": "2022-05-15",
+  "avspark": "18:00",
+  "bane": "Møhlenpris idrettsplass",
+  "dommer": "Mohanad Nabil Alzinati",
+  "hjemmelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "navn": "Lars Henrik Hafstad Karlsson",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Kay-Magne Larsen Pedersen",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 23,
+        "navn": "Anders Træland",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 25,
+        "navn": "Lars Kolbjørn Beltestad",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 28,
+        "navn": "Erling Stavn Qvale",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Jens Mathias Turøy Kleppe",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Tord Fares Jonsson Abd Rabo",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 30,
+        "navn": "Willem Percyval Westli",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 91,
+        "navn": "Mazin Ahmed Saeed Daar",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 9,
+        "navn": "Abdoulrahmane Diallo",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Erik Sandvik",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 4,
+        "navn": "Simon Dyrland Håkonsen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Aoss Ehmad Saion",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 12,
+        "navn": "Arlind Gjervik Laci",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 13,
+        "navn": "Benjamin Tharaldsen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 16,
+        "navn": "Sondre Hagen Rønnestad",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 17,
+        "navn": "Øystein Emdal Midtvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 26,
+        "navn": "Robin Sebastian Halln",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Mads Didrik Hafstad Storebø",
+    "formasjon": "4-4-2"
+  },
+  "bortelag": {
+    "navn": "Bjarg 3",
+    "spillere": [
+      {
+        "draktnr": 12,
+        "navn": "Øyvind Reinan",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Simon Myhre Johansen",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Thomas Ervik Mjanger",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 17,
+        "navn": "Mats Hodneland",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 18,
+        "navn": "Didrik Hillesøy Berg",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Carl Stian Hillesøy Berg",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Håkon Høiaas Halvorsen",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 11,
+        "navn": "Jonathan Hansen Molin",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 66,
+        "navn": "Simon Nicolai Bolann Håland",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Andreas Haga",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Kristoffer Fauskanger",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 20,
+        "navn": "Mikal Sortland",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 0,
+        "navn": "Markus Garrido Nilssen",
+        "posisjon": "Strøket",
+        "start": true,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Simon Nicolai Bolann Håland",
+    "formasjon": null
+  },
+  "kampnrHint": "12120704019",
+  "advarsler": [],
+  "kilde": "mediarapporter/2022/Mediareport_12120704019-30102026-0117.pdf"
+}

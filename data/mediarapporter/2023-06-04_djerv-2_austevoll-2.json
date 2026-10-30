@@ -1,0 +1,265 @@
+{
+  "type": "mediarapport",
+  "versjon": 1,
+  "id": "2023-06-04_djerv-2_austevoll-2",
+  "turnering": "6. div. Menn avd. 01",
+  "dato": "2023-06-04",
+  "avspark": "12:30",
+  "bane": "Møhlenpris idrettsplass",
+  "dommer": "Asmir Husejnovic",
+  "hjemmelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "navn": "August Trønnes",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 2,
+        "navn": "Simen Elias Knutsvik Håvåg",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Joachim Alexander Hafstad Karlsson",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Peter Schau Bull",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 18,
+        "navn": "Arne Ravnå",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Eirik Flatråker Møgster",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 8,
+        "navn": "Liam Folmann Østvik",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 19,
+        "navn": "Njord Tvedt Eidsheim",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 11,
+        "navn": "Mamadee King Kabba",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Isak Steen-Olsen Teigland",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 42,
+        "navn": "Tord Fares Jonsson Abd Rabo",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 0,
+        "navn": "Lars Lønnebotn Svendsgård",
+        "posisjon": "Strøket",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 0,
+        "navn": "Mads Didrik Hafstad Storebø",
+        "posisjon": "Strøket",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Jens Mathias Turøy Kleppe",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Willem Percyval Westli",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Erik Sandvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 17,
+        "navn": "Øystein Emdal Midtvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 20,
+        "navn": "Oskar Johann Rasmussen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 69,
+        "navn": "Marcus Kvalheim Refvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 99,
+        "navn": "Kay-Magne Larsen Pedersen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Tomas Emdal Midtvik",
+    "formasjon": "4-3-3"
+  },
+  "bortelag": {
+    "navn": "Austevoll 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "navn": "Ruben Aleksander Werner Pettersen",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 23,
+        "navn": "Benjamin Hoyland",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 25,
+        "navn": "Mons Johan Troland",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 45,
+        "navn": "Peder Sandtorv Totlandsdal",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Jonathan Skår",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 11,
+        "navn": "Espen Hausberg",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 12,
+        "navn": "Rasmus Drønen Hatlevik",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Lauritz Østervold",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 19,
+        "navn": "Vegard Bruntveit",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "William Konrad Bjånesø",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 16,
+        "navn": "Henrik Elias Østervold",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 13,
+        "navn": "Tor Magnus Tveit Haugland",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 20,
+        "navn": "Endre Blindheim Haugland",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 22,
+        "navn": "Harald Haraldson Taranger",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Endre Blindheim Haugland",
+    "formasjon": "3-5-2"
+  },
+  "kampnrHint": "12120601044",
+  "advarsler": [],
+  "kilde": "mediarapporter/2023/Mediareport_12120601044-30102026-0110.pdf"
+}

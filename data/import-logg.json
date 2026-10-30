@@ -772,5 +772,353 @@
     "type": "mediarapport",
     "output": "data/mediarapporter/2026-10-23_baune-2_djerv-2.json",
     "importert": "2026-10-30T00:12:00.323Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601004-30102026-0108.pdf": {
+    "sha256": "bc03ff4a898db17648a7f79c647131232ea2f65f5f9d880daea681ae5150c2e7",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-04-16_djerv-2_sleipner.json",
+    "importert": "2026-10-30T00:15:40.171Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601011-30102026-0108.pdf": {
+    "sha256": "ac6923a8a283d883ef1890888635841c5bc1b614ceeed3ff2731507755755b55",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-04-22_bergkrystall-ornen-2_djerv-2.json",
+    "importert": "2026-10-30T00:15:40.208Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601017-30102026-0109.pdf": {
+    "sha256": "c010e88e2e9222153e09e170b8566be9f031b441b320eb90451dc3ae37877fd0",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-05-02_djerv-2_utsikten.json",
+    "importert": "2026-10-30T00:15:40.235Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601028-30102026-0109.pdf": {
+    "sha256": "108fa40029fa0aa961d880c45389361b3904e903d1bc0d0e3c86b5a7546cd127",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-05-13_eikelandsfjorden_djerv-2.json",
+    "importert": "2026-10-30T00:15:40.264Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601031-30102026-0110.pdf": {
+    "sha256": "1dc1ea1f9a191e3828738544a5875cbf6e52c8cffa9c77ec78cfc7fa3209f6a4",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-05-21_djerv-2_nore-neset-2.json",
+    "importert": "2026-10-30T00:15:40.290Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601038-30102026-0110.pdf": {
+    "sha256": "9f3851b91c988701ab9405d774a370e18be40a6413f64c8d1ec47db489bd4d76",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-05-28_baune-2_djerv-2.json",
+    "importert": "2026-10-30T00:15:40.315Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601044-30102026-0110.pdf": {
+    "sha256": "734fea07163ec36bfb8012dedb2cc07806f6616cdc89e819572c2e865224bee2",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-06-04_djerv-2_austevoll-2.json",
+    "importert": "2026-10-30T00:15:40.342Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601053-30102026-0111.pdf": {
+    "sha256": "945e64c9b79ce913d9c350e02dc1236854ba5ddcca0ea962bf9b0232a1db6c87",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-06-09_loddefjord-3_djerv-2.json",
+    "importert": "2026-10-30T00:15:40.372Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601063-30102026-0111.pdf": {
+    "sha256": "d51506a05b32789219bf1da53c50aa3e4763259fdff16372a3611afa77b5d6c5",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-06-24_saedalen-2_djerv-2.json",
+    "importert": "2026-10-30T00:15:40.411Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601070-30102026-0111.pdf": {
+    "sha256": "beaceeb43da9d488a96c70faf6373af65db09f1c9bbbd479795bcfbc67101cbb",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-08-19_sleipner_djerv-2.json",
+    "importert": "2026-10-30T00:15:40.438Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601077-30102026-0112.pdf": {
+    "sha256": "62e42e88736981d35852f829cb39680ea453c6e1202e0c2ad9378a31380f2b38",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-08-27_djerv-2_bergkrystall-ornen-2.json",
+    "importert": "2026-10-30T00:15:40.466Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601083-30102026-0112.pdf": {
+    "sha256": "5e6befc76c7c3d20b16b0d894e5050443741b7e3cb3455edab75b6d29cc4c0cb",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-09-03_utsikten_djerv-2.json",
+    "importert": "2026-10-30T00:15:40.495Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601094-30102026-0113.pdf": {
+    "sha256": "09067d2229cf831e66246e668cd190dd6fd205e0c6263c87a08dd49ecf1766c8",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-09-16_djerv-2_eikelandsfjorden.json",
+    "importert": "2026-10-30T00:15:40.521Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601097-30102026-0113.pdf": {
+    "sha256": "f04e8c6a6817b367beb1997122c5a5f7d75ef6c08e9404718f191d373ca3388b",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-09-24_nore-neset-2_djerv-2.json",
+    "importert": "2026-10-30T00:15:40.546Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601104-30102026-0113.pdf": {
+    "sha256": "0d12c63d11abc0542e3ae9dd5eb21058163c58e20bcfbbf4703d671e96c84614",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-09-30_djerv-2_baune-2.json",
+    "importert": "2026-10-30T00:15:40.570Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601110-30102026-0113.pdf": {
+    "sha256": "d4fa9b8a0f696a31494af339aa256c9b122a078448d6f281f10b942fd618980b",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-10-08_austevoll-2_djerv-2.json",
+    "importert": "2026-10-30T00:15:40.594Z"
+  },
+  "mediarapporter/2023/Mediareport_12120601129-30102026-0114.pdf": {
+    "sha256": "8a280f39d18d725bb5270bb367a352f7eb599b148c9a46e783be327bb2b2a464",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2023-10-28_djerv-2_saedalen-2.json",
+    "importert": "2026-10-30T00:15:40.622Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601004-30102026-0108.pdf": {
+    "sha256": "10c55869c5f2da0fdd2979c5c71e65bd0b3e259c83dc5d85c4c098c9a31cd619",
+    "type": "kamprapport",
+    "output": "data/matches/12120601004.json",
+    "importert": "2026-10-30T00:15:55.773Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601011-30102026-0109.pdf": {
+    "sha256": "804c9702ed47898f86fdd6f26134dfec94d35d31d00d004a162d477df44fcef5",
+    "type": "kamprapport",
+    "output": "data/matches/12120601011.json",
+    "importert": "2026-10-30T00:15:55.827Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601017-30102026-0109.pdf": {
+    "sha256": "ca12b621826c1ac7b2516200a3fe7dc9a0938f5476e425001927573d0737bf1b",
+    "type": "kamprapport",
+    "output": "data/matches/12120601017.json",
+    "importert": "2026-10-30T00:15:55.878Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601028-30102026-0109.pdf": {
+    "sha256": "04179e77717c7be41fdb117710b78dea144e256ec964ce013509da25e27009f5",
+    "type": "kamprapport",
+    "output": "data/matches/12120601028.json",
+    "importert": "2026-10-30T00:15:55.922Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601031-30102026-0110.pdf": {
+    "sha256": "6637b0808f9cf39e645a49e84175bac8f91c8533199b068ac756e6bd6ea052ec",
+    "type": "kamprapport",
+    "output": "data/matches/12120601031.json",
+    "importert": "2026-10-30T00:15:56.002Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601038-30102026-0110.pdf": {
+    "sha256": "d03e001351fd677207ba56dbf5052213191f700a2cbb0cea2e228e9848348535",
+    "type": "kamprapport",
+    "output": "data/matches/12120601038.json",
+    "importert": "2026-10-30T00:15:56.042Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601044-30102026-0110.pdf": {
+    "sha256": "f1a65741eb275511d01f7715964500cc5b2e0ec4ef42f0e055e9b1c970ae7e0b",
+    "type": "kamprapport",
+    "output": "data/matches/12120601044.json",
+    "importert": "2026-10-30T00:15:56.078Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601053-30102026-0111.pdf": {
+    "sha256": "9f79bcd8ff222c5e757a313d4a90afc55616789e3b7e54b810d7d8f04fe533ed",
+    "type": "kamprapport",
+    "output": "data/matches/12120601053.json",
+    "importert": "2026-10-30T00:15:56.120Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601063-30102026-0111.pdf": {
+    "sha256": "a1fc9ddd01a59e5ff400030301fee3eb53fbfa7bdefd6663fa2f077d798b6158",
+    "type": "kamprapport",
+    "output": "data/matches/12120601063.json",
+    "importert": "2026-10-30T00:15:56.155Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601070-30102026-0112.pdf": {
+    "sha256": "d3eefbf0ebe4ba4b7f79d0897a24df2ec2bdc2d75e514ae9f75450fafddfbdd3",
+    "type": "kamprapport",
+    "output": "data/matches/12120601070.json",
+    "importert": "2026-10-30T00:15:56.196Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601077-30102026-0112.pdf": {
+    "sha256": "a54391fc178351c9acb2e31891a5e760a405b06ab6a80233a28a5bd673e022b2",
+    "type": "kamprapport",
+    "output": "data/matches/12120601077.json",
+    "importert": "2026-10-30T00:15:56.235Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601083-30102026-0112.pdf": {
+    "sha256": "2b1b321ad4d6ec26f5181c3748222b68b0114a75586952316c33f4beab570f35",
+    "type": "kamprapport",
+    "output": "data/matches/12120601083.json",
+    "importert": "2026-10-30T00:15:56.266Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601094-30102026-0113.pdf": {
+    "sha256": "3c5a849462d0dde4d8c3446d4b073026b56a45498e79bc0f6f2891f4e48c82f0",
+    "type": "kamprapport",
+    "output": "data/matches/12120601094.json",
+    "importert": "2026-10-30T00:15:56.300Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601097-30102026-0113.pdf": {
+    "sha256": "fd89e4786053646b3f6136d4bcca28208c2146b8dc2d6be1088907d2a2c746f4",
+    "type": "kamprapport",
+    "output": "data/matches/12120601097.json",
+    "importert": "2026-10-30T00:15:56.339Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601104-30102026-0113.pdf": {
+    "sha256": "bcc882748fad771196f9b26073c86ee1e47798cd3bc7eb07352c031fb9075c82",
+    "type": "kamprapport",
+    "output": "data/matches/12120601104.json",
+    "importert": "2026-10-30T00:15:56.381Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601110-30102026-0113.pdf": {
+    "sha256": "f0f3194b92e7127d91e0947d0e6109274163c18f1d44548333b3d4200a01615b",
+    "type": "kamprapport",
+    "output": "data/matches/12120601110.json",
+    "importert": "2026-10-30T00:15:56.425Z"
+  },
+  "kamprapporter/2023/Kamprapport-12120601129-30102026-0114.pdf": {
+    "sha256": "5ac90f59a1800becc704ecf0c154d8412fc26d87825714241fdddf2697f050d5",
+    "type": "kamprapport",
+    "output": "data/matches/12120601129.json",
+    "importert": "2026-10-30T00:15:56.461Z"
+  },
+  "mediarapporter/2022/Mediareport_12120704001-30102026-0117.pdf": {
+    "sha256": "1040f859f4965a19d3712f9bf793a1514cdf7a3a5ead9309b755e0593c212760",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2022-04-23_djerv-2_viking-2.json",
+    "importert": "2026-10-30T00:20:57.125Z"
+  },
+  "mediarapporter/2022/Mediareport_12120704019-30102026-0117.pdf": {
+    "sha256": "d4ee217f993bfc4ec990677a6cc9d58f139f749e51b0dfb91de9bfb164b08efe",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2022-05-15_djerv-2_bjarg-3.json",
+    "importert": "2026-10-30T00:20:57.163Z"
+  },
+  "mediarapporter/2022/Mediareport_12120704024-30102026-0117.pdf": {
+    "sha256": "3cf0aa5b727adcfbcea8915f835414f2c4ab32159ef4fd80f7a44cbf083daf59",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2022-05-21_trane-2_djerv-2.json",
+    "importert": "2026-10-30T00:20:57.189Z"
+  },
+  "mediarapporter/2022/Mediareport_12120704028-30102026-0118.pdf": {
+    "sha256": "2e27f41b2523b7c9b5d38267412cc9eb892acb2ab0b9e72c29b8289ec4550330",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2022-05-29_djerv-2_voss-3.json",
+    "importert": "2026-10-30T00:20:57.217Z"
+  },
+  "mediarapporter/2022/Mediareport_12120704034-30102026-0118.pdf": {
+    "sha256": "150a144d4c0c7e695abd28e96976812ac298f747a4738e458b28aedd48870a6e",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2022-09-11_saedalen-2_djerv-2.json",
+    "importert": "2026-10-30T00:20:57.248Z"
+  },
+  "mediarapporter/2022/Mediareport_12120704044-30102026-0118.pdf": {
+    "sha256": "1bb6bc48837603a779faf181b55a16722288fd9d16d855c25554e735899be78d",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2022-06-19_ny-krohnborg-2_djerv-2.json",
+    "importert": "2026-10-30T00:20:57.275Z"
+  },
+  "mediarapporter/2022/Mediareport_12120704046-30102026-0119.pdf": {
+    "sha256": "412d35ec936e64d7a70bfd591927415d14af00e3210881f699107a4ddfd5f05f",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2022-08-27_viking-2_djerv-2.json",
+    "importert": "2026-10-30T00:20:57.297Z"
+  },
+  "mediarapporter/2022/Mediareport_12120704064-30102026-0119.pdf": {
+    "sha256": "6a24d8b2ec70b6fef3ea770ce0398f40cb517083cce675ba7954bbd631add1a0",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2022-09-18_bjarg-3_djerv-2.json",
+    "importert": "2026-10-30T00:20:57.326Z"
+  },
+  "mediarapporter/2022/Mediareport_12120704069-30102026-0119.pdf": {
+    "sha256": "e3cdd704ea30f176da313c379377d8f917f16bc721a98cb837bb0414c13a899b",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2022-09-25_djerv-2_trane-2.json",
+    "importert": "2026-10-30T00:20:57.355Z"
+  },
+  "mediarapporter/2022/Mediareport_12120704073-30102026-0119.pdf": {
+    "sha256": "0ea2d2c374f03e9e14ccdaf720c948df19ec7f52f4da8fd7db21c05a6fbe78b0",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2022-10-01_voss-3_djerv-2.json",
+    "importert": "2026-10-30T00:20:57.380Z"
+  },
+  "mediarapporter/2022/Mediareport_12120704079-30102026-0120.pdf": {
+    "sha256": "9bef61d5e60af9be897ce26e26c42c27b407ead51a8126648cfa26369e1e615a",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2022-10-09_djerv-2_saedalen-2.json",
+    "importert": "2026-10-30T00:20:57.402Z"
+  },
+  "mediarapporter/2022/Mediareport_12120704089-30102026-0120.pdf": {
+    "sha256": "8f01c53985a51b1de187e28ba82ce5c3b6a00c4979dcd11106b0fcbe62339f7f",
+    "type": "mediarapport",
+    "output": "data/mediarapporter/2022-10-23_djerv-2_ny-krohnborg-2.json",
+    "importert": "2026-10-30T00:20:57.423Z"
+  },
+  "kamprapporter/2022/Kamprapport-12120704001-30102026-0117.pdf": {
+    "sha256": "5e9e2e0ddc29f7f83be77f2cf1ae3ae54a03c4445ae2afd29246eb9ecf433c27",
+    "type": "kamprapport",
+    "output": "data/matches/12120704001.json",
+    "importert": "2026-10-30T00:21:10.208Z"
+  },
+  "kamprapporter/2022/Kamprapport-12120704019-30102026-0117.pdf": {
+    "sha256": "5f14b69b9c2e21e08406119e5d2baeb086d625e12701636c0967afa18697a817",
+    "type": "kamprapport",
+    "output": "data/matches/12120704019.json",
+    "importert": "2026-10-30T00:21:10.255Z"
+  },
+  "kamprapporter/2022/Kamprapport-12120704024-30102026-0117.pdf": {
+    "sha256": "9ee12709004c60ba1268c187c2487dcfe51a88d8f1f2373cbc7191284753a1db",
+    "type": "kamprapport",
+    "output": "data/matches/12120704024.json",
+    "importert": "2026-10-30T00:21:10.298Z"
+  },
+  "kamprapporter/2022/Kamprapport-12120704028-30102026-0118.pdf": {
+    "sha256": "11f42525ce9777004d1bcc1ba10c9d731774dad94081d2020abe3f0517f39af7",
+    "type": "kamprapport",
+    "output": "data/matches/12120704028.json",
+    "importert": "2026-10-30T00:21:10.341Z"
+  },
+  "kamprapporter/2022/Kamprapport-12120704034-30102026-0118.pdf": {
+    "sha256": "f0e6135e376cbe73ac4ffed16dd0c4a6215de4bd3f15bb48fd1e6e9d775d8be4",
+    "type": "kamprapport",
+    "output": "data/matches/12120704034.json",
+    "importert": "2026-10-30T00:21:10.388Z"
+  },
+  "kamprapporter/2022/Kamprapport-12120704044-30102026-0118.pdf": {
+    "sha256": "05162c990e748c4dd8a260b0cd17e3b3f89b45b1790024eaa5ecade5ae393cc7",
+    "type": "kamprapport",
+    "output": "data/matches/12120704044.json",
+    "importert": "2026-10-30T00:21:10.423Z"
+  },
+  "kamprapporter/2022/Kamprapport-12120704046-30102026-0119.pdf": {
+    "sha256": "374ebfbb96bdbf419c2b5e83bdefade7a6a64f20973d4eef884734aef12d243c",
+    "type": "kamprapport",
+    "output": "data/matches/12120704046.json",
+    "importert": "2026-10-30T00:21:10.462Z"
+  },
+  "kamprapporter/2022/Kamprapport-12120704064-30102026-0119.pdf": {
+    "sha256": "b9122e8b890dfa90d4ad0638727af219f565c0341e2e44f5591f5cb6eadf80bd",
+    "type": "kamprapport",
+    "output": "data/matches/12120704064.json",
+    "importert": "2026-10-30T00:21:10.506Z"
+  },
+  "kamprapporter/2022/Kamprapport-12120704069-30102026-0119.pdf": {
+    "sha256": "1e854ae92f62a28ae880161767d0910f1026950984261f3a17885240837e4a90",
+    "type": "kamprapport",
+    "output": "data/matches/12120704069.json",
+    "importert": "2026-10-30T00:21:10.546Z"
+  },
+  "kamprapporter/2022/Kamprapport-12120704073-30102026-0119.pdf": {
+    "sha256": "d3bd392b1e0c76fb14630f257811cc5ec671c5b809fde1b35f208af747f29ced",
+    "type": "kamprapport",
+    "output": "data/matches/12120704073.json",
+    "importert": "2026-10-30T00:21:10.584Z"
+  },
+  "kamprapporter/2022/Kamprapport-12120704079-30102026-0120.pdf": {
+    "sha256": "dc8e4d226b2a7d28124b4b3f2d7f073a4c5c995230011023a272029ba52a3a61",
+    "type": "kamprapport",
+    "output": "data/matches/12120704079.json",
+    "importert": "2026-10-30T00:21:10.625Z"
+  },
+  "kamprapporter/2022/Kamprapport-12120704089-30102026-0120.pdf": {
+    "sha256": "0a6c7432947415d78a5539e8c4080c1047890f46076481a7af2d49dbf9a95c8e",
+    "type": "kamprapport",
+    "output": "data/matches/12120704089.json",
+    "importert": "2026-10-30T00:21:10.696Z"
   }
 }

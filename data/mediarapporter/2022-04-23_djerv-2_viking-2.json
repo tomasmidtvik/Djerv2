@@ -1,0 +1,251 @@
+{
+  "type": "mediarapport",
+  "versjon": 1,
+  "id": "2022-04-23_djerv-2_viking-2",
+  "turnering": "7. div. Menn avd. 04",
+  "dato": "2022-04-23",
+  "avspark": "15:00",
+  "bane": "Møhlenpris idrettsplass",
+  "dommer": "Kim Andre Wollertsen",
+  "hjemmelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "navn": "Sebastian Monsen",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Simon Dyrland Håkonsen",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 23,
+        "navn": "Anders Træland",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 26,
+        "navn": "Sjur Mjør",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 28,
+        "navn": "Erling Stavn Qvale",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 17,
+        "navn": "Øystein Emdal Midtvik",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 25,
+        "navn": "Lars Kolbjørn Beltestad",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 30,
+        "navn": "Willem Percyval Westli",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 91,
+        "navn": "Mazin Ahmed Saeed Daar",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Tord Fares Jonsson Abd Rabo",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 9,
+        "navn": "Erik Sandvik",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 5,
+        "navn": "Abdoulrahmane Diallo",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Kay-Magne Larsen Pedersen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Peter Schau Bull",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 13,
+        "navn": "Ole Marius Pallesen Knudsen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Jens Mathias Turøy Kleppe",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 16,
+        "navn": "Sondre Hagen Rønnestad",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 80,
+        "navn": "Ahmed Mohamoud Ali",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Mads Didrik Hafstad Storebø",
+    "formasjon": "4-4-2"
+  },
+  "bortelag": {
+    "navn": "Viking 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "navn": "Christian Morillo Lyngbø",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Mats Hellne",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Andreas Jahnsen Guttormsen",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 6,
+        "navn": "Eivind Orset",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Isak Nese Wilhelmsen",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 8,
+        "navn": "Tristan Holt Holene",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Johannes Bøckmann",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 11,
+        "navn": "Kristoffer Gjelsvik",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 13,
+        "navn": "Anders Sivertsen Wallem",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 15,
+        "navn": "Anik Kumar Paul",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 19,
+        "navn": "Espen Lerøen Tande",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 20,
+        "navn": "Sebastian Bersaas Thorsheim",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 17,
+        "navn": "Bjørn Ove Ingebrigtsen",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 9,
+        "navn": "Elliot Hovda",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": null,
+    "formasjon": null
+  },
+  "kampnrHint": "12120704001",
+  "advarsler": [],
+  "kilde": "mediarapporter/2022/Mediareport_12120704001-30102026-0117.pdf"
+}

@@ -1,0 +1,272 @@
+{
+  "type": "mediarapport",
+  "versjon": 1,
+  "id": "2022-09-11_saedalen-2_djerv-2",
+  "turnering": "7. div. Menn avd. 04",
+  "dato": "2022-09-11",
+  "avspark": "20:00",
+  "bane": "Kalandseid idrettsplass",
+  "dommer": "Trond Inge Andal",
+  "hjemmelag": {
+    "navn": "Sædalen 2",
+    "spillere": [
+      {
+        "draktnr": 1,
+        "navn": "Simen Hatløy Walde",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Benjamin Bjånesø Baxter",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Tarje Dimmen Riise",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 8,
+        "navn": "Sjur Hirth",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 16,
+        "navn": "Erik Hodneland Kildehaug",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 18,
+        "navn": "Paal Eithun Hartmann",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 27,
+        "navn": "Marius Halkjelsvik Dahl",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 31,
+        "navn": "Simen Skjælaaen Dahl",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 52,
+        "navn": "Mats Martinius Vadset",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 9,
+        "navn": "Iver Myrene Skeide",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 11,
+        "navn": "Nicolai Trovåg Lekven",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 13,
+        "navn": "Gaute Danson Ytrenes",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 19,
+        "navn": "Aleksander Tsynkalovskiy",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 21,
+        "navn": "Sivert Henriksen",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 30,
+        "navn": "Emil Myklebust Artmeyer",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Sondre Aaberg Mathisen",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 15,
+        "navn": "Ole Martin Overøie Tvedt",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Stein Olsaker",
+    "formasjon": null
+  },
+  "bortelag": {
+    "navn": "Djerv 2",
+    "spillere": [
+      {
+        "draktnr": 41,
+        "navn": "Marius Kjørsvik",
+        "posisjon": "Keeper",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 4,
+        "navn": "Marius Claudey",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 9,
+        "navn": "Eivind Træland",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 25,
+        "navn": "Lars Kolbjørn Beltestad",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 80,
+        "navn": "Peter Schau Bull",
+        "posisjon": "Forsvar",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 7,
+        "navn": "Willem Percyval Westli",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 14,
+        "navn": "Eirik Flatråker Møgster",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 28,
+        "navn": "Robin Sebastian Halln",
+        "posisjon": "Midtbane",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 5,
+        "navn": "Abdoulrahmane Diallo",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 10,
+        "navn": "Erik Sandvik",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": true
+      },
+      {
+        "draktnr": 23,
+        "navn": "Tord Fares Jonsson Abd Rabo",
+        "posisjon": "Angrep",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 1,
+        "navn": "Sebastian Monsen",
+        "posisjon": "Strøket",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 30,
+        "navn": "Mads Didrik Hafstad Storebø",
+        "posisjon": "Strøket",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 66,
+        "navn": "Erling Stavn Qvale",
+        "posisjon": "Strøket",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 71,
+        "navn": "Sjur Mjør",
+        "posisjon": "Strøket",
+        "start": true,
+        "kaptein": false
+      },
+      {
+        "draktnr": 3,
+        "navn": "Kay-Magne Larsen Pedersen",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 17,
+        "navn": "Øystein Emdal Midtvik",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      },
+      {
+        "draktnr": 26,
+        "navn": "Jens Mathias Turøy Kleppe",
+        "posisjon": null,
+        "start": false,
+        "kaptein": false
+      }
+    ],
+    "hovedtrener": "Mads Didrik Hafstad Storebø",
+    "formasjon": "4-3-3"
+  },
+  "kampnrHint": "12120704034",
+  "advarsler": [],
+  "kilde": "mediarapporter/2022/Mediareport_12120704034-30102026-0118.pdf"
+}
