@@ -1,0 +1,36 @@
+---
+import BilanseTabell from '../../components/BilanseTabell.astro';
+import StatSeksjon from '../../components/StatSeksjon.astro';
+import { favoritter, motstandere } from '../../lib/analyse.ts';
+import { getDb, tall, url } from '../../lib/site.ts';
+
+const db = getDb();
+const rader = motstandere(db.kamper, db.settings.poeng);
+const f = favoritter(rader);
+const lenke = (slug: string) => url(`motstander/${slug}/`);
+const lister = [
+  ['Favorittmotstandere', f.favoritter],
+  ['Skrekkmotstandere', f.skrekk],
+] as const;
+---
+
+<StatSeksjon seksjon="motstandere" tittel="Motstandere" medSesong={false} beskrivelse={`Alle ${rader.length} lagene Djerv 2 har møtt. Trykk på et lag for å se alle kampene.`}>
+  <div class="grid gap-3 sm:grid-cols-2">
+    {lister.map(([tittel, liste]) => (
+      <section class="card" aria-label={tittel}>
+        <h2 class="border-b border-line px-4 py-2.5 font-bold">{tittel}</h2>
+        <ol class="divide-y divide-line">
+          {liste.map((r) => (
+            <li class="flex items-center justify-between gap-3 px-4 py-2 text-sm">
+              <a class="link font-medium" href={lenke(r.slug)}>{r.navn}</a>
+              <span class="num whitespace-nowrap text-xs text-muted">{r.b.seire}-{r.b.uavgjort}-{r.b.tap} · {tall(r.b.poengPerKamp ?? 0, 2)} poeng/kamp</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+  </div>
+  <p class="text-xs text-muted">Bare lag vi har møtt minst to ganger. Rangert på poeng per kamp, deretter målforskjell. Få kamper gir usikre tall.</p>
+
+  <BilanseTabell forste="Lag" rader={rader.map((r) => ({ navn: r.navn, href: lenke(r.slug), b: r.b }))} />
+</StatSeksjon>

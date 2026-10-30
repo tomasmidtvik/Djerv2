@@ -1,0 +1,61 @@
+---
+import BilanseTabell from '../../../components/BilanseTabell.astro';
+import StatSeksjon from '../../../components/StatSeksjon.astro';
+import { kontaktpersoner, trenere, type Periode } from '../../../lib/analyse.ts';
+import { datoKort, getDb, spillerUrl, tall } from '../../../lib/site.ts';
+import { kamperISesong } from '../../../lib/stats.ts';
+
+export function getStaticPaths() {
+  return [{ params: { sesong: undefined } }, ...getDb().sesonger.map((s) => ({ params: { sesong: String(s) } }))];
+}
+const sesong = Astro.params.sesong ? Number(Astro.params.sesong) : null;
+const db = getDb();
+const kamper = kamperISesong(db, sesong);
+const t = trenere(kamper, db.settings.poeng);
+const kontakt = kontaktpersoner(kamper);
+const med = kamper.length - t.utenTrener;
+const periode = (p: Periode) => (p.fra === p.til ? datoKort(p.fra) : `${datoKort(p.fra)}–${datoKort(p.til)}`);
+---
+
+<StatSeksjon seksjon="trenere" tittel="Trenere og støtteapparat" sesong={sesong} beskrivelse={`Trener er hovedtrener i mediarapporten, ellers den som står som trener i kamprapporten. Basert på ${med} av ${kamper.length} kamper.`}>
+  <section aria-labelledby="trenere">
+    <h2 id="trenere" class="h-section mb-2">Resultater per trener</h2>
+    <BilanseTabell
+      forste="Trener"
+      rader={t.rader.map((r) => ({
+        navn: r.navn,
+        href: r.slug ? spillerUrl(r.slug) : null,
+        merknad: `Mål per kamp ${tall(r.b.malForSnitt ?? 0, 2)}–${tall(r.b.malMotSnitt ?? 0, 2)}`,
+        b: r.b,
+      }))}
+    />
+  </section>
+
+  <section aria-labelledby="perioder">
+    <h2 id="perioder" class="h-section mb-2">Perioder</h2>
+    <p class="mb-2 text-sm text-muted">Sammenhengende kamper med samme trener. Flere perioder betyr at noen andre stod som trener innimellom.</p>
+    <ul class="card divide-y divide-line">
+      {t.rader.map((r) => (
+        <li class="px-4 py-2.5 text-sm">
+          <span class="font-medium">{r.navn}</span>
+          <span class="num mt-0.5 block text-xs text-muted">{r.perioder.map((p) => `${periode(p)} (${p.kamper})`).join(' · ')}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section aria-labelledby="kontakt">
+    <h2 id="kontakt" class="h-section mb-2">Kontaktpersoner</h2>
+    <ul class="card divide-y divide-line">
+      {kontakt.map((k) => (
+        <li class="px-4 py-2.5 text-sm">
+          <span class="flex items-baseline justify-between gap-3">
+            {k.slug ? <a class="link font-medium" href={spillerUrl(k.slug)}>{k.navn}</a> : <span class="font-medium">{k.navn}</span>}
+            <span class="num font-semibold">{k.kamper}</span>
+          </span>
+          <span class="num mt-0.5 block text-xs text-muted">{k.perioder.map((p) => `${periode(p)} (${p.kamper})`).join(' · ')}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+</StatSeksjon>

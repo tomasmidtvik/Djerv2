@@ -1,0 +1,141 @@
+---
+import StatSeksjon from '../../../components/StatSeksjon.astro';
+import { getDb } from '../../../lib/site.ts';
+import { tilKampData } from '../../../lib/maltid.ts';
+
+const db = getDb();
+const data = db.kamper.map((k) => tilKampData(k, db.settings.poeng));
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+const motstandere = [...new Map(data.map((d) => [d.motSlug, d.mot]))].sort((a, b) => a[1].localeCompare(b[1], 'nb'));
+const trenere = [...new Set(data.map((d) => d.trener).filter((t): t is string => Boolean(t)))].sort((a, b) => a.localeCompare(b, 'nb'));
+---
+
+<StatSeksjon seksjon="mal" tittel="Mål og tid" medSesong={false} beskrivelse="Når vi scorer og slipper inn. Filtrene gjelder alle tallene.">
+  <form id="filter" class="flex flex-wrap items-end gap-3" aria-label="Filtrer" onsubmit="return false">
+    <label class="flex flex-col gap-1 text-xs font-semibold text-muted">
+      Sesong
+      <select name="sesong" class="field">
+        <option value="">Alle</option>
+        {db.sesonger.map((s) => <option value={s}>{s}</option>)}
+      </select>
+    </label>
+    <label class="flex flex-col gap-1 text-xs font-semibold text-muted">
+      Hjemme/borte
+      <select name="sted" class="field">
+        <option value="">Alle</option>
+        <option value="hjemme">Hjemme</option>
+        <option value="borte">Borte</option>
+      </select>
+    </label>
+    <label class="flex flex-col gap-1 text-xs font-semibold text-muted">
+      Motstander
+      <select name="mot" class="field max-w-[12rem]">
+        <option value="">Alle</option>
+        {motstandere.map(([slug, navn]) => <option value={slug}>{navn}</option>)}
+      </select>
+    </label>
+    <label class="flex flex-col gap-1 text-xs font-semibold text-muted">
+      Trener
+      <select name="trener" class="field max-w-[12rem]">
+        <option value="">Alle</option>
+        {trenere.map((t) => <option value={t}>{t}</option>)}
+      </select>
+    </label>
+  </form>
+
+  <p id="grunnlag" class="text-sm text-muted" aria-live="polite"></p>
+  <noscript><p class="card p-4 text-sm">Denne siden trenger JavaScript for å regne ut tallene.</p></noscript>
+  <div id="resultat" class="space-y-6"></div>
+  <script type="application/json" id="kampdata" set:html={json}></script>
+</StatSeksjon>
+
+<script>
+  import { forsteKort, forsteMal, malTett, scorerForst, type ForsteMal, type KampData } from '../../../lib/maltid.ts';
+
+  const data = JSON.parse(document.getElementById('kampdata')!.textContent!) as KampData[];
+  const form = document.getElementById('filter') as HTMLFormElement;
+  const ut = document.getElementById('resultat')!;
+  const grunnlag = document.getElementById('grunnlag')!;
+  const MIN = 5;
+  const el = (n: string) => form.elements.namedItem(n) as HTMLSelectElement;
+  const tall = (x: number | null, d = 0) => (x === null ? '–' : x.toLocaleString('nb-NO', { minimumFractionDigits: d, maximumFractionDigits: d }));
+  const pst = (x: number) => `${Math.round(x * 100)} %`;
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+  const params = new URLSearchParams(location.search);
+  for (const n of ['sesong', 'sted', 'mot', 'trener']) if (params.get(n)) el(n).value = params.get(n)!;
+
+  const tile = (l: string, v: string, m = '') =>
+    `<div class="card px-2 py-3 text-center"><div class="num text-xl font-extrabold">${esc(v)}</div><div class="text-[0.7rem] font-medium leading-tight text-muted">${esc(l)}</div>${m ? `<div class="mt-0.5 text-[0.65rem] leading-tight text-muted">${esc(m)}</div>` : ''}</div>`;
+
+  const rad = (navn: string, f: ForsteMal) => `
+    <tr>
+      <th scope="row" class="!text-sm !normal-case !tracking-normal !text-ink">${navn}</th>
+      <td class="r">${f.grunnlag}</td>
+      <td class="r">${f.utenMal}</td>
+      <td class="r">${tall(f.snitt)}</td>
+      <td class="r font-bold">${f.median === null ? '–' : `${f.median}'`}</td>
+      ${f.innen.map((i) => `<td class="r">${pst(i.andel)}</td>`).join('')}
+    </tr>`;
+
+  function tegn() {
+    const f = { sesong: el('sesong').value, sted: el('sted').value, mot: el('mot').value, trener: el('trener').value };
+    const valgt = data.filter(
+      (d) =>
+        (!f.sesong || String(d.sesong) === f.sesong) &&
+        (!f.sted || d.sted === f.sted) &&
+        (!f.mot || d.motSlug === f.mot) &&
+        (!f.trener || d.trener === f.trener),
+    );
+    const q = new URLSearchParams(Object.entries(f).filter(([, v]) => v));
+    history.replaceState(null, '', q.size ? `?${q}` : location.pathname);
+
+    grunnlag.textContent = `${valgt.length} av ${data.length} kamper valgt.`;
+    if (valgt.length < MIN) {
+      ut.innerHTML = `<p class="card p-5 text-center text-sm text-muted">Ikke nok data: tallene vises fra ${MIN} kamper.</p>`;
+      return;
+    }
+    const fm = forsteMal(valgt, 'for');
+    const bm = forsteMal(valgt, 'mot');
+    const s = scorerForst(valgt);
+    const t = malTett(valgt);
+    const k = forsteKort(valgt);
+    const andelVi = s.grunnlag ? s.vi / s.grunnlag : 0;
+    ut.innerHTML = `
+      <section aria-labelledby="forste">
+        <h2 id="forste" class="h-section mb-2">Tid til første mål</h2>
+        <div class="card overflow-x-auto">
+          <table class="tbl">
+            <thead><tr>
+              <th scope="col"></th><th scope="col" class="r">Kamper</th><th scope="col" class="r" title="Kamper uten slikt mål">Uten</th>
+              <th scope="col" class="r" title="Snitt minutt i kamper med mål">Snitt</th><th scope="col" class="r" title="Der halvparten av kampene har hatt mål">Median</th>
+              <th scope="col" class="r">Innen 10'</th><th scope="col" class="r">15'</th><th scope="col" class="r">30'</th><th scope="col" class="r">45'</th>
+            </tr></thead>
+            <tbody>${rad('Første mål for', fm)}${rad('Første baklengs', bm)}</tbody>
+          </table>
+        </div>
+        <p class="mt-1 text-xs text-muted">Kamper uten mål telles ikke som minutt 90. Snitt gjelder bare kamper med mål. Kamper der rapporten mangler mål er ikke med. Median «–» betyr at under halvparten av kampene hadde slikt mål.</p>
+      </section>
+      <section aria-labelledby="forstscorer">
+        <h2 id="forstscorer" class="h-section mb-2">Hvem scorer først</h2>
+        <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          ${tile('Vi scorer først', `${s.vi}`, pst(andelVi))}
+          ${tile('De scorer først', `${s.de}`, s.grunnlag ? pst(s.de / s.grunnlag) : '')}
+          ${tile('Poeng/kamp når vi scorer først', s.vi >= MIN ? tall(s.poengVi, 2) : '–', s.vi >= MIN ? '' : 'ikke nok data')}
+          ${tile('Poeng/kamp når de scorer først', s.de >= MIN ? tall(s.poengDe, 2) : '–', s.de >= MIN ? '' : 'ikke nok data')}
+        </div>
+        <p class="mt-1 text-xs text-muted">Basert på ${s.grunnlag} av ${valgt.length} kamper: kamper uten mål og kamper der rapporten mangler mål er ikke med.</p>
+      </section>
+      <section aria-labelledby="tett">
+        <h2 id="tett" class="h-section mb-2">Tid mellom mål og første kort</h2>
+        <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          ${tile('Snitt minutter mellom våre mål', tall(t.snittMellom), `${t.kamperMedFlere} kamper med flere mål`)}
+          ${tile('Kamper med to mål innen 5 min', `${t.toInnen5}`)}
+          ${tile('Median første kort', k.median === null ? '–' : `${k.median}'`, `${k.medKort} kamper med kort`)}
+          ${tile('Snitt første kort', k.snitt === null ? '–' : `${tall(k.snitt)}'`)}
+        </div>
+      </section>`;
+  }
+  form.addEventListener('change', tegn);
+  tegn();
+</script>

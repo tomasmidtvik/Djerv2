@@ -1,0 +1,68 @@
+---
+// Felles ramme for statistikksidene: meny over seksjonene og valg av sesong.
+import Layout from '../layouts/Layout.astro';
+import { getDb, url } from '../lib/site.ts';
+interface Props {
+  /** siste del av adressen, f.eks. "lag". Tom for oversikten. */
+  seksjon: string;
+  tittel: string;
+  beskrivelse?: string;
+  sesong?: number | null;
+  /** false = siden har ikke egne sider per sesong */
+  medSesong?: boolean;
+}
+const { seksjon, tittel, beskrivelse, sesong = null, medSesong = true } = Astro.props;
+const db = getDb();
+const seksjoner = [
+  ['', 'Topplister'],
+  ['lag', 'Laget'],
+  ['mal', 'Mål og tid'],
+  ['tropp', 'Tropp'],
+  ['motstandere', 'Motstandere'],
+  ['disiplin', 'Disiplin'],
+  ['trenere', 'Trenere'],
+  ['dommere', 'Dommere'],
+  ['baner', 'Baner og tid'],
+] as const;
+const sti = (s: string) => (s === 'motstandere' ? 'motstandere/' : s ? `statistikk/${s}/` : 'statistikk/');
+const sesongSti = (s: number | null) => (seksjon ? `statistikk/${seksjon}/${s ? `${s}/` : ''}` : `statistikk/${s ? `${s}/` : ''}`);
+const fullTittel = sesong ? `${tittel} ${sesong}` : tittel;
+---
+
+<Layout title={fullTittel} description={beskrivelse ?? `${tittel} for ${db.settings.lagnavn}.`} aktiv="statistikk">
+  <nav class="-mx-4 overflow-x-auto px-4 pb-1" aria-label="Statistikk">
+    <ul class="flex w-max gap-1">
+      {
+        seksjoner.map(([s, navn]) => (
+          <li>
+            <a
+              href={url(sti(s))}
+              aria-current={s === seksjon ? 'page' : undefined}
+              class="block whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-semibold text-muted hover:bg-surface aria-[current=page]:bg-accent aria-[current=page]:text-on-accent"
+            >
+              {navn}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <h1 class="mt-4 text-2xl font-bold tracking-tight">{fullTittel}</h1>
+  {beskrivelse && <p class="mt-1 text-sm text-muted">{beskrivelse}</p>}
+
+  {
+    medSesong && (
+      <nav class="-mx-4 mt-3 overflow-x-auto px-4 pb-1" aria-label="Velg sesong">
+        <div class="seg">
+          <a href={url(sesongSti(null))} aria-current={sesong === null ? 'page' : undefined}>Alle tider</a>
+          {db.sesonger.map((s) => <a href={url(sesongSti(s))} aria-current={sesong === s ? 'page' : undefined}>{s}</a>)}
+        </div>
+      </nav>
+    )
+  }
+
+  <div class="mt-5 space-y-6">
+    <slot />
+  </div>
+</Layout>

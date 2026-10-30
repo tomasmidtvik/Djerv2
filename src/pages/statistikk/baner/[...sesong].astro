@@ -1,0 +1,33 @@
+---
+import BilanseTabell from '../../../components/BilanseTabell.astro';
+import StatSeksjon from '../../../components/StatSeksjon.astro';
+import { tidspunkt } from '../../../lib/analyse.ts';
+import { getDb } from '../../../lib/site.ts';
+import { kamperISesong } from '../../../lib/stats.ts';
+
+export function getStaticPaths() {
+  return [{ params: { sesong: undefined } }, ...getDb().sesonger.map((s) => ({ params: { sesong: String(s) } }))];
+}
+const sesong = Astro.params.sesong ? Number(Astro.params.sesong) : null;
+const db = getDb();
+const kamper = kamperISesong(db, sesong);
+const t = tidspunkt(kamper, db.settings.poeng);
+const rad = (g: (typeof t.baner)[number]) => ({ navn: g.navn, b: g.b });
+const deler = [
+  ['Baner', 'Bane', t.baner],
+  ['Ukedag', 'Ukedag', t.ukedager],
+  ['Klokkeslett', 'Avspark', t.klokkeslett],
+  ['Måned', 'Måned', t.maneder],
+] as const;
+---
+
+<StatSeksjon seksjon="baner" tittel="Baner og tid" sesong={sesong} beskrivelse={`Basert på ${kamper.length} av ${kamper.length} kamper. P/K og S % vises fra 5 kamper.`}>
+  {
+    deler.map(([tittel, forste, liste]) => (
+      <section aria-label={tittel}>
+        <h2 class="h-section mb-2">{tittel}</h2>
+        <BilanseTabell forste={forste} rader={liste.map(rad)} />
+      </section>
+    ))
+  }
+</StatSeksjon>

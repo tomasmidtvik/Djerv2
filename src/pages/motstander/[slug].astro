@@ -1,0 +1,39 @@
+---
+import KampRad from '../../components/KampRad.astro';
+import Tall from '../../components/Tall.astro';
+import Layout from '../../layouts/Layout.astro';
+import { motstandere } from '../../lib/analyse.ts';
+import { getDb, tall, url } from '../../lib/site.ts';
+
+export function getStaticPaths() {
+  return motstandere(getDb().kamper).map((r) => ({ params: { slug: r.slug } }));
+}
+const db = getDb();
+const r = motstandere(db.kamper, db.settings.poeng).find((x) => x.slug === Astro.params.slug);
+if (!r) return Astro.redirect(url('motstandere/'));
+const kamper = [...r.kamper].reverse();
+---
+
+<Layout title={`Mot ${r.navn}`} description={`Alle kamper mellom ${db.settings.lagnavn} og ${r.navn}: ${r.b.seire} seire, ${r.b.uavgjort} uavgjort og ${r.b.tap} tap.`} aktiv="statistikk">
+  <nav class="mb-3 text-sm text-muted" aria-label="Brødsmuler"><a href={url('motstandere/')} class="link">Motstandere</a></nav>
+  <h1 class="text-2xl font-bold tracking-tight">Mot {r.navn}</h1>
+  <div class="mt-4">
+    <Tall
+      kolonner="grid-cols-3 sm:grid-cols-6"
+      tall={[
+        ['Møter', r.b.kamper],
+        ['Seire', r.b.seire],
+        ['Uavgjort', r.b.uavgjort],
+        ['Tap', r.b.tap],
+        ['Mål', `${r.b.malFor}–${r.b.malMot}`],
+        ['Poeng/kamp', tall(r.b.poengPerKamp ?? 0, 2)],
+      ]}
+    />
+  </div>
+  <section class="mt-6" aria-labelledby="kamper">
+    <h2 id="kamper" class="h-section mb-2">Alle kamper</h2>
+    <ul class="card divide-y divide-line overflow-hidden">
+      {kamper.map((k) => <li><KampRad kamp={k} /></li>)}
+    </ul>
+  </section>
+</Layout>

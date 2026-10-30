@@ -1,0 +1,20 @@
+---
+// Nøkkeltall i en rad med små kort.
+interface Props {
+  tall: [string, string | number, string?][];
+  kolonner?: string;
+}
+const { tall, kolonner = 'grid-cols-3 sm:grid-cols-6' } = Astro.props;
+---
+
+<div class={`grid gap-2 ${kolonner}`}>
+  {
+    tall.map(([label, verdi, merknad]) => (
+      <div class="card px-2 py-3 text-center">
+        <div class="num text-xl font-extrabold">{verdi}</div>
+        <div class="text-[0.7rem] font-medium leading-tight text-muted">{label}</div>
+        {merknad && <div class="mt-0.5 text-[0.65rem] leading-tight text-muted">{merknad}</div>}
+      </div>
+    ))
+  }
+</div>

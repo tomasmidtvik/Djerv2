@@ -30,6 +30,7 @@ npm run import -- --force
 ### Hva importen sjekker
 
 - **Antall mål per lag** må stemme med sluttresultatet. Selvmål som NFF har merket med «(s)» i målkolonnen (f.eks. «11 (s)») telles automatisk for det andre laget. Stemmer det likevel ikke (rapporten mangler en målscorer), havner kampen i review-listen, og siden viser målet som «ukjent målscorer» i stedet for å gjette.
+- **Pauseresultatet** må stemme med målene før pause. Til og med minutt 45 regnes som 1. omgang. Et mål i minutt 45 eller 46 flyttes til den omgangen pauseresultatet tilsier. Stemmer det likevel ikke, havner kampen i review-listen. Mål etter minutt 90 er tilleggstid og vises samlet som «90+» i figurene.
 - **Formasjon:** Har et lag ført opp hele troppen med posisjon i mediarapporten (flere enn 10 utespillere), vises ingen formasjon eller banevisning for det laget.
 - **Mediarapporten** kobles til kampen på dato, avspark og lagnavn (og bane). Finnes ingen eller flere kamper som passer, havner den i review-listen. Kommer mediarapporten før kamprapporten, kobles den automatisk ved neste import.
 - **Rødt kort etter to gule** («Utv. (Adv. 2)») er ikke sett i praksis ennå. Havner et kort i den kolonnen, får du en tydelig **KONTROLLER**-advarsel, så du kan sjekke at det stemmer med PDF-en.
@@ -72,6 +73,12 @@ Nøkkelen er kampnummeret (står i URL-en til kampen, f.eks. `/kamp/12120604081/
   skjul:                          # skjul navnet på en spiller (angis med draktnr, så navnet ikke står i repoet)
     - lag: motstander             # djerv | motstander
       draktnr: 20
+  rettelser:                      # retter feil i rapporten. Overlever ny import.
+    - spiller: Ola Nordmann
+      type: mal                   # mal | selvmal | gult | rodt2 | rodt
+      fra: 50                     # utelat "fra" for å legge til en hendelse
+      til: 40                     # utelat "til" for å fjerne en hendelse
+  pause: { hjemme: 1, borte: 0 }  # overstyrer pauseresultatet
   tilskuere: 40                   # vises bare hvis over 0
   mediarapport: 2026-10-18_djerv-2_kvernbit-2   # tving kobling (eller false for å ignorere)
   godkjent: true                  # fjerner kampen fra review-listen
@@ -129,6 +136,11 @@ Venstre side er navnet slik det står i rapporten, høyre side er navnet persone
 - **Seiersprosent** for en spiller = lagets seire i kampene spilleren var i troppen.
 - **Posisjon** fra mediarapporten vises som «oppstilt som», ikke «spilte som».
 - Poeng i sesongoversikten: 3 for seier, 1 for uavgjort (kan endres i `data/innstillinger.yaml`).
+- **Trener** i en kamp er hovedtrener i mediarapporten, ellers den som står som «Trener» i kamprapporten. Kamper uten noen av delene er merket som uten trener.
+- **Få kamper:** Prosent og snitt vises fra 5 kamper. Sidene viser grunnlaget med «basert på X av Y kamper».
+- **Mål som mangler i rapporten** teller i resultatet, men er ikke med i tall som krever minutt, som tid til første mål og hvem som scorer først.
+- **Tid til første mål:** Kamper uten mål telles ikke som minutt 90. De blir stående igjen i kurven, og medianen leses av der halvparten av kampene har hatt mål.
+- **Opp- og nedrykk** utledes av divisjonsnummeret fra sesong til sesong.
 
 ---
 

@@ -25,7 +25,7 @@ export function GET() {
       t: 'Motstander',
       n: m.navn,
       d: `${m.kamper} ${m.kamper === 1 ? 'kamp' : 'kamper'}`,
-      u: url(`kamper/?motstander=${slugify(m.navn)}&sesong=alle`),
+      u: url(`motstander/${slugify(m.navn)}/`),
       k: '',
     });
   }

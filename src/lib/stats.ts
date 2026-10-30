@@ -59,6 +59,13 @@ export interface SpillerStat {
   seire: number;
   uavgjort: number;
   tap: number;
+  /** kamper med minst 3 mål */
+  hatTricks: number;
+  /** mål og kort i kamper der spilleren stod som innbytter */
+  malInnbytter: number;
+  kortInnbytter: number;
+  /** mål fordelt på posisjon spilleren var oppstilt i */
+  malPosisjon: Record<string, number>;
   /** lagets seiersprosent i kampene spilleren var i troppen (0–100) */
   seiersprosent: number | null;
   forste: Kamp | null;
@@ -85,6 +92,10 @@ export function spillerStat(kamper: PersonKamp[]): SpillerStat {
     seire: 0,
     uavgjort: 0,
     tap: 0,
+    hatTricks: 0,
+    malInnbytter: 0,
+    kortInnbytter: 0,
+    malPosisjon: {},
     seiersprosent: null,
     forste: null,
     siste: null,
@@ -101,6 +112,12 @@ export function spillerStat(kamper: PersonKamp[]): SpillerStat {
     st.rodeAdv2 += s.rodeAdv2.length;
     st.rodeDirekte += s.rodeDirekte.length;
     if (s.kaptein) st.kaptein++;
+    if (s.mal.length >= 3) st.hatTricks++;
+    if (s.innbytter) {
+      st.malInnbytter += s.mal.length;
+      st.kortInnbytter += s.gule.length + s.rodeAdv2.length + s.rodeDirekte.length;
+    }
+    if (s.posisjon && s.mal.length) st.malPosisjon[s.posisjon] = (st.malPosisjon[s.posisjon] ?? 0) + s.mal.length;
     const u: Utfall = kamp.utfall;
     if (u === 'S') st.seire++;
     else if (u === 'U') st.uavgjort++;
@@ -121,7 +138,7 @@ export interface Rad {
   verdi: number;
 }
 
-export type Nokkel = 'mal' | 'gule' | 'rode' | 'rodeAdv2' | 'rodeDirekte' | 'kamper' | 'kortPerKamp' | 'kaptein';
+export type Nokkel = 'mal' | 'gule' | 'rode' | 'rodeAdv2' | 'rodeDirekte' | 'kamper' | 'kortPerKamp' | 'kaptein' | 'hatTricks' | 'malInnbytter';
 
 /** Toppliste for en nøkkel, med sesongfilter (null = alle tider). Spillere med 0 utelates. */
 export function toppliste(personer: Person[], nokkel: Nokkel, sesong: number | null = null, minKamper = 0): Rad[] {

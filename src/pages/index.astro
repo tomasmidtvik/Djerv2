@@ -70,7 +70,7 @@ const malscorere = siste
       <section class="mt-6" aria-labelledby="sesongen">
         <div class="mb-2 flex items-baseline justify-between">
           <h2 id="sesongen" class="h-section">Sesongen {sesong}</h2>
-          <a href={url(`statistikk/${sesong}/`)} class="link text-sm">All statistikk</a>
+          <a href={url(`statistikk/lag/${sesong}/`)} class="link text-sm">All statistikk</a>
         </div>
         <div class="grid grid-cols-3 gap-2 sm:grid-cols-6">
           {(
@@ -112,7 +112,7 @@ const malscorere = siste
             tittel: `Flest kort ${sesong}`,
             rader: kort,
             verdi: (r: (typeof kort)[number]) => `${r.stat.gule} gule${r.stat.rode ? `, ${r.stat.rode} røde` : ''}`,
-            anker: 'disiplin',
+            anker: 'gule',
             tom: 'Ingen kort ennå.',
           },
         ].map((b) => (

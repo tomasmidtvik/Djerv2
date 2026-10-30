@@ -1,0 +1,102 @@
+---
+import StatSeksjon from '../../../components/StatSeksjon.astro';
+import Tall from '../../../components/Tall.astro';
+import Toppliste from '../../../components/Toppliste.astro';
+import { BOLKER, disiplin } from '../../../lib/analyse.ts';
+import { datoKort, getDb, kampTittel, kampUrl, tall } from '../../../lib/site.ts';
+import { kamperISesong, toppliste } from '../../../lib/stats.ts';
+
+export function getStaticPaths() {
+  return [{ params: { sesong: undefined } }, ...getDb().sesonger.map((s) => ({ params: { sesong: String(s) } }))];
+}
+const sesong = Astro.params.sesong ? Number(Astro.params.sesong) : null;
+const db = getDb();
+const kamper = kamperISesong(db, sesong);
+const d = disiplin(kamper);
+const per = (n: number) => (kamper.length ? tall(n / kamper.length, 2) : '–');
+const perSesong = db.sesonger.map((s) => ({ s, d: disiplin(kamperISesong(db, s)) }));
+const minKamper = sesong ? 1 : 3;
+const dis = toppliste(db.personer, 'kortPerKamp', sesong, minKamper);
+const maks = Math.max(1, ...d.oss.bolker, ...d.mot.bolker);
+---
+
+<StatSeksjon seksjon="disiplin" tittel="Disiplin" sesong={sesong} beskrivelse={`Kort for oss og motstanderne. Basert på ${kamper.length} av ${kamper.length} kamper.`}>
+  <Tall
+    kolonner="grid-cols-2 sm:grid-cols-4"
+    tall={[
+      ['Gule, oss', d.oss.gule],
+      ['Røde, oss', d.oss.rode],
+      ['Gule, motstander', d.mot.gule],
+      ['Røde, motstander', d.mot.rode],
+      ['Kort per kamp, oss', per(d.oss.gule + d.oss.rode)],
+      ['Kort per kamp, motstander', per(d.mot.gule + d.mot.rode)],
+    ]}
+  />
+
+  <section aria-labelledby="minutt">
+    <h2 id="minutt" class="h-section mb-2">Når kortene faller</h2>
+    <div class="card overflow-x-auto">
+      <table class="tbl">
+        <thead><tr><th scope="col">Minutt</th><th scope="col">Oss</th><th scope="col">Motstander</th></tr></thead>
+        <tbody>
+          {BOLKER.map((b, i) => (
+            <tr>
+              <td class="num whitespace-nowrap font-medium">{b}</td>
+              {[d.oss.bolker[i], d.mot.bolker[i]].map((n, j) => (
+                <td class="w-[40%] min-w-[7rem]">
+                  <span class="flex items-center gap-2">
+                    <span class={`block h-2.5 rounded ${j === 0 ? 'bg-accent' : 'bg-muted'}`} style={`width:${Math.max(n ? 4 : 0, (n / maks) * 80)}%`}></span>
+                    <span class="num text-xs">{n}</span>
+                  </span>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {
+    !sesong && (
+      <section aria-labelledby="sesong">
+        <h2 id="sesong" class="h-section mb-2">Per sesong</h2>
+        <div class="card overflow-x-auto">
+          <table class="tbl">
+            <thead><tr><th scope="col">Sesong</th><th scope="col" class="r">Kamper</th><th scope="col" class="r">Gule</th><th scope="col" class="r">Røde</th><th scope="col" class="r">Kort/kamp</th><th scope="col" class="r">Mot., gule</th><th scope="col" class="r">Mot., røde</th></tr></thead>
+            <tbody>
+              {perSesong.map(({ s, d: x }) => (
+                <tr><td class="font-semibold">{s}</td><td class="r">{x.kamper}</td><td class="r">{x.oss.gule}</td><td class="r">{x.oss.rode}</td><td class="r font-bold">{x.kamper ? tall((x.oss.gule + x.oss.rode) / x.kamper, 2) : '–'}</td><td class="r">{x.mot.gule}</td><td class="r">{x.mot.rode}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )
+  }
+
+  <section aria-labelledby="mest">
+    <h2 id="mest" class="h-section mb-2">Kamper med flest kort</h2>
+    <ul class="card divide-y divide-line">
+      {d.mestKort.map(({ k, oss: o, mot: m }) => (
+        <li><a href={kampUrl(k.kampnr)} class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-surface-2"><span class="min-w-0 flex-1 truncate">{kampTittel(k)} <span class="num text-xs text-muted">{datoKort(k.dato)}</span></span><span class="num whitespace-nowrap font-semibold">{o} + {m}</span></a></li>
+      ))}
+    </ul>
+    <p class="mt-1 text-xs text-muted">Kort til oss + kort til motstanderen.</p>
+  </section>
+
+  <Toppliste
+    id="spillere"
+    tittel="Kort per kamp, spillere"
+    rader={dis}
+    tom="Ingen kort."
+    antall={15}
+    kolonner={[
+      { label: 'Kamper', verdi: (r) => r.stat.kamper },
+      { label: 'Gule', verdi: (r) => r.stat.gule },
+      { label: 'Røde', verdi: (r) => r.stat.rode },
+      { label: 'Kort/kamp', verdi: (r) => tall(r.verdi, 2), fet: true },
+    ]}
+    merknad={minKamper > 1 ? `Minst ${minKamper} kamper i troppen.` : undefined}
+  />
+</StatSeksjon>

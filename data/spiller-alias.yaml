@@ -3,11 +3,24 @@
 # Importen foreslår mulige duplikater (se data/review.md), men slår aldri sammen selv.
 # Venstre side: navnet slik det står i en rapport. Høyre side: navnet personen skal vises med.
 # Navnet til høyre kan selv stå i en rapport (da brukes det som det er).
-#
-# Eksempel (fjern # foran linjene for å slå sammen):
 alias:
-  # "Kay Magne Pedersen": "Kay-Magne Larsen Pedersen"
-  # "Øystein Midtvik": "Øystein Emdal Midtvik"
+  # Bekreftet av Tomas 2026-10-30
+  "Aoss Saion": "Aoss Ehmad Saion"
+  "Hamse Ali": "Hamse Mohamoud Ali"
+  "Håvard Hjelmeland": "Håvard Waage Hjelmeland"
+  "Isak Gaasland": "Isak Wulff Gaasland"
+  "Kay Magne Larsen Pedersen": "Kay-Magne Larsen Pedersen"
+  "Kay Magne Pedersen": "Kay-Magne Larsen Pedersen"
+  "Kay Magne": "Kay-Magne Larsen Pedersen"
+  "Marcus Refvik": "Marcus Kvalheim Refvik"
+  "Peter Bull": "Peter Schau Bull"
+  "Sjur Mjød": "Sjur Mjør"
+  "Sjur Aure": "Sjur Mjør"
+  "Tomas Midtvik": "Tomas Emdal Midtvik"
+  "Tord Jonsson": "Tord Fares Jonsson Abd Rabo"
+  "Ulrik Opheim": "Ulrik Opheim Heggli"
+  "Ulle Opheim": "Ulrik Opheim Heggli"
+  "Øystein Midtvik": "Øystein Emdal Midtvik"
 
 # Par som IKKE er samme person (fjerner forslaget fra review-listen):
 ikke_samme_person:

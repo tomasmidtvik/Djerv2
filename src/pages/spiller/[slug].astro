@@ -1,5 +1,7 @@
 ---
 import Avatar from '../../components/Avatar.astro';
+import BilanseTabell from '../../components/BilanseTabell.astro';
+import { medOgUten } from '../../lib/analyse.ts';
 import Icon from '../../components/Icon.astro';
 import Kort from '../../components/Kort.astro';
 import Utfall from '../../components/Utfall.astro';
@@ -16,6 +18,8 @@ export function getStaticPaths() {
 const p: Person | undefined = getDb().personMap.get(Astro.params.slug!);
 if (!p) return Astro.redirect(url('spillere/'));
 const total = spillerStat(p.spillerKamper);
+const db = getDb();
+const medUten = medOgUten(p, db.kamper, db.settings.poeng);
 const sesonger = total.sesonger.slice().reverse();
 const perSesong = sesonger.map((s) => ({ s, st: spillerStat(filtrerSesong(p.spillerKamper, s)) }));
 const roller = lederRoller(p);
@@ -96,14 +100,36 @@ const beskrivelse = erSpiller
               <dt class="text-muted">Røde kort (2 gule / direkte)</dt>
               <dd class="num">{total.rodeAdv2} / {total.rodeDirekte}</dd>
             </div>
+            <div class="flex justify-between gap-3">
+              <dt class="text-muted">Hat-tricks</dt>
+              <dd class="num">{total.hatTricks}</dd>
+            </div>
+            <div class="flex justify-between gap-3">
+              <dt class="text-muted">Mål som innbytter</dt>
+              <dd class="num">{total.malInnbytter}</dd>
+            </div>
             {posisjoner.size > 0 && (
               <div class="flex justify-between gap-3 sm:col-span-2">
                 <dt class="text-muted">Oppstilt som (fra mediarapport)</dt>
                 <dd>{[...posisjoner.entries()].map(([pos, n]) => `${pos} ${n}`).join(' · ')}</dd>
               </div>
             )}
+            {Object.keys(total.malPosisjon).length > 0 && (
+              <div class="flex justify-between gap-3 sm:col-span-2">
+                <dt class="text-muted">Mål etter oppstilt posisjon</dt>
+                <dd>{Object.entries(total.malPosisjon).map(([pos, n]) => `${pos} ${n}`).join(' · ')}</dd>
+              </div>
+            )}
           </dl>
         </section>
+
+        {medUten && (
+          <section class="mt-6" aria-labelledby="med-uten">
+            <h2 id="med-uten" class="h-section mb-2">Laget med og uten spilleren</h2>
+            <BilanseTabell forste="Spilleren" rader={[{ navn: 'I troppen', b: medUten.med }, { navn: 'Ikke i troppen', b: medUten.uten }]} />
+            <p class="mt-1 text-xs text-muted">Bare sesonger spilleren var med. Mange andre ting påvirker resultatene, så dette sier ikke at spilleren er årsaken.</p>
+          </section>
+        )}
 
         <section class="mt-6" aria-labelledby="per-sesong">
           <h2 id="per-sesong" class="h-section mb-2">Per sesong</h2>

@@ -21,4 +21,10 @@
 #     - Ola Nordmann
 #   tilskuere: 40
 #   mediarapport: 2026-10-18_djerv-2_kvernbit-2   # tving kobling (eller false)
+#   rettelser:                    # retter hendelser. Overlever ny import.
+#     - spiller: Ola Nordmann
+#       type: mal                 # mal | selvmal | gult | rodt2 | rodt
+#       fra: 50                   # utelat "fra" for å legge til en hendelse
+#       til: 40                   # utelat "til" for å fjerne en hendelse
+#   pause: { hjemme: 1, borte: 0 } # overstyrer pauseresultatet
 #   godkjent: true                # fjerner kampen fra review-listen

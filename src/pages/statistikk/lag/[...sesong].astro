@@ -1,0 +1,174 @@
+---
+import BilanseTabell from '../../../components/BilanseTabell.astro';
+import StatSeksjon from '../../../components/StatSeksjon.astro';
+import Tall from '../../../components/Tall.astro';
+import Utfall from '../../../components/Utfall.astro';
+import { bilanse, omganger, rekker, rekorder, resultatFordeling, sesongRader, type Rekke } from '../../../lib/analyse.ts';
+import { datoKort, getDb, kampTittel, kampUrl, tall, url } from '../../../lib/site.ts';
+import { kamperISesong } from '../../../lib/stats.ts';
+
+export function getStaticPaths() {
+  return [{ params: { sesong: undefined } }, ...getDb().sesonger.map((s) => ({ params: { sesong: String(s) } }))];
+}
+const sesong = Astro.params.sesong ? Number(Astro.params.sesong) : null;
+const db = getDb();
+const regel = db.settings.poeng;
+const kamper = kamperISesong(db, sesong);
+const b = bilanse(kamper, regel);
+const hjemme = bilanse(kamper.filter((k) => k.side === 'hjemme'), regel);
+const borte = bilanse(kamper.filter((k) => k.side === 'borte'), regel);
+const fordeling = resultatFordeling(kamper);
+const o = omganger(kamper);
+const r = rekker(kamper);
+const rek = rekorder(kamper);
+const cleanSheets = kamper.filter((k) => k.malMot === 0 && k.malKomplett).length;
+const utenScoring = kamper.filter((k) => k.malFor === 0).length;
+const maksFord = Math.max(1, ...fordeling.map((f) => f.antall));
+const rekkeTekst = (x: Rekke) =>
+  x.lengde && x.fra && x.til ? `${datoKort(x.fra.dato)}${x.lengde > 1 ? `–${datoKort(x.til.dato)}` : ''}${x.paagaar ? ' (pågår)' : ''}` : '';
+const rekkeRader: [string, Rekke][] = [
+  ['Seiersrekke', r.seier],
+  ['Ubeseiret', r.ubeseiret],
+  ['Tapsrekke', r.tap],
+  ['Uten seier', r.utenSeier],
+  ['Kamper på rad med scoring', r.scoring],
+];
+const rekordRader = [
+  ['Største seier', rek.storsteSeier],
+  ['Største tap', rek.storsteTap],
+  ['Flest mål i en kamp', rek.flestMal],
+  ['Flest mål scoret', rek.flestScoret],
+  ['Flest mål sluppet inn', rek.flestSluppetInn],
+] as const;
+const minuttRader = [
+  ['Raskeste mål', rek.raskesteMal],
+  ['Seneste mål', rek.senesteMal],
+  ['Raskeste baklengsmål', rek.raskesteBaklengs],
+] as const;
+---
+
+<StatSeksjon seksjon="lag" tittel="Laget" sesong={sesong} beskrivelse={`Basert på ${kamper.length} av ${kamper.length} kamper. Poeng: ${regel.seier} for seier, ${regel.uavgjort} for uavgjort.`}>
+  <Tall
+    kolonner="grid-cols-4 sm:grid-cols-8"
+    tall={[
+      ['Kamper', b.kamper],
+      ['Seire', b.seire],
+      ['Uavgjort', b.uavgjort],
+      ['Tap', b.tap],
+      ['Poeng', b.poeng],
+      ['Mål', `${b.malFor}–${b.malMot}`],
+      ['Mål for/kamp', tall(b.malForSnitt ?? 0, 2)],
+      ['Mål mot/kamp', tall(b.malMotSnitt ?? 0, 2)],
+    ]}
+  />
+
+  <section aria-labelledby="hjemmeborte">
+    <h2 id="hjemmeborte" class="h-section mb-2">Hjemme og borte</h2>
+    <BilanseTabell forste="Sted" rader={[{ navn: 'Hjemme', b: hjemme }, { navn: 'Borte', b: borte }]} />
+  </section>
+
+  {
+    !sesong && (
+      <section aria-labelledby="sesonger">
+        <h2 id="sesonger" class="h-section mb-2">Sesong for sesong</h2>
+        <BilanseTabell
+          forste="Sesong"
+          rader={sesongRader(db).map((s) => ({
+            navn: String(s.sesong),
+            href: url(`statistikk/lag/${s.sesong}/`),
+            merknad: `${s.turneringer.join(', ')}${s.rykk ? ` · ${s.rykk}` : ''}`,
+            b: s.b,
+          }))}
+        />
+      </section>
+    )
+  }
+
+  <section aria-labelledby="omganger">
+    <h2 id="omganger" class="h-section mb-2">Omganger</h2>
+    <div class="grid gap-3 md:grid-cols-2">
+      <div class="card overflow-x-auto">
+        <table class="tbl">
+          <caption class="px-3 pt-3 text-left text-sm font-semibold">Mål per omgang</caption>
+          <thead><tr><th scope="col"></th><th scope="col" class="r">1. omgang</th><th scope="col" class="r">2. omgang</th></tr></thead>
+          <tbody>
+            <tr><th scope="row" class="!text-sm !normal-case !tracking-normal !text-ink">Mål for</th><td class="r">{o.for1}</td><td class="r">{o.for2}</td></tr>
+            <tr><th scope="row" class="!text-sm !normal-case !tracking-normal !text-ink">Mål mot</th><td class="r">{o.mot1}</td><td class="r">{o.mot2}</td></tr>
+          </tbody>
+        </table>
+        {o.utenOmgang > 0 && <p class="px-3 pb-3 pt-1 text-xs text-muted">{o.utenOmgang} mål mangler minutt i rapporten og er ikke med.</p>}
+      </div>
+      <div class="card overflow-x-auto">
+        <table class="tbl">
+          <caption class="px-3 pt-3 text-left text-sm font-semibold">Stilling til pause og utfall</caption>
+          <thead><tr><th scope="col">Til pause</th><th scope="col" class="r">K</th><th scope="col" class="r">S</th><th scope="col" class="r">U</th><th scope="col" class="r">T</th></tr></thead>
+          <tbody>
+            {([['Ledet', o.pause.ledet], ['Likt', o.pause.likt], ['Bak', o.pause.bak]] as const).map(([n, x]) => (
+              <tr><th scope="row" class="!text-sm !normal-case !tracking-normal !text-ink">{n}</th><td class="r">{x.kamper}</td><td class="r">{x.S}</td><td class="r">{x.U}</td><td class="r">{x.T}</td></tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="px-3 pb-3 pt-1 text-xs text-muted">Basert på {o.grunnlag} av {kamper.length} kamper.</p>
+      </div>
+    </div>
+    <div class="mt-3 grid gap-3 md:grid-cols-2">
+      {([['Snuoperasjoner (bak til pause, ikke tap)', o.snu], ['Tapt pauseledelse', o.tapt]] as const).map(([tittel, liste]) => (
+        <div class="card">
+          <h3 class="border-b border-line px-4 py-2.5 text-sm font-semibold">{tittel}: {liste.length}</h3>
+          <ul class="divide-y divide-line">
+            {liste.slice(-6).reverse().map((k) => (
+              <li><a href={kampUrl(k.kampnr)} class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-surface-2"><Utfall utfall={k.utfall} /><span class="min-w-0 flex-1 truncate">{kampTittel(k)}</span><span class="num text-xs text-muted">{datoKort(k.dato)}</span></a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section aria-labelledby="clean">
+    <h2 id="clean" class="h-section mb-2">Clean sheets og rekker</h2>
+    <Tall kolonner="grid-cols-2" tall={[['Clean sheets', cleanSheets, 'kamper uten baklengs'], ['Uten scoring', utenScoring, 'kamper uten egne mål']]} />
+    <div class="card mt-3 overflow-x-auto">
+      <table class="tbl">
+        <thead><tr><th scope="col">Rekke</th><th scope="col" class="r">Kamper</th><th scope="col">Periode</th></tr></thead>
+        <tbody>
+          {rekkeRader.map(([n, x]) => (
+            <tr><td class="font-medium">{n}</td><td class="r font-bold">{x.lengde}</td><td class="num whitespace-nowrap text-muted">{rekkeTekst(x)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="rekorder">
+    <h2 id="rekorder" class="h-section mb-2">Rekorder</h2>
+    <div class="card divide-y divide-line">
+      {rekordRader.map(([n, x]) => x && (
+        <div class="flex items-start justify-between gap-4 px-4 py-2.5 text-sm">
+          <span class="text-muted">{n}</span>
+          <span class="text-right">{x.kamper.slice(0, 3).map((k) => <a class="link block" href={kampUrl(k.kampnr)}>{kampTittel(k)} <span class="num text-xs text-muted">{datoKort(k.dato)}</span></a>)}</span>
+        </div>
+      ))}
+      {minuttRader.map(([n, x]) => x && (
+        <div class="flex items-start justify-between gap-4 px-4 py-2.5 text-sm">
+          <span class="text-muted">{n}</span>
+          <a class="link text-right" href={kampUrl(x.k.kampnr)}><span class="font-semibold">{x.e.minutt}'</span> {x.e.navn ?? ''}{x.e.selvmal ? ' (selvmål)' : ''} <span class="num block text-xs text-muted">{kampTittel(x.k)}, {datoKort(x.k.dato)}</span></a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section aria-labelledby="fordeling">
+    <h2 id="fordeling" class="h-section mb-2">Resultatfordeling</h2>
+    <p class="mb-2 text-sm text-muted">Fra vårt ståsted: egne mål først.{fordeling[0] && ` Vanligste resultat er ${fordeling[0].resultat} (${fordeling[0].antall} ${fordeling[0].antall === 1 ? 'gang' : 'ganger'}).`}</p>
+    <ul class="card divide-y divide-line">
+      {fordeling.map((f) => (
+        <li class="flex items-center gap-3 px-4 py-1.5 text-sm">
+          <span class="num w-12 font-semibold">{f.resultat}</span>
+          <span class="flex-1"><span class={`block h-2.5 rounded ${f.utfall === 'S' ? 'bg-win' : f.utfall === 'U' ? 'bg-draw' : 'bg-loss'}`} style={`width:${Math.max(4, (f.antall / maksFord) * 100)}%`}></span></span>
+          <span class="num w-6 text-right text-muted">{f.antall}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+</StatSeksjon>

@@ -76,6 +76,8 @@ export interface Kamprapport {
   bortelag: RapportLag;
   /** hvilken side Djerv 2 spilte på (null hvis ikke funnet) */
   djerv: 'hjemme' | 'borte' | null;
+  /** avkryssede protester (utelates når det ikke er noen) */
+  protester?: { side: 'hjemme' | 'borte'; naar: 'for' | 'etter' }[];
   /** advarsler fra parseren (lagres så review-listen kan bygges uten PDF-en) */
   advarsler: string[];
   kilde: string;
@@ -141,7 +143,19 @@ export interface BruktInnbytter {
   minutt?: number;
 }
 
+/** Manuell retting av en hendelse. Uten "fra" legges den til, uten "til" fjernes den. */
+export interface Rettelse {
+  spiller: string;
+  type: 'mal' | 'selvmal' | 'gult' | 'rodt2' | 'rodt';
+  fra?: number;
+  til?: number;
+}
+
 export interface KampMeta {
+  /** retter hendelser uten å endre filene importen skriver */
+  rettelser?: Rettelse[];
+  /** overstyrer pauseresultatet i rapporten */
+  pause?: Score;
   opptak?: Opptak[];
   referat?: string;
   /** keeper i kampen – brukes bare hvis mediarapport mangler */

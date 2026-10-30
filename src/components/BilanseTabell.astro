@@ -1,0 +1,61 @@
+---
+// Tabell med kamper, S/U/T, mål, poeng per kamp og seiersprosent.
+// Prosent og snitt vises ikke på få kamper ("ikke nok data").
+import { MIN_KAMPER, type Bilanse } from '../lib/analyse.ts';
+import { prosent, tall } from '../lib/site.ts';
+interface Rad {
+  navn: string;
+  href?: string | null;
+  merknad?: string | null;
+  b: Bilanse;
+}
+interface Props {
+  forste: string;
+  rader: Rad[];
+  tom?: string;
+}
+const { forste, rader, tom = 'Ingen kamper.' } = Astro.props;
+const nok = (b: Bilanse) => b.kamper >= MIN_KAMPER;
+---
+
+{
+  rader.length === 0 ? (
+    <p class="card p-4 text-sm text-muted">{tom}</p>
+  ) : (
+    <div class="card overflow-x-auto">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th scope="col">{forste}</th>
+            <th scope="col" class="r" title="Kamper">K</th>
+            <th scope="col" class="r" title="Seire">S</th>
+            <th scope="col" class="r" title="Uavgjort">U</th>
+            <th scope="col" class="r" title="Tap">T</th>
+            <th scope="col" class="r">Mål</th>
+            <th scope="col" class="r" title="Målforskjell">+/-</th>
+            <th scope="col" class="r" title={`Poeng per kamp (fra ${MIN_KAMPER} kamper)`}>P/K</th>
+            <th scope="col" class="r" title={`Seiersprosent (fra ${MIN_KAMPER} kamper)`}>S %</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rader.map((r) => (
+            <tr>
+              <td class="min-w-[9rem]">
+                {r.href ? <a class="link font-medium" href={r.href}>{r.navn}</a> : <span class="font-medium">{r.navn}</span>}
+                {r.merknad && <span class="block text-xs text-muted">{r.merknad}</span>}
+              </td>
+              <td class="r">{r.b.kamper}</td>
+              <td class="r">{r.b.seire}</td>
+              <td class="r">{r.b.uavgjort}</td>
+              <td class="r">{r.b.tap}</td>
+              <td class="r whitespace-nowrap">{r.b.malFor}–{r.b.malMot}</td>
+              <td class="r">{r.b.malforskjell > 0 ? `+${r.b.malforskjell}` : r.b.malforskjell}</td>
+              <td class="r font-semibold">{nok(r.b) ? tall(r.b.poengPerKamp ?? 0, 2) : '–'}</td>
+              <td class="r">{nok(r.b) ? prosent(r.b.seierProsent) : '–'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}

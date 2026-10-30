@@ -1,0 +1,56 @@
+---
+import StatSeksjon from '../../../components/StatSeksjon.astro';
+import { dommere, MIN_KAMPER } from '../../../lib/analyse.ts';
+import { getDb, prosent, tall } from '../../../lib/site.ts';
+import { kamperISesong } from '../../../lib/stats.ts';
+
+export function getStaticPaths() {
+  return [{ params: { sesong: undefined } }, ...getDb().sesonger.map((s) => ({ params: { sesong: String(s) } }))];
+}
+const sesong = Astro.params.sesong ? Number(Astro.params.sesong) : null;
+const db = getDb();
+const kamper = kamperISesong(db, sesong);
+const rader = dommere(kamper, db.settings.poeng);
+const medDommer = rader.reduce((n, r) => n + r.b.kamper, 0);
+---
+
+<StatSeksjon seksjon="dommere" tittel="Dommere" sesong={sesong} beskrivelse={`Kuriosa. Basert på ${medDommer} av ${kamper.length} kamper. Prosent og snitt vises fra ${MIN_KAMPER} kamper.`}>
+  <div class="card overflow-x-auto">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th scope="col">Dommer</th>
+          <th scope="col" class="r" title="Kamper">K</th>
+          <th scope="col" class="r" title="Seire">S</th>
+          <th scope="col" class="r" title="Uavgjort">U</th>
+          <th scope="col" class="r" title="Tap">T</th>
+          <th scope="col" class="r" title="Seiersprosent">S %</th>
+          <th scope="col" class="r" title="Kort til oss per kamp">Kort oss</th>
+          <th scope="col" class="r" title="Kort til motstander per kamp">Kort mot</th>
+          <th scope="col" class="r" title="Seier-uavgjort-tap hjemme">Hjemme</th>
+          <th scope="col" class="r" title="Seier-uavgjort-tap borte">Borte</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rader.map((r) => {
+          const nok = r.b.kamper >= MIN_KAMPER;
+          return (
+            <tr>
+              <td class="min-w-[10rem]"><span class="font-medium">{r.navn}</span>{r.klubb && <span class="block text-xs text-muted">{r.klubb}</span>}</td>
+              <td class="r">{r.b.kamper}</td>
+              <td class="r">{r.b.seire}</td>
+              <td class="r">{r.b.uavgjort}</td>
+              <td class="r">{r.b.tap}</td>
+              <td class="r">{nok ? prosent(r.b.seierProsent) : '–'}</td>
+              <td class="r">{nok ? tall(r.kortOss / r.b.kamper, 2) : r.kortOss}</td>
+              <td class="r">{nok ? tall(r.kortMot / r.b.kamper, 2) : r.kortMot}</td>
+              <td class="r whitespace-nowrap">{r.hjemme.seire}-{r.hjemme.uavgjort}-{r.hjemme.tap}</td>
+              <td class="r whitespace-nowrap">{r.borte.seire}-{r.borte.uavgjort}-{r.borte.tap}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+  <p class="text-xs text-muted">Kortkolonnene viser snitt per kamp fra {MIN_KAMPER} kamper, ellers antall.</p>
+</StatSeksjon>

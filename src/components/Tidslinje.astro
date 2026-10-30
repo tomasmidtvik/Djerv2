@@ -8,8 +8,8 @@ interface Props {
   kamp: Kamp;
 }
 const { kamp: k } = Astro.props;
-const forste = k.hendelser.filter((e) => e.minutt !== null && e.minutt <= 45);
-const andre = k.hendelser.filter((e) => e.minutt === null || e.minutt > 45);
+const forste = k.hendelser.filter((e) => e.omgang === 1);
+const andre = k.hendelser.filter((e) => e.omgang !== 1);
 const typeTekst = (e: KampHendelse) =>
   e.type === 'mal' ? (e.selvmal ? 'Selvmål' : 'Mål') : e.type === 'gult' ? 'Gult kort' : e.type === 'rodt2' ? 'Rødt kort (to gule)' : 'Rødt kort';
 ---

@@ -1,6 +1,6 @@
 # Review-liste
 
-Generert av `npm run import` 30.10.2026, 01:21:11. Filen skrives på nytt ved hver import.
+Generert av `npm run import` 30.10.2026, 11:33:20. Filen skrives på nytt ved hver import.
 
 Når du har sjekket en kamp og alt stemmer, sett `godkjent: true` på kampen i `data/matches-meta.yaml`.
 
@@ -15,6 +15,7 @@ Når du har sjekket en kamp og alt stemmer, sett `godkjent: true` på kampen i `
 ## Kamp 12120601053: Loddefjord 3 - Djerv 2 (2023-06-09)
 
 - Mål stemmer ikke for Loddefjord 3: 0 registrert på spillere, men resultatet er 6-6. Selvmål? Legg det inn under "selvmal" i data/matches-meta.yaml.
+- Pauseresultatet er 4-1, men målene før pause gir 0-1. Sjekk minuttene i PDF-en.
 
 ## Kamp 12120602007: Djerv 2 - NHHI 2 (2024-04-14)
 
@@ -23,6 +24,7 @@ Når du har sjekket en kamp og alt stemmer, sett `godkjent: true` på kampen i `
 ## Kamp 12120602023: Neptun - Djerv 2 (2024-05-14)
 
 - Mål stemmer ikke for Djerv 2: 1 registrert på spillere + 1 selvmål, men resultatet er 4-3. Selvmål? Legg det inn under "selvmal" i data/matches-meta.yaml.
+- Pauseresultatet er 2-1, men målene før pause gir 1-2. Sjekk minuttene i PDF-en.
 
 ## Kamp 12120602032: Djerv 2 - Vaksdal (2024-05-30)
 
@@ -38,6 +40,7 @@ Når du har sjekket en kamp og alt stemmer, sett `godkjent: true` på kampen i `
 
 ## Kamp 12120603032: Djerv 2 - Nymark 2 (2025-06-09)
 
+- Pauseresultatet er 1-0, men målene før pause gir 0-0. Sjekk minuttene i PDF-en.
 - KONTROLLER: kort i kolonnen "Utv. (Adv. 2)" (rødt etter to gule) for Simen Elias Knutsvik Håvåg (hjemmelag) i 85'. Denne kolonnen er ikke sett i praksis før – sjekk mot PDF-en.
 
 ## Kamp 12120604058: Djerv 2 - Neptun (2026-09-06)
@@ -54,23 +57,4 @@ Når du har sjekket en kamp og alt stemmer, sett `godkjent: true` på kampen i `
 
 # Mulige duplikater
 
-Er det samme person, legg til en linje under `alias:` i `data/spiller-alias.yaml`.
-Er det ulike personer, legg paret under `ikke_samme_person:` så forsvinner forslaget.
-
-- "Aoss Ehmad Saion" og "Aoss Saion" – det ene navnet er en del av det andre
-- "Hamse Ali" og "Hamse Mohamoud Ali" – det ene navnet er en del av det andre
-- "Håvard Hjelmeland" og "Håvard Waage Hjelmeland" – det ene navnet er en del av det andre
-- "Isak Gaasland" og "Isak Wulff Gaasland" – det ene navnet er en del av det andre
-- "Kay Magne" og "Kay Magne Larsen Pedersen" – det ene navnet er en del av det andre
-- "Kay Magne" og "Kay Magne Pedersen" – det ene navnet er en del av det andre
-- "Kay Magne" og "Kay-Magne Larsen Pedersen" – det ene navnet er en del av det andre
-- "Kay Magne Larsen Pedersen" og "Kay Magne Pedersen" – det ene navnet er en del av det andre
-- "Kay Magne Larsen Pedersen" og "Kay-Magne Larsen Pedersen" – samme navnedeler (bindestrek/mellomrom/rekkefølge)
-- "Kay Magne Pedersen" og "Kay-Magne Larsen Pedersen" – det ene navnet er en del av det andre
-- "Marcus Kvalheim Refvik" og "Marcus Refvik" – det ene navnet er en del av det andre
-- "Peter Bull" og "Peter Schau Bull" – det ene navnet er en del av det andre
-- "Sjur Mjød" og "Sjur Mjør" – nesten likt navn (1 tegn forskjell)
-- "Tomas Emdal Midtvik" og "Tomas Midtvik" – det ene navnet er en del av det andre
-- "Tord Fares Jonsson Abd Rabo" og "Tord Jonsson" – det ene navnet er en del av det andre
-- "Ulrik Opheim" og "Ulrik Opheim Heggli" – det ene navnet er en del av det andre
-- "Øystein Emdal Midtvik" og "Øystein Midtvik" – det ene navnet er en del av det andre
+Ingen forslag.

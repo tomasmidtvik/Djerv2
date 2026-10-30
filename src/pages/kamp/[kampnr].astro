@@ -6,6 +6,7 @@ import Tidslinje from '../../components/Tidslinje.astro';
 import Tropp from '../../components/Tropp.astro';
 import Utfall from '../../components/Utfall.astro';
 import Layout from '../../layouts/Layout.astro';
+import { kampFakta } from '../../lib/analyse.ts';
 import type { Kamp } from '../../lib/db.ts';
 import { datoKort, datoLang, getDb, kampTittel, kampUrl, spillerUrl, stor, url } from '../../lib/site.ts';
 
@@ -41,9 +42,24 @@ const info: [string, string | null][] = [
   ['Ekstraomganger', k.eeo],
   ['Straffekonkurranse', k.straffekonk],
   ['Keeper', k.keeper?.kilde === 'metadata' ? k.keeper.navn : null],
+  ['Protest', k.protester.length ? k.protester.map((p) => `${p.lag}, ${p.naar === 'for' ? 'før kampstart' : 'etter kampslutt'}`).join('; ') : null],
   ['Kampnr.', k.kampnr],
 ];
 const ossLag = k.side === 'hjemme' ? k.hjemme : k.borte;
+const f = kampFakta(k);
+const malTekst = (e: typeof f.forste) => (e ? `${e.minutt}' ${e.navn ?? 'Ukjent'}${e.selvmal ? ' (selvmål)' : ''}` : null);
+const fakta: [string, string | number | null][] = [
+  ['Mål i kampen', f.totalt],
+  ['Seiersmargin', f.margin || null],
+  ['1. omgang (oss–dem)', `${f.malOmgang.for[0]}–${f.malOmgang.mot[0]}`],
+  ['2. omgang (oss–dem)', `${f.malOmgang.for[1]}–${f.malOmgang.mot[1]}`],
+  ['Første mål', malTekst(f.forste)],
+  ['Siste mål', f.totalt > 1 ? malTekst(f.siste) : null],
+  ['Ulike målscorere', f.ulikeScorere || null],
+  ['Hat-trick', f.hatTricks.length ? f.hatTricks.map((s) => `${s.navn} (${s.mal.length})`).join(', ') : null],
+  ['Mål etter posisjon', f.perPosisjon.length ? f.perPosisjon.map(([p, n]) => `${p} ${n}`).join(' · ') : null],
+  ['Mål per 15 min (oss–dem)', f.totalt ? f.bolker.map((b) => `${b.for}–${b.mot}`).join(' · ') : null],
+];
 const harBane = k.hjemme.harMedia || k.borte.harMedia;
 const beskrivelse = `${kampTittel(k)} (pause ${k.pause ? `${k.pause.hjemme}-${k.pause.borte}` : '–'}), ${datoKort(k.dato)} på ${k.bane}.`;
 ---
@@ -142,6 +158,22 @@ const beskrivelse = `${kampTittel(k)} (pause ${k.pause ? `${k.pause.hjemme}-${k.
           </section>
         )
       }
+      <section class="card p-4" aria-labelledby="kampfakta">
+        <h2 id="kampfakta" class="h-section mb-2">Kampfakta</h2>
+        <dl class="divide-y divide-line text-sm">
+          {
+            fakta
+              .filter(([, v]) => v !== null)
+              .map(([label, v]) => (
+                <div class="flex justify-between gap-4 py-2">
+                  <dt class="text-muted">{label}</dt>
+                  <dd class="num text-right">{v}</dd>
+                </div>
+              ))
+          }
+        </dl>
+        {!k.malKomplett && <p class="mt-2 text-xs text-muted">Rapporten mangler minutt for {k.ukjenteMal.hjemme + k.ukjenteMal.borte} mål, så tallene er ufullstendige.</p>}
+      </section>
       <section class="card p-4" aria-labelledby="kampinfo">
         <h2 id="kampinfo" class="h-section mb-2">Kampinfo</h2>
         <dl class="divide-y divide-line text-sm">

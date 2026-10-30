@@ -1,6 +1,12 @@
 {
   "type": "kamprapport",
   "versjon": 1,
+  "protester": [
+    {
+      "side": "hjemme",
+      "naar": "etter"
+    }
+  ],
   "kampnr": "12120602077",
   "dato": "2024-10-04",
   "avspark": "19:00",

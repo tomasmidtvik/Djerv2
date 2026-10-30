@@ -1,0 +1,69 @@
+---
+import BilanseTabell from '../../../components/BilanseTabell.astro';
+import StatSeksjon from '../../../components/StatSeksjon.astro';
+import { formasjoner, spillerPar, troppRader } from '../../../lib/analyse.ts';
+import { getDb, spillerUrl, tall } from '../../../lib/site.ts';
+
+const db = getDb();
+const rader = troppRader(db);
+const par = spillerPar(db.kamper);
+const form = formasjoner(db.kamper, db.settings.poeng);
+const navn = (slug: string) => db.personMap.get(slug)?.navn ?? slug;
+const medForm = form.reduce((n, f) => n + f.b.kamper, 0);
+---
+
+<StatSeksjon seksjon="tropp" tittel="Tropp" medSesong={false} beskrivelse="Spillere i troppen per sesong, hvem som har spilt sammen, og formasjonene laget har vært oppstilt i.">
+  <section aria-labelledby="sesong">
+    <h2 id="sesong" class="h-section mb-2">Per sesong</h2>
+    <div class="card overflow-x-auto">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th scope="col">Sesong</th>
+            <th scope="col" class="r">Kamper</th>
+            <th scope="col" class="r">Spillere</th>
+            <th scope="col" class="r" title="Snitt spillere i troppen per kamp">Snitt tropp</th>
+            <th scope="col" class="r">Nye</th>
+            <th scope="col" class="r" title="Spilte tidligere, men ikke sesongen før">Tilbake</th>
+            <th scope="col" class="r" title="Spilte sesongen før, men ikke denne">Borte</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rader.map((r) => (
+            <tr>
+              <td class="font-semibold">{r.sesong}</td>
+              <td class="r">{r.kamper}</td>
+              <td class="r font-bold">{r.spillere}</td>
+              <td class="r">{tall(r.snittTropp, 1)}</td>
+              <td class="r">{r.nye ?? '–'}</td>
+              <td class="r">{r.tilbake ?? '–'}</td>
+              <td class="r">{r.sluttet ?? '–'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="mt-1 text-xs text-muted">Nye, tilbake og borte kan ikke regnes for første sesong i arkivet. Spillere med skjult navn er ikke med.</p>
+  </section>
+
+  <section aria-labelledby="formasjoner">
+    <h2 id="formasjoner" class="h-section mb-2">Formasjoner</h2>
+    <BilanseTabell forste="Formasjon" rader={form.map((f) => ({ navn: f.navn, b: f.b }))} />
+    <p class="mt-1 text-xs text-muted">Oppstilt som i mediarapporten, ikke nødvendigvis det laget spilte. Basert på {medForm} av {db.kamper.length} kamper.</p>
+  </section>
+
+  <section aria-labelledby="par">
+    <h2 id="par" class="h-section mb-2">Oftest i troppen sammen</h2>
+    <ol class="card divide-y divide-line">
+      {par.map((p, i) => (
+        <li class="flex items-center gap-3 px-4 py-2 text-sm">
+          <span class="num w-5 text-muted">{i + 1}</span>
+          <span class="min-w-0 flex-1">
+            <a class="link" href={spillerUrl(p.a)}>{navn(p.a)}</a> og <a class="link" href={spillerUrl(p.b)}>{navn(p.b)}</a>
+          </span>
+          <span class="num font-semibold">{p.kamper}</span>
+        </li>
+      ))}
+    </ol>
+  </section>
+</StatSeksjon>

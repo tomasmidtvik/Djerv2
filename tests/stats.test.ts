@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { buildDb } from '../src/lib/db.ts';
 import { linkMedia, skjulNavn, skjulteSpillere } from '../src/lib/link.ts';
-import { foreslaDuplikater, malSjekk } from '../src/lib/review.ts';
+import { foreslaDuplikater, malSjekk, reviewList } from '../src/lib/review.ts';
 import { filtrerSesong, lagStat, plasseringer, spillerStat, toppliste } from '../src/lib/stats.ts';
 import type { Mediarapport } from '../src/lib/types.ts';
 import { kamp, lag, leder, raw, spiller } from './helpers.ts';
@@ -198,6 +198,55 @@ describe('hendelser og målsjekk', () => {
     expect(d.kamper[0].ukjenteMal).toEqual({ hjemme: 0, borte: 0 });
     // Selvmålet teller ikke som mål for spilleren
     expect(spillerStat(d.personer[0].spillerKamper).mal).toBe(1);
+  });
+
+  it('plasserer mål i minutt 45/46 etter pauseresultatet, og varsler ved avvik', () => {
+    const h = (mal: number[]) => lag('Djerv 2', [spiller('Ola Nordmann', { mal })]);
+    const b = lag('X', []);
+    const andreOmgang = buildDb(raw([kamp('5001', '2025-01-01', h([10, 45]), b, [2, 0], { pause: { hjemme: 1, borte: 0 } })])).kamper[0];
+    expect(andreOmgang.hendelser.map((e) => e.omgang)).toEqual([1, 2]);
+    expect(andreOmgang.pauseAvvik).toBeNull();
+    const forsteOmgang = buildDb(raw([kamp('5002', '2025-01-01', h([46]), b, [1, 0], { pause: { hjemme: 1, borte: 0 } })])).kamper[0];
+    expect(forsteOmgang.hendelser[0].omgang).toBe(1);
+    expect(forsteOmgang.pauseAvvik).toBeNull();
+    const avvik = buildDb(raw([kamp('5003', '2025-01-01', h([50]), b, [1, 0], { pause: { hjemme: 1, borte: 0 } })])).kamper[0];
+    expect(avvik.pauseAvvik).toMatch(/1-0.*0-0/);
+    const utenPause = buildDb(raw([kamp('5004', '2025-01-01', h([50]), b, [1, 0], { pause: null })])).kamper[0];
+    expect(utenPause.pauseAvvik).toBeNull();
+  });
+
+  it('bruker rettelser fra metadata uten å endre rådataene', () => {
+    const k = kamp('6001', '2025-01-01', lag('Djerv 2', [spiller('Ola Nordmann', { mal: [50], gule: [10] })]), lag('X', []), [2, 0], {
+      pause: { hjemme: 1, borte: 0 },
+    });
+    const meta = {
+      '6001': {
+        rettelser: [
+          { spiller: 'Ola Nordmann', type: 'mal' as const, fra: 50, til: 40 },
+          { spiller: 'Ola Nordmann', type: 'mal' as const, til: 70 },
+          { spiller: 'Ola Nordmann', type: 'gult' as const, fra: 10 },
+          { spiller: 'Finnes Ikke', type: 'mal' as const, til: 5 },
+          { spiller: 'Ola Nordmann', type: 'rodt' as const, fra: 3, til: 4 },
+        ],
+      },
+    };
+    const r = raw([k], { meta });
+    const d = buildDb(r);
+    expect(d.kamper[0].hendelser.map((e) => [e.type, e.minutt])).toEqual([
+      ['mal', 40],
+      ['mal', 70],
+    ]);
+    expect(d.kamper[0].malKomplett).toBe(true);
+    expect(k.hjemmelag.spillere[0].mal).toEqual([50]);
+    const punkter = reviewList(r, d)[0].punkter;
+    expect(punkter.filter((p) => p.startsWith('Rettelse'))).toHaveLength(2);
+  });
+
+  it('finner trener: mediarapport først, så "Trener" i kamprapporten', () => {
+    const k = kamp('7001', '2025-01-01', lag('Djerv 2', [spiller('Ola Nordmann')], [leder('Ass Assistent', 'Ass.trener'), leder('Tor Trener', 'Trener')]), lag('X', []), [0, 0]);
+    expect(buildDb(raw([k])).kamper[0].trener).toMatchObject({ navn: 'Tor Trener', slug: 'tor-trener', kilde: 'kamprapport' });
+    const utenTrener = kamp('7002', '2025-01-01', lag('Djerv 2', [spiller('Ola Nordmann')], [leder('Kari Kontakt', 'Kontaktperson')]), lag('X', []), [0, 0]);
+    expect(buildDb(raw([utenTrener])).kamper[0].trener).toBeNull();
   });
 
   it('viser ukjent målscorer i stedet for å gjette', () => {

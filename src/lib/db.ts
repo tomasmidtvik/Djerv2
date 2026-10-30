@@ -2,6 +2,7 @@
 import type { RawData, Settings } from './data.ts';
 import { linkMedia, matchLineup, type MediaLink } from './link.ts';
 import { cleanText, normName, slugify } from './names.ts';
+import { medRettelser } from './rettelser.ts';
 import type {
   Hendelser,
   KampMeta,
@@ -69,6 +70,8 @@ export interface KampHendelse {
   slug: string | null;
   selvmal: boolean;
   leder: boolean;
+  /** omgangen hendelsen hører til. Til og med minutt 45 er 1. omgang, med unntak avgjort av pauseresultatet. */
+  omgang: 1 | 2 | null;
   /** stillingen etter målet */
   stilling?: [number, number];
 }
@@ -98,6 +101,13 @@ export interface Kamp {
   hendelser: KampHendelse[];
   /** antall mål uten registrert målscorer (f.eks. selvmål som ikke er lagt inn) */
   ukjenteMal: Record<Side, number>;
+  /** alle mål i kampen har målscorer og minutt */
+  malKomplett: boolean;
+  /** satt når pauseresultatet ikke stemmer med målene før pause */
+  pauseAvvik: string | null;
+  protester: { lag: string; naar: 'for' | 'etter' }[];
+  /** hovedtrener fra mediarapporten, ellers "Trener" i kamprapporten */
+  trener: { navn: string; slug: string | null; kilde: 'mediarapport' | 'kamprapport' } | null;
   opptak: Opptak[];
   referat: string | null;
   keeper: { navn: string; slug: string | null; kilde: 'mediarapport' | 'metadata' } | null;
@@ -142,6 +152,7 @@ export interface Db {
 }
 
 const other = (s: Side): Side => (s === 'hjemme' ? 'borte' : 'hjemme');
+const omgangFra = (minutt: number | null): 1 | 2 | null => (minutt === null ? null : minutt <= 45 ? 1 : 2);
 
 export function buildDb(raw: RawData): Db {
   // ---- Alias ----
@@ -175,9 +186,9 @@ export function buildDb(raw: RawData): Db {
     }
   };
 
-  const ours = raw.matches.filter((m) => m.djerv);
-  const ignorert = raw.matches.filter((m) => !m.djerv).map((m) => m.kampnr);
   const metaOf = (kampnr: string): KampMeta => raw.meta[kampnr] ?? {};
+  const ours = raw.matches.filter((m) => m.djerv).map((m) => medRettelser(m, metaOf(m.kampnr)).rapport);
+  const ignorert = raw.matches.filter((m) => !m.djerv).map((m) => m.kampnr);
 
   for (const m of ours) {
     const lag = m.djerv === 'hjemme' ? m.hjemmelag : m.bortelag;
@@ -290,6 +301,16 @@ export function buildDb(raw: RawData): Db {
         keeper = { navn: k?.navn ?? cleanText(meta.keeper), slug: k?.slug ?? null, kilde: 'metadata' };
       }
 
+      // Trener: hovedtrener fra mediarapporten, ellers "Trener" i kamprapporten
+      let trener: Kamp['trener'] = null;
+      if (oss.hovedtrener) {
+        const key = keyOf(oss.hovedtrener);
+        trener = { navn: reg.get(key)?.navn ?? cleanText(oss.hovedtrener), slug: slugByKey.get(key) ?? null, kilde: 'mediarapport' };
+      } else {
+        const l = oss.ledere.find((x) => /^(hoved)?trener$/i.test(x.funksjon));
+        if (l) trener = { navn: l.navn, slug: l.slug, kilde: 'kamprapport' };
+      }
+
       const malFor = side === 'hjemme' ? m.resultat.hjemme : m.resultat.borte;
       const malMot = side === 'hjemme' ? m.resultat.borte : m.resultat.hjemme;
       return {
@@ -316,6 +337,10 @@ export function buildDb(raw: RawData): Db {
         utfall: malFor > malMot ? 'S' : malFor < malMot ? 'T' : 'U',
         hendelser,
         ukjenteMal,
+        malKomplett: ukjenteMal.hjemme + ukjenteMal.borte === 0,
+        pauseAvvik: pauseAvvik(m, hendelser),
+        protester: (m.protester ?? []).map((p) => ({ lag: p.side === 'hjemme' ? m.hjemmelag.navn : m.bortelag.navn, naar: p.naar })),
+        trener,
         opptak: (meta.opptak ?? []).filter((o) => o && typeof o.url === 'string'),
         referat: meta.referat?.trim() || null,
         keeper,
@@ -364,6 +389,14 @@ export function buildDb(raw: RawData): Db {
   };
 }
 
+/** Sammenligner pauseresultatet med målene som er plassert i 1. omgang. */
+function pauseAvvik(m: Kamprapport, hendelser: KampHendelse[]): string | null {
+  if (!m.pause) return null;
+  const mal1 = (s: Side) => hendelser.filter((e) => e.type === 'mal' && e.side === s && e.omgang === 1).length;
+  if (mal1('hjemme') === m.pause.hjemme && mal1('borte') === m.pause.borte) return null;
+  return `Pauseresultatet er ${m.pause.hjemme}-${m.pause.borte}, men målene før pause gir ${mal1('hjemme')}-${mal1('borte')}. Sjekk minuttene i PDF-en.`;
+}
+
 function buildEvents(
   m: Kamprapport,
   side: Side,
@@ -375,10 +408,10 @@ function buildEvents(
 ): { hendelser: KampHendelse[]; ukjenteMal: Record<Side, number> } {
   const ev: KampHendelse[] = [];
   const add = (s: Side, navn: string, slug: string | null, h: Hendelser & { mal?: number[] }, leder: boolean) => {
-    for (const minutt of h.mal ?? []) ev.push({ minutt, type: 'mal', side: s, navn, slug, selvmal: false, leder });
-    for (const minutt of h.gule) ev.push({ minutt, type: 'gult', side: s, navn, slug, selvmal: false, leder });
-    for (const minutt of h.rodeAdv2) ev.push({ minutt, type: 'rodt2', side: s, navn, slug, selvmal: false, leder });
-    for (const minutt of h.rodeDirekte) ev.push({ minutt, type: 'rodt', side: s, navn, slug, selvmal: false, leder });
+    for (const minutt of h.mal ?? []) ev.push({ minutt, type: 'mal', side: s, navn, slug, selvmal: false, leder, omgang: omgangFra(minutt) });
+    for (const minutt of h.gule) ev.push({ minutt, type: 'gult', side: s, navn, slug, selvmal: false, leder, omgang: omgangFra(minutt) });
+    for (const minutt of h.rodeAdv2) ev.push({ minutt, type: 'rodt2', side: s, navn, slug, selvmal: false, leder, omgang: omgangFra(minutt) });
+    for (const minutt of h.rodeDirekte) ev.push({ minutt, type: 'rodt', side: s, navn, slug, selvmal: false, leder, omgang: omgangFra(minutt) });
   };
   for (const [s, lag] of [
     ['hjemme', hjemme],
@@ -388,7 +421,7 @@ function buildEvents(
       add(s, p.navn, p.slug, p, false);
       // Selvmål fra rapporten ("11 (s)"): målet tilhører det andre laget
       for (const minutt of p.selvmal) {
-        ev.push({ minutt, type: 'mal', side: other(s), navn: p.navn, slug: p.slug, selvmal: true, leder: false });
+        ev.push({ minutt, type: 'mal', side: other(s), navn: p.navn, slug: p.slug, selvmal: true, leder: false, omgang: omgangFra(minutt) });
       }
     }
     for (const l of lag.ledere) add(s, l.navn, l.slug, l, true);
@@ -406,6 +439,7 @@ function buildEvents(
       slug: p?.slug ?? (sm.spiller && scorerLag.erOss ? slugByKey.get(keyOf(sm.spiller)) ?? null : null),
       selvmal: true,
       leder: false,
+      omgang: omgangFra(sm.minutt ?? null),
     });
   }
   // Mål uten registrert målscorer
@@ -415,10 +449,26 @@ function buildEvents(
     const fasit = s === 'hjemme' ? m.resultat.hjemme : m.resultat.borte;
     ukjenteMal[s] = Math.max(0, fasit - registrert);
     for (let i = 0; i < ukjenteMal[s]; i++) {
-      ev.push({ minutt: null, type: 'mal', side: s, navn: null, slug: null, selvmal: false, leder: false });
+      ev.push({ minutt: null, type: 'mal', side: s, navn: null, slug: null, selvmal: false, leder: false, omgang: null });
     }
   }
-  ev.sort((a, b) => (a.minutt ?? 999) - (b.minutt ?? 999));
+  // Mål i minutt 45/46 kan høre til begge omganger. Pauseresultatet avgjør når det finnes.
+  if (m.pause) {
+    for (const s of ['hjemme', 'borte'] as const) {
+      const mal = ev.filter((e) => e.type === 'mal' && e.side === s);
+      let i1 = mal.filter((e) => e.omgang === 1).length;
+      for (const e of mal) {
+        if (i1 > m.pause[s] && e.minutt === 45 && e.omgang === 1) {
+          e.omgang = 2;
+          i1--;
+        } else if (i1 < m.pause[s] && e.minutt === 46 && e.omgang === 2) {
+          e.omgang = 1;
+          i1++;
+        }
+      }
+    }
+  }
+  ev.sort((a, b) => (a.omgang ?? 3) - (b.omgang ?? 3) || (a.minutt ?? 999) - (b.minutt ?? 999));
   let h = 0;
   let b = 0;
   for (const e of ev) {

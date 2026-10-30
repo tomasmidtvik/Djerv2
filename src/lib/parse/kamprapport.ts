@@ -153,9 +153,12 @@ export function parseKamprapport(page: PdfPage, opts: ParseOptions): Kamprapport
     }
   }
 
+  const protester = parseProtester(horiz, ranges);
+
   return {
     type: 'kamprapport',
     versjon: 1,
+    ...(protester.length ? { protester } : {}),
     kampnr,
     dato: dt.dato,
     avspark: dt.tid,
@@ -176,6 +179,23 @@ export function parseKamprapport(page: PdfPage, opts: ParseOptions): Kamprapport
     advarsler: warnings,
     kilde: opts.kilde,
   };
+}
+
+/**
+ * Protestfeltene: "PROTEST varslet fra / hjemmelag før kampstart", med et X til høyre for teksten.
+ * Teksten står på to linjer, og krysset kan stå på høyde med en av dem.
+ */
+function parseProtester(horiz: TextToken[], ranges: [number, number][]): NonNullable<Kamprapport['protester']> {
+  const out: NonNullable<Kamprapport['protester']> = [];
+  ranges.forEach(([xa, xb], i) => {
+    for (const label of horiz.filter((t) => t.text === 'PROTEST' && t.x0 >= xa && t.x0 < xb)) {
+      const naer = horiz.filter((t) => t.y > label.y - 4 && t.y < label.y + 13 && t.x0 > label.x0 + 60 && t.x0 < xb && t.x0 < label.x0 + 115);
+      if (!naer.some((t) => /^x$/i.test(t.text))) continue;
+      const linje2 = horiz.filter((t) => t.y > label.y + 1.6 && t.y < label.y + 13 && t.x0 >= label.x0 - 1 && t.x0 < label.x0 + 60);
+      out.push({ side: i === 0 ? 'hjemme' : 'borte', naar: linje2.some((t) => t.text === 'etter') ? 'etter' : 'for' });
+    }
+  });
+  return out;
 }
 
 function parseDateTime(s: string): { dato: string; tid: string } | null {

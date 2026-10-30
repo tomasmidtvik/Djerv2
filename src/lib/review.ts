@@ -2,6 +2,7 @@
 import type { RawData } from './data.ts';
 import type { Db, Person } from './db.ts';
 import { editDistance, isSubsetName, normName, sameParts } from './names.ts';
+import { medRettelser } from './rettelser.ts';
 import type { KampMeta, Kamprapport } from './types.ts';
 
 export interface ReviewItem {
@@ -46,7 +47,15 @@ export function reviewList(raw: RawData, db: Db): ReviewItem[] {
   for (const r of raw.matches) {
     const meta = raw.meta[r.kampnr] ?? {};
     if (meta.godkjent) continue;
-    const punkter = [...malSjekk(r, meta), ...r.advarsler, ...(db.lineupMerknader.get(r.kampnr) ?? [])];
+    const { rapport, problemer } = medRettelser(r, meta);
+    const avvik = db.kampMap.get(r.kampnr)?.pauseAvvik;
+    const punkter = [
+      ...problemer,
+      ...malSjekk(rapport, meta),
+      ...(avvik ? [avvik] : []),
+      ...r.advarsler,
+      ...(db.lineupMerknader.get(r.kampnr) ?? []),
+    ];
     if (!r.djerv) punkter.unshift(`Fant ikke ${raw.settings.lagnavn} i kampen – den vises ikke på siden`);
     if (punkter.length) {
       items.push({

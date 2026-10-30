@@ -1,7 +1,7 @@
 ---
 // Én kamp i en liste. Mobil: lagene stablet som en resultattavle. Bred skjerm: én linje som i NFFs kampoversikt.
 import type { Kamp } from '../lib/db.ts';
-import { datoKort, datoUkedag, kampUrl } from '../lib/site.ts';
+import { datoKort, datoUkedag, kampUrl, stor } from '../lib/site.ts';
 import Utfall from './Utfall.astro';
 interface Props {
   kamp: Kamp;
@@ -15,7 +15,7 @@ const oss = (side: 'hjemme' | 'borte') => (k.side === side ? 'font-bold text-ink
   <!-- Mobil -->
   <div class="flex items-center gap-3 md:hidden">
     <div class="w-[4.5rem] shrink-0 text-xs leading-snug text-muted">
-      <div class="font-semibold capitalize text-ink">{datoUkedag(k.dato)}</div>
+      <div class="font-semibold text-ink">{stor(datoUkedag(k.dato))}</div>
       <div class="num">{k.dato.slice(0, 4)} · {k.avspark}</div>
     </div>
     <div class="min-w-0 flex-1 text-[0.95rem] leading-snug">

@@ -244,6 +244,18 @@ describe('kolonnemapping', () => {
     expect(r.advarsler.some((a) => a.startsWith('KONTROLLER') && a.includes('Peter Schau Bull') && a.includes("88'"))).toBe(true);
   });
 
+  it('leser avkryssede protester, og ingen når feltene er tomme', () => {
+    const page = pages['Kamprapport-12120604081'];
+    expect(parseKamprapport(page, opts('x')).protester).toBeUndefined();
+    // Hjemmelag etter kampslutt: krysset står til høyre for den andre "PROTEST"-teksten på venstre side
+    const labels = page.tokens.filter((t) => t.text === 'PROTEST' && t.x0 < 400).sort((a, b) => a.y - b.y);
+    const x = (l: TextToken): TextToken => ({ ...l, text: 'X', x0: l.x0 + 87, x1: l.x0 + 93, y: l.y + 3, y0: l.y0 + 3, y1: l.y1 + 3 });
+    const r = parseKamprapport({ ...page, tokens: [...page.tokens, x(labels[1])] }, opts('x'));
+    expect(r.protester).toEqual([{ side: 'hjemme', naar: 'etter' }]);
+    const f = parseKamprapport({ ...page, tokens: [...page.tokens, x(labels[0])] }, opts('x'));
+    expect(f.protester).toEqual([{ side: 'hjemme', naar: 'for' }]);
+  });
+
   it('godtar overskrifter som kommer som flere roterte biter', () => {
     const page = pages['Kamprapport-12120601129'];
     const split = page.tokens.flatMap((t): TextToken[] => {
