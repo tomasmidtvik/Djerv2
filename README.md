@@ -156,10 +156,10 @@ Ballediagrammet viser 1-minuttsbolker på bred skjerm og 3-minuttersbolker på m
 
 ## Publisering på GitHub Pages (første gang)
 
-1. Lag et **offentlig** repo på GitHub, f.eks. `djerv2-statistikk`.
+1. Lag et **offentlig** repo på GitHub, og gi det navnet `Djerv2`. Navnet blir en del av adressen, med samme store og små bokstaver.
 2. Push prosjektet til repoet (GitHub Desktop: *Add existing repository* → *Publish repository*).
 3. På GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-4. Gå til fanen **Actions** og se at «Publiser siden» blir grønn. Siden ligger på `https://<brukernavn>.github.io/<repo-navn>/`.
+4. Gå til fanen **Actions** og se at «Publiser siden» blir grønn. Siden ligger på `https://<brukernavn>.github.io/Djerv2/`.
 
 Etter dette publiseres siden automatisk hver gang du pusher til `main`. Adressen (base-stien) settes automatisk, så du trenger ikke endre noe om repoet heter noe annet. Testene kjøres før publisering. Feiler de, publiseres ikke siden.
 
